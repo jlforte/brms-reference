@@ -77,8 +77,8 @@ public class CommandBuilderUtil {
 	public static Collection<Command> buildAgendaGroupFocusCommands() {
 		ArrayList<Command> commands = new ArrayList<Command>();
 
-		commands.add(buildAgendaGroupSetFocusCommand("FilterCoverages"));
-		commands.add(buildAgendaGroupSetFocusCommand("IdentifyCoverages"));
+		commands.add(buildAgendaGroupSetFocusCommand("validate"));
+		commands.add(buildAgendaGroupSetFocusCommand("approve"));
 
 		return commands;
 	}

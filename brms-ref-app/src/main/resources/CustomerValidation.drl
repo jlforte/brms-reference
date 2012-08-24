@@ -1,0 +1,60 @@
+//created on: Aug 22, 2012
+package com.rhc.brms.ref.rules
+
+//list any import classes here.
+import com.rhc.brms.ref.domain.Customer;
+
+//declare any global variables here
+global RulesServiceResponse
+
+
+rule "Invalid Customer Age"
+	agenda-group "validate-data"
+    when
+        $customer : Customer 
+        	(
+        	$age:  		age == null 
+        			|| 	age < 0 
+        	)
+    then
+        System.out.println("Invalid age of " + $age + " for customer " + $customer);
+
+end
+
+rule "Invalid Customer Credit Score"
+	agenda-group "validate-data"
+    when
+        $customer : Customer 
+        	(
+        	$score:  	creditScore == null 
+        			|| 	creditScore < 0 
+        			|| 	creditScore > 800 
+        	)
+    then
+        System.out.println("Invalid credit score of " + $score + " for customer " + $customer);
+
+end
+
+rule "No Customer Name"
+	agenda-group "validate-data"
+    when
+        $customer 	: 	Customer 
+        	(
+        	$name	:  	name == null 
+        	)
+    then
+        System.out.println("Invalid credit score of " + $name + " for customer " + $customer);
+
+end
+
+rule "No Customer ID"
+	agenda-group "validate-data"
+    when
+        $customer 	: 	Customer 
+        	(
+        	$id	:  	id == null 
+        	)
+    then
+        System.out.println("Invalid credit score of " + $id + " for customer " + $customer);
+
+end

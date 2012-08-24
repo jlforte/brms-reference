@@ -1,0 +1,73 @@
+//created on: Aug 22, 2012
+package com.rhc.brms.ref.rules
+
+//list any import classes here.
+
+import com.rhc.brms.ref.domain.Application;
+import com.rhc.brms.ref.domain.Customer;
+import com.rhc.brms.ref.domain.Mortgage;
+
+//declare any global variables here
+global RulesServiceResponse
+
+
+rule "Customer is a Minor"
+    agenda-group "eligible"
+    when
+        $customer	:	Customer	(
+        		$id		:	id,
+        		$age	: 	age < 18
+        		) 
+        $app		:	Application	(
+        		reviewed != true,
+        		customerId == $id,
+        		$appId	:	applicationID
+        )
+    then
+        $app.setReviewed(true);
+        $app.setApproved(false);
+        update($app);
+        System.out.println("Application " + $appId + " denied due to applicant being a minor");
+end
+
+rule "Poor Credit Score"
+	agenda-group "approve"
+    when
+        $customer	:	Customer	(
+        		$id		:	id,
+        		$score	:	creditScore < 650
+        		) 
+        $app		:	Application	(
+        		reviewed != true,
+        		customerId == $id,
+        		$appId	:	applicationID
+        )
+    then
+        $app.setReviewed(true);
+        $app.setApproved(false);
+        update($app);
+        System.out.println("Application " + $appId + " denied due to poor credit score");
+
+end
+
+rule "Auto-Approve Under 10k"
+	agenda-group "approve"
+    when
+        $customer	:	Customer	(
+        		$id		:	id,
+        		$score	:	creditScore > 650
+        		) 
+        $app		:	Application	(
+        		reviewed != true,
+        		customerId == $id,
+        		$amount : 	amount < 10000,
+        		$appId	:	applicationID
+        )
+    then
+        $app.setReviewed(true);
+        $app.setApproved(true);
+        update($app);
+        insert(new Mortgage(
+        System.out.println("Application " + $appId + " denied due to poor credit score");
+
+end
