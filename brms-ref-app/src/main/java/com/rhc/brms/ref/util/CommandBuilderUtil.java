@@ -9,6 +9,8 @@ import org.drools.command.runtime.rule.AgendaGroupSetFocusCommand;
 import org.drools.command.runtime.rule.FireAllRulesCommand;
 import org.drools.command.runtime.rule.InsertObjectCommand;
 
+import com.rhc.brms.ref.domain.Application;
+import com.rhc.brms.ref.domain.Customer;
 import com.rhc.brms.ref.engine.RulesServiceRequest;
 import com.rhc.brms.ref.engine.RulesServiceResponse;
 
@@ -45,41 +47,32 @@ public class CommandBuilderUtil {
 		// Create ArrayList of commands to return
 		ArrayList<Command> commands = new ArrayList<Command>();
 
+		// Retrieve objects from request
+		Collection<Customer> customers  = request.getCustomers();
+		Collection<Application> applications = request.getApplications();
+		
 		// Create insert commands to add values from request
-
-//		 commands.add( CommandFactory.newInsert( request.getRequestDate()));
-//		
-//		 MemberOccurrenceProfileAndIdentiferType[] memlist =
-//		 request.getIndividualList().getIndividualArray(0).getMemberOccurrences().getMemberOccurrenceArray();
-//		 for (MemberOccurrenceProfileAndIdentiferType mem : memlist){
-//		 commands.add(
-//		 CommandFactory.newInsert((MemberOccurrenceProfileAndIdentiferType)mem));
-//		 System.out.println("Inserting Member");
-//		 for (CoverageSummaryType cov :
-//		 mem.getCoverageSummaries().getCoverageSummaryArray()){
-//		 commands.add( CommandFactory.newInsert((CoverageSummaryType)cov));
-//		 System.out.println("Inserting Coverage");
-//		 for (BenefitOptionType benefit :
-//		 cov.getBenefitOptions().getBenefitOptionArray()) {
-//		 commands.add( CommandFactory.newInsert((BenefitOptionType)benefit));
-//		 System.out.println("Inserting Benefit");
-//		 for (CoverageOwnerSummaryType covOwner :
-//		 benefit.getCoverageOwners().getCoverageOwnerArray()) {
-//		 System.out.println("Inserting CoverageOwner");
-//		 commands.add( CommandFactory.newInsert((CoverageOwnerSummaryType)covOwner));
-//		 }
-//		 }
-//		 }
-
+		
+		for(Customer c : customers){
+			System.out.println( "Adding Customer " + c );
+			commands.add( CommandFactory.newInsert( c ) );
+		}
+		
+		for(Application a: applications){
+			System.out.println( "Adding application " + a );
+			commands.add( CommandFactory.newInsert( a ) );
+		}
+		
 		return commands;
 	}
 
 	public static Collection<Command> buildAgendaGroupFocusCommands() {
 		ArrayList<Command> commands = new ArrayList<Command>();
 
-		commands.add(buildAgendaGroupSetFocusCommand("validate"));
 		commands.add(buildAgendaGroupSetFocusCommand("approve"));
-
+		commands.add(buildAgendaGroupSetFocusCommand("eligible"));
+		commands.add(buildAgendaGroupSetFocusCommand("validate-data"));
+		
 		return commands;
 	}
 

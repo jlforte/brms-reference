@@ -6,9 +6,12 @@ package com.rhc.brms.ref.rules
 import com.rhc.brms.ref.domain.Application;
 import com.rhc.brms.ref.domain.Customer;
 import com.rhc.brms.ref.domain.Mortgage;
+import com.rhc.brms.ref.engine.RulesServiceResponse;
+import java.math.BigDecimal;
 
 //declare any global variables here
-global RulesServiceResponse
+global RulesServiceResponse response;
+
 
 
 rule "Customer is a Minor"
@@ -21,13 +24,13 @@ rule "Customer is a Minor"
         $app		:	Application	(
         		reviewed != true,
         		customerId == $id,
-        		$appId	:	applicationID
+        		$appId	:	applicationId
         )
     then
-        $app.setReviewed(true);
-        $app.setApproved(false);
-        update($app);
-        System.out.println("Application " + $appId + " denied due to applicant being a minor");
+        $app.setReviewed( true );
+        $app.setApproved( false );
+        update( $app );
+        System.out.println( "Application " + $appId + " denied due to applicant being a minor" );
 end
 
 rule "Poor Credit Score"
@@ -40,13 +43,13 @@ rule "Poor Credit Score"
         $app		:	Application	(
         		reviewed != true,
         		customerId == $id,
-        		$appId	:	applicationID
+        		$appId	:	applicationId
         )
     then
-        $app.setReviewed(true);
-        $app.setApproved(false);
-        update($app);
-        System.out.println("Application " + $appId + " denied due to poor credit score");
+        $app.setReviewed( true );
+        $app.setApproved( false );
+        update( $app );
+        System.out.println( "Application " + $appId + " denied due to poor credit score" );
 
 end
 
@@ -61,13 +64,35 @@ rule "Auto-Approve Under 10k"
         		reviewed != true,
         		customerId == $id,
         		$amount : 	amount < 10000,
-        		$appId	:	applicationID
+        		$appId	:	applicationId
         )
     then
-        $app.setReviewed(true);
-        $app.setApproved(true);
-        update($app);
-        insert(new Mortgage(
-        System.out.println("Application " + $appId + " denied due to poor credit score");
+        $app.setReviewed( true );
+        $app.setApproved( true );
+        update( $app );
+        insert( new Mortgage( $id, $appId, $amount ) );
+        System.out.println( "Application " + $appId + " approved for amount " + $amount );
+
+end
+
+rule "Limit mortgage at 10k"
+	agenda-group "approve"
+    when
+        $customer	:	Customer	(
+        		$id		:	id,
+        		$score	:	creditScore > 650
+        		) 
+        $app		:	Application	(
+        		reviewed != true,
+        		customerId == $id,
+        		$amount : 	amount > 10000,
+        		$appId	:	applicationId
+        )
+    then
+        $app.setReviewed( true );
+        $app.setApproved( true );
+        update( $app );
+        insert( new Mortgage( $id, $appId, new BigDecimal( 10000 ) ) );
+        System.out.println( "Application " + $appId + " approved for max of $10,000" );
 
 end

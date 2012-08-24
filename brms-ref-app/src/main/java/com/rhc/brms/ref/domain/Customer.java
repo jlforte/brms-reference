@@ -7,7 +7,7 @@ public class Customer {
 	private Integer creditScore;
 	private Long id;
 	
-	public Customer(String name, Integer age, Integer creditScore, long id) {
+	public Customer(String name, Integer age, Integer creditScore, Long id) {
 		
 		this.name = name;
 		this.age = age;
@@ -46,6 +46,13 @@ public class Customer {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
 
+	@Override
+	public String toString() {
+		return "Customer [name=" + name + ", age=" + age + ", creditScore=" + creditScore + ", id=" + id + "]";
+	}
+	
+	
+	
+	
 }

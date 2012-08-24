@@ -53,7 +53,8 @@ public class DroolsExecutionService implements RulesApplicationInterface<RulesSe
 		// Execute commands
 		ExecutionResults results = droolsService.executeCommandList(commands);
 		response = transformer.transform(results);
-		response.setFiredRules(droolsService.getFiredActivations());
+		
+		//response.setFiredRules(droolsService.getFiredActivations());
 
 		return response;
 	}

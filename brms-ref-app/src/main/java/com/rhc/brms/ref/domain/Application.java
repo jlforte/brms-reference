@@ -6,16 +6,14 @@ public class Application {
 
 	private BigDecimal amount;
 	private Long customerId;
-	private Boolean reviewed;
+	private Boolean reviewed = false;
 	private Boolean approved;
 	private Long applicationId;
 	
-	public Application(BigDecimal amount, Long customerId, Boolean reviewed, Boolean approved, Long applicationId) {
+	public Application(BigDecimal amount, Long customerId,  Long applicationId) {
 		
 		this.amount = amount;
 		this.customerId = customerId;
-		this.reviewed = reviewed;
-		this.approved = approved;
 		this.applicationId = applicationId;
 	}
 	
@@ -48,6 +46,12 @@ public class Application {
 	}
 	public void setApplicationId(Long applicationId) {
 		this.applicationId = applicationId;
+	}
+
+	@Override
+	public String toString() {
+		return "Application [amount=" + amount + ", customerId=" + customerId + ", reviewed=" + reviewed + ", approved=" + approved
+				+ ", applicationId=" + applicationId + "]";
 	}
 	
 	

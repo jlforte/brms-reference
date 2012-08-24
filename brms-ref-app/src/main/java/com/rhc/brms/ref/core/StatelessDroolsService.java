@@ -36,18 +36,22 @@ public class StatelessDroolsService {
    private static final Logger logger = Logger.getLogger(StatelessDroolsService.class);
    private KnowledgeBase kbase;
    private HashMap<String, List<AfterActivationFiredEvent>> firedActivations;
-   private boolean isRecordingFiredRuleActivations = true;
-   private boolean isRecordingAuditLog = true;
+   private boolean isRecordingFiredRuleActivations = false;
+   private boolean isRecordingAuditLog = false;
    private String logFileName = "DroolsAuditLog";
 
    public ExecutionResults executeCommandList(List<Command> commands) {
-      // Build Knowledge Base
+      
+	   System.out.println("Executing command list");
+	   
+	   // Build Knowledge Base
       if ( this.kbase == null ) {
          this.kbase = buildKnowledgeBase();
       }
 
       // Setup of the session and audit logger
       StatefulKnowledgeSession ksession = this.kbase.newStatefulKnowledgeSession();
+      
       
       // Audit Log can be turned on and off
       KnowledgeRuntimeLogger droolsAuditLogger = null;
@@ -118,10 +122,13 @@ public class StatelessDroolsService {
       logger.info("Building Knowledge Base...");
       
       // add any new rules here
-      kbuilder.add( ResourceFactory.newClassPathResource( "MyRules.drl", getClass() ), ResourceType.DRL );
-
+      kbuilder.add( ResourceFactory.newClassPathResource( "ApplicationValidation.drl", getClass() ), ResourceType.DRL );
+      kbuilder.add( ResourceFactory.newClassPathResource( "CustomerValidation.drl", getClass() ), ResourceType.DRL );
+      kbuilder.add( ResourceFactory.newClassPathResource( "MortgageRules.drl", getClass() ), ResourceType.DRL );
+      
       if ( kbuilder.hasErrors() ) {
           logger.error( kbuilder.getErrors().toString() );
+          System.out.println( kbuilder.getErrors().toString() );
       }
       
       KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();

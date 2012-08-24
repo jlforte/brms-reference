@@ -34,6 +34,11 @@ public class Mortgage {
 		this.approvedAmount = approvedAmount;
 	}
 
+	@Override
+	public String toString() {
+		return "Mortgage [customerId=" + customerId + ", applicationId=" + applicationId + ", approvedAmount=" + approvedAmount + "]";
+	}
+
 	
 	
 }

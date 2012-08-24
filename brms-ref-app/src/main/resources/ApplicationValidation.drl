@@ -4,10 +4,11 @@ package com.rhc.brms.ref.rules
 //list any import classes here.
 
 import com.rhc.brms.ref.domain.Application;
+import com.rhc.brms.ref.engine.RulesServiceResponse;
 
 
 //declare any global variables here
-global RulesServiceResponse
+global RulesServiceResponse response;
 
 
 rule "Invalid Application Amount"
@@ -19,7 +20,7 @@ rule "Invalid Application Amount"
         				|| 		amount < 0	 
         	)
     then
-        System.out.println("Invalid amount of " + $amount + " for application " + $application);
+        System.out.println( "Invalid amount of " + $amount + " for application " + $application );
 
 end
 
@@ -32,7 +33,7 @@ rule "No Application ID"
         	$id	:  	applicationId == null 
         	)
     then
-        System.out.println("Invalid credit score of " + $id + " for customer " + $application);
+        System.out.println( "Invalid credit score of " + $id + " for customer " + $application );
 
 end
 
@@ -45,6 +46,6 @@ rule "No Customer ID"
         	$id	:  	customerId == null 
         	)
     then
-        System.out.println("Invalid credit score of " + $id + " for customer " + $application);
+        System.out.println( "Invalid credit score of " + $id + " for customer " + $application );
         
 end

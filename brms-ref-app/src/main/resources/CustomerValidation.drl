@@ -3,9 +3,10 @@ package com.rhc.brms.ref.rules
 
 //list any import classes here.
 import com.rhc.brms.ref.domain.Customer;
+import com.rhc.brms.ref.engine.RulesServiceResponse;
 
 //declare any global variables here
-global RulesServiceResponse
+global RulesServiceResponse response;
 
 
 rule "Invalid Customer Age"
@@ -17,7 +18,7 @@ rule "Invalid Customer Age"
         			|| 	age < 0 
         	)
     then
-        System.out.println("Invalid age of " + $age + " for customer " + $customer);
+        System.out.println( "Invalid age of " + $age + " for customer " + $customer );
 
 end
 
@@ -31,7 +32,7 @@ rule "Invalid Customer Credit Score"
         			|| 	creditScore > 800 
         	)
     then
-        System.out.println("Invalid credit score of " + $score + " for customer " + $customer);
+        System.out.println( "Invalid credit score of " + $score + " for customer " + $customer );
 
 end
 
@@ -43,7 +44,7 @@ rule "No Customer Name"
         	$name	:  	name == null 
         	)
     then
-        System.out.println("Invalid credit score of " + $name + " for customer " + $customer);
+        System.out.println( "Invalid credit score of " + $name + " for customer " + $customer );
 
 end
 
@@ -55,6 +56,6 @@ rule "No Customer ID"
         	$id	:  	id == null 
         	)
     then
-        System.out.println("Invalid credit score of " + $id + " for customer " + $customer);
+        System.out.println( "Invalid credit score of " + $id + " for customer " + $customer );
 
 end
