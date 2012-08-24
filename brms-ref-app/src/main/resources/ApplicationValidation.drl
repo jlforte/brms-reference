@@ -17,10 +17,13 @@ rule "Invalid Application Amount"
         $application : Application 
         	(
         	$amount		:  		amount == null 
-        				|| 		amount < 0	 
+        				|| 		amount < 0,
+        	valid 	!=	false	 
         	)
     then
         System.out.println( "Invalid amount of " + $amount + " for application " + $application );
+        $application.setValid(false);
+        update($application);
 
 end
 
@@ -30,11 +33,14 @@ rule "No Application ID"
     when
         $application 	: 	Application 
         	(
-        	$id	:  	applicationId == null 
+        	$id	:  	applicationId == null,
+        	valid 	!=	false 
         	)
     then
-        System.out.println( "Invalid credit score of " + $id + " for customer " + $application );
-
+    	
+        System.out.println( "Invalid application id of " + $id + " for application " + $application );
+		$application.setValid(false);
+		update($application);
 end
 
 
@@ -43,9 +49,11 @@ rule "No Customer ID"
     when
         $application 	: 	Application 
         	(
-        	$id	:  	customerId == null 
+        	$id	:  	customerId == null,
+        	valid 	!=	false 
         	)
     then
-        System.out.println( "Invalid credit score of " + $id + " for customer " + $application );
-        
+        System.out.println( "Invalid customer ID of " + $id + " for application " + $application );
+        $application.setValid(false);
+        update($application);
 end

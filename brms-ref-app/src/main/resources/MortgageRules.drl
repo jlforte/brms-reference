@@ -18,10 +18,12 @@ rule "Customer is a Minor"
     agenda-group "eligible"
     when
         $customer	:	Customer	(
+        		valid == true,
         		$id		:	id,
         		$age	: 	age < 18
         		) 
         $app		:	Application	(
+        		valid == true,	
         		reviewed != true,
         		customerId == $id,
         		$appId	:	applicationId
@@ -37,10 +39,12 @@ rule "Poor Credit Score"
 	agenda-group "approve"
     when
         $customer	:	Customer	(
+        		valid == true,
         		$id		:	id,
         		$score	:	creditScore < 650
         		) 
         $app		:	Application	(
+        		valid == true,
         		reviewed != true,
         		customerId == $id,
         		$appId	:	applicationId
@@ -57,10 +61,12 @@ rule "Auto-Approve Under 10k"
 	agenda-group "approve"
     when
         $customer	:	Customer	(
+        		valid == true,
         		$id		:	id,
         		$score	:	creditScore > 650
         		) 
         $app		:	Application	(
+        		valid == true,
         		reviewed != true,
         		customerId == $id,
         		$amount : 	amount < 10000,
@@ -79,10 +85,12 @@ rule "Limit mortgage at 10k"
 	agenda-group "approve"
     when
         $customer	:	Customer	(
+        		valid == true,
         		$id		:	id,
         		$score	:	creditScore > 650
         		) 
         $app		:	Application	(
+        		valid == true,
         		reviewed != true,
         		customerId == $id,
         		$amount : 	amount > 10000,

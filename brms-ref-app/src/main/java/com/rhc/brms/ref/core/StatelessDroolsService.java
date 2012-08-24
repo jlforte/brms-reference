@@ -126,6 +126,7 @@ public class StatelessDroolsService {
       
       if ( kbuilder.hasErrors() ) {
           logger.error( kbuilder.getErrors().toString() );
+          System.out.println( kbuilder.getErrors().toString() );
       }
       
       KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();

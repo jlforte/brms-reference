@@ -9,6 +9,7 @@ public class Application {
 	private Boolean reviewed = false;
 	private Boolean approved;
 	private Long applicationId;
+	private Boolean valid = true;
 	
 	public Application(BigDecimal amount, Long customerId,  Long applicationId) {
 		
@@ -48,12 +49,21 @@ public class Application {
 		this.applicationId = applicationId;
 	}
 
+	public Boolean getValid() {
+		return valid;
+	}
+
+	public void setValid(Boolean valid) {
+		this.valid = valid;
+	}
+
 	@Override
 	public String toString() {
 		return "Application [amount=" + amount + ", customerId=" + customerId + ", reviewed=" + reviewed + ", approved=" + approved
-				+ ", applicationId=" + applicationId + "]";
+				+ ", applicationId=" + applicationId + ", valid=" + valid + "]";
 	}
-	
+
+
 	
 	
 }

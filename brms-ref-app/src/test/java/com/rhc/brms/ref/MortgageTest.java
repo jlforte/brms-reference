@@ -66,7 +66,9 @@ public class MortgageTest {
 	private static Collection<Customer> createCustomers(){
 		
 		List<Customer> customers = new ArrayList<Customer>();
-		customers.add( new Customer( "Dave", 17, 700, CUSTOMER_ID_1 ) );
+		customers.add( new Customer( "Dave", 20, 700, CUSTOMER_ID_1 ) );
+		customers.add( new Customer( "Mike", 18, 750, CUSTOMER_ID_2 ) );
+		customers.add( new Customer( "Bryan", 28, 450, CUSTOMER_ID_3 ) );
 		
 		return customers;
 	}
@@ -75,6 +77,8 @@ public class MortgageTest {
 		
 		List<Application> applications = new ArrayList<Application>();
 		applications.add(new Application(new BigDecimal( 15000 ) , CUSTOMER_ID_1 , APPLICATION_ID_1 ));
+		applications.add(new Application(new BigDecimal( 75000 ) , CUSTOMER_ID_3 , APPLICATION_ID_2 ));
+		applications.add(new Application(new BigDecimal( 85000 ) , CUSTOMER_ID_2 , APPLICATION_ID_3 ));
 		
 		return applications;
 	

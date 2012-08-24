@@ -59,11 +59,13 @@ public class CommandBuilderUtil {
 		
 		for(Customer c : customers){
 			logger.info( "Adding Customer " + c );
+			System.out.println("Customer: " + c);
 			commands.add( CommandFactory.newInsert( c ) );
 		}
 		
 		for(Application a: applications){
 			logger.info( "Adding application " + a );
+			System.out.println("Applicaiton: " + a);
 			commands.add( CommandFactory.newInsert( a ) );
 		}
 		

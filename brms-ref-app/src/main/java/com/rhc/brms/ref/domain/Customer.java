@@ -6,6 +6,7 @@ public class Customer {
 	private Integer age;
 	private Integer creditScore;
 	private Long id;
+	private Boolean valid = true;
 	
 	public Customer(String name, Integer age, Integer creditScore, Long id) {
 		
@@ -42,17 +43,22 @@ public class Customer {
 	public long getId() {
 		return id;
 	}
-
-	public void setId(long id) {
+	
+	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public Boolean getValid() {
+		return valid;
+	}
+
+	public void setValid(Boolean valid) {
+		this.valid = valid;
 	}
 
 	@Override
 	public String toString() {
-		return "Customer [name=" + name + ", age=" + age + ", creditScore=" + creditScore + ", id=" + id + "]";
+		return "Customer [name=" + name + ", age=" + age + ", creditScore=" + creditScore + ", id=" + id + ", valid=" + valid + "]";
 	}
-	
-	
-	
-	
+
 }
