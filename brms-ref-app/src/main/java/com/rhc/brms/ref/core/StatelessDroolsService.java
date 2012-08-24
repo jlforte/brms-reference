@@ -41,8 +41,6 @@ public class StatelessDroolsService {
    private String logFileName = "DroolsAuditLog";
 
    public ExecutionResults executeCommandList(List<Command> commands) {
-      
-	   System.out.println("Executing command list");
 	   
 	   // Build Knowledge Base
       if ( this.kbase == null ) {
@@ -128,7 +126,6 @@ public class StatelessDroolsService {
       
       if ( kbuilder.hasErrors() ) {
           logger.error( kbuilder.getErrors().toString() );
-          System.out.println( kbuilder.getErrors().toString() );
       }
       
       KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
