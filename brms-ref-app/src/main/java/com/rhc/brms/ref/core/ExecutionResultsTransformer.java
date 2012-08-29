@@ -8,7 +8,7 @@ import org.drools.runtime.ExecutionResults;
 
 /**
  * This interface defines the ability to transform a Drools Batch ExecutionResults into a generically typed response.
- * This class will handle everything related to retunring informaiton from the knowledge session
+ * This class will handle everything related to returning information from the knowledge session
  *  
  */
 public interface ExecutionResultsTransformer<Response> {

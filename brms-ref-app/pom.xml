@@ -6,48 +6,41 @@
   <name>BRMS Reference Application</name>
 
 	<dependencies>
-  		<dependency>
-        	<groupId>org.drools</groupId>
-        	<artifactId>drools-core</artifactId>
-        	<version>5.3.0.Final</version>
-        	<type>jar</type>
-  		</dependency>
-  		<dependency>
-    	  <groupId>org.drools</groupId>
-      		<artifactId>drools-compiler</artifactId>
-  	  		<version>5.3.0.Final</version>
-      		<type>jar</type>
-  		</dependency>
-  		<dependency>
-  			<groupId>junit</groupId>
-  			<artifactId>junit</artifactId>
-  			<version>3.8.1</version>
-  			<scope>test</scope>
-  		</dependency>
-  		<dependency>
-  			<groupId>log4j</groupId>
-  			<artifactId>log4j</artifactId>
-  			<version>1.2.15</version>
-  			<scope>provided</scope>
-  			<exclusions>
-    			<exclusion>
-      				<groupId>javax.mail</groupId>
-      				<artifactId>mail</artifactId>
-    			</exclusion>
-    			<exclusion>
-      				<groupId>javax.jms</groupId>
-      				<artifactId>jms</artifactId>
-    			</exclusion>
-    			<exclusion>
-      				<groupId>com.sun.jdmk</groupId>
-      				<artifactId>jmxtools</artifactId>
-    			</exclusion>
-    			<exclusion>
-      				<groupId>com.sun.jmx</groupId>
-      				<artifactId>jmxri</artifactId>
-    			</exclusion>
-			</exclusions>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-core</artifactId>
+			<version>RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>knowledge-api</artifactId>
+			<version>RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-compiler</artifactId>
+			<version>RELEASE</version>
 		</dependency>
 	</dependencies>      
-        
 </project>

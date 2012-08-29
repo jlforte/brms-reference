@@ -1,18 +1,15 @@
 package com.rhc.brms.ref.engine;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.drools.command.Command;
-import org.drools.command.CommandFactory;
-import org.drools.command.runtime.rule.AgendaGroupSetFocusCommand;
 import org.drools.runtime.ExecutionResults;
-import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.rhc.brms.ref.core.RulesApplicationInterface;
 import com.rhc.brms.ref.core.ExecutionResultsTransformer;
+import com.rhc.brms.ref.core.RulesApplicationInterface;
 import com.rhc.brms.ref.core.StatelessDroolsService;
 import com.rhc.brms.ref.util.CommandBuilderUtil;
 
@@ -23,7 +20,7 @@ import com.rhc.brms.ref.util.CommandBuilderUtil;
  */
 public class DroolsExecutionService implements RulesApplicationInterface<RulesServiceRequest, RulesServiceResponse> {
 
-	private static final Logger logger = Logger.getLogger(DroolsExecutionService.class);
+	private static final Logger logger = LoggerFactory.getLogger(DroolsExecutionService.class);
 
 	private StatelessDroolsService droolsService = new StatelessDroolsService();
 	private ExecutionResultsTransformer<RulesServiceResponse> transformer = new RulesServiceResultsTransformer();

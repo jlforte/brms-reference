@@ -3,14 +3,14 @@ package com.rhc.brms.ref.util;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
 import org.drools.command.Command;
 import org.drools.command.CommandFactory;
 import org.drools.command.runtime.rule.AgendaGroupSetFocusCommand;
 import org.drools.command.runtime.rule.FireAllRulesCommand;
 import org.drools.command.runtime.rule.InsertObjectCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.rhc.brms.ref.core.StatelessDroolsService;
 import com.rhc.brms.ref.domain.Application;
 import com.rhc.brms.ref.domain.Customer;
 import com.rhc.brms.ref.engine.RulesServiceRequest;
@@ -18,7 +18,7 @@ import com.rhc.brms.ref.engine.RulesServiceResponse;
 
 public class CommandBuilderUtil {
 
-	private static final Logger logger = Logger.getLogger(CommandBuilderUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(CommandBuilderUtil.class);
 	
 	/**
 	 * Utility class to create an AgendaGroupSetFocusCommand for the incoming agendaGroup

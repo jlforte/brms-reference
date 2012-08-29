@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggerFactory;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
@@ -15,14 +13,14 @@ import org.drools.builder.ResourceType;
 import org.drools.command.Command;
 import org.drools.command.CommandFactory;
 import org.drools.event.rule.AfterActivationFiredEvent;
-import org.drools.event.rule.DebugAgendaEventListener;
-import org.drools.event.rule.DebugWorkingMemoryEventListener;
 import org.drools.event.rule.DefaultAgendaEventListener;
 import org.drools.io.ResourceFactory;
 import org.drools.logger.KnowledgeRuntimeLogger;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.runtime.ExecutionResults;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 
@@ -33,7 +31,7 @@ import org.drools.runtime.StatefulKnowledgeSession;
  */
 public class StatelessDroolsService {
 
-   private static final Logger logger = Logger.getLogger(StatelessDroolsService.class);
+   private static final Logger logger = LoggerFactory.getLogger(StatelessDroolsService.class);
    private KnowledgeBase kbase;
    private HashMap<String, List<AfterActivationFiredEvent>> firedActivations;
    private boolean isRecordingFiredRuleActivations = false;
