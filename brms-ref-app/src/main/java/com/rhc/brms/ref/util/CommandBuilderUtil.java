@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import com.rhc.brms.ref.domain.Application;
 import com.rhc.brms.ref.domain.Customer;
-import com.rhc.brms.ref.engine.RulesServiceRequest;
-import com.rhc.brms.ref.engine.RulesServiceResponse;
+import com.rhc.brms.ref.engine.MortageApplicationRequest;
+import com.rhc.brms.ref.engine.MortageApplicationResponse;
 
 public class CommandBuilderUtil {
 
@@ -34,7 +34,7 @@ public class CommandBuilderUtil {
 		return agendaGroupCommand;
 	}
 
-	public static InsertObjectCommand buildInsertResponseCommand(RulesServiceResponse response) {
+	public static InsertObjectCommand buildInsertResponseCommand(MortageApplicationResponse response) {
 		InsertObjectCommand insertResponseCommand = new InsertObjectCommand();
 		insertResponseCommand.setObject(response);
 		insertResponseCommand.setOutIdentifier("response");
@@ -46,7 +46,7 @@ public class CommandBuilderUtil {
 		return fireAll;
 	}
 
-	public static Collection<Command> buildInsertObjectCommands(RulesServiceRequest request) {
+	public static Collection<Command> buildInsertObjectCommands(MortageApplicationRequest request) {
 
 		// Create ArrayList of commands to return
 		ArrayList<Command> commands = new ArrayList<Command>();

@@ -6,12 +6,7 @@ package com.rhc.brms.ref.rules
 import com.rhc.brms.ref.domain.Application;
 import com.rhc.brms.ref.domain.Customer;
 import com.rhc.brms.ref.domain.Mortgage;
-import com.rhc.brms.ref.engine.RulesServiceResponse;
 import java.math.BigDecimal;
-
-//declare any global variables here
-global RulesServiceResponse response;
-
 
 
 rule "Customer is a Minor"

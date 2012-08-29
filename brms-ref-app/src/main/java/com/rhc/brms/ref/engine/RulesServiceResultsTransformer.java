@@ -8,7 +8,7 @@ import org.drools.runtime.ExecutionResults;
 import com.rhc.brms.ref.core.ExecutionResultsTransformer;
 
 public class RulesServiceResultsTransformer implements
-		ExecutionResultsTransformer<RulesServiceResponse> {
+		ExecutionResultsTransformer<MortageApplicationResponse> {
 
 	/**
 	 * Queries to grab references from the engine. These are objects we will
@@ -16,7 +16,7 @@ public class RulesServiceResultsTransformer implements
 	 */
 	private final List<Command> queryCommandList = buildQueryCommandList();
 
-	public RulesServiceResponse transform(ExecutionResults results) {
+	public MortageApplicationResponse transform(ExecutionResults results) {
 		return null;
 	}
 

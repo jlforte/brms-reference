@@ -3,10 +3,7 @@ package com.rhc.brms.ref.rules
 
 //list any import classes here.
 import com.rhc.brms.ref.domain.Customer;
-import com.rhc.brms.ref.engine.RulesServiceResponse;
 
-//declare any global variables here
-global RulesServiceResponse response;
 
 
 rule "Invalid Customer Age"
