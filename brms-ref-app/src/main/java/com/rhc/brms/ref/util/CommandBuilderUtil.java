@@ -46,6 +46,7 @@ public class CommandBuilderUtil {
 		return fireAll;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static Collection<Command> buildInsertObjectCommands(MortageApplicationRequest request) {
 
 		// Create ArrayList of commands to return
@@ -70,6 +71,7 @@ public class CommandBuilderUtil {
 		return commands;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static Collection<Command> buildAgendaGroupFocusCommands() {
 		ArrayList<Command> commands = new ArrayList<Command>();
 
