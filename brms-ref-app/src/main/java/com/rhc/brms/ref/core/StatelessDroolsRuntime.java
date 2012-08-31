@@ -19,8 +19,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 
- * This class handles everything related to executing rules and building a
- * knowledge base.
+ * This class handles everything related to executing rules and building a knowledge base.
  * 
  */
 public class StatelessDroolsRuntime {
@@ -74,8 +73,7 @@ public class StatelessDroolsRuntime {
 	}
 
 	/**
-	 * This is a slick way to capture all activations fired in the session so
-	 * they can be interrogated
+	 * This is a slick way to capture all activations fired in the session so they can be interrogated
 	 * 
 	 * @param kSession
 	 */

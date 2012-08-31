@@ -6,9 +6,8 @@ import org.drools.command.Command;
 import org.drools.runtime.ExecutionResults;
 
 /**
- * This interface defines the ability to transform a Drools Batch
- * ExecutionResults into a generically typed response. This class will handle
- * everything related to returning information from the knowledge session
+ * This interface defines the ability to transform a Drools Batch ExecutionResults into a generically typed response.
+ * This class will handle everything related to returning information from the knowledge session
  * 
  */
 public interface ExecutionResultsTransformer<Response> {
@@ -22,8 +21,7 @@ public interface ExecutionResultsTransformer<Response> {
 
 	/**
 	 * 
-	 * @return the queries to be run in order to obtain the proper objects in
-	 *         the ExecutionResults
+	 * @return the queries to be run in order to obtain the proper objects in the ExecutionResults
 	 */
 	@SuppressWarnings("rawtypes")
 	public List<Command> getQueryCommands();

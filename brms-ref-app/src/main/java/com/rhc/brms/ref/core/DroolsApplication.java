@@ -16,9 +16,10 @@ public abstract class DroolsApplication<Request, Response> {
 
 	protected static Logger logger = LoggerFactory.getLogger( DroolsApplication.class );
 
-	protected StatelessDroolsRuntime droolsRuntime; // responsible drools runtime execution
-	protected ExecutionResultsTransformer<Response> resultsTransformer;// responsible for transforming results from runtime into something the applicaiton needs
-	
+	protected StatelessDroolsRuntime droolsRuntime; 					// responsible drools runtime execution
+	protected ExecutionResultsTransformer<Response> resultsTransformer;	// responsible for transforming results from
+																		// runtime into something the application needs
+
 	@SuppressWarnings("rawtypes")
 	public Response executeAllRules( Request request ) {
 

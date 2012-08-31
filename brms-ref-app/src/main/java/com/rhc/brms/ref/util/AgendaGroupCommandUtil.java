@@ -9,12 +9,12 @@ public class AgendaGroupCommandUtil {
 	 * 
 	 * @param agendaGroup
 	 * @return agendaGroupCommand
-	 * 	
+	 * 
 	 */
-	   public static AgendaGroupSetFocusCommand buildAgendaGroupSetFocusCommand(String agendaGroup){
-		      AgendaGroupSetFocusCommand agendaGroupCommand = new AgendaGroupSetFocusCommand();
-		      agendaGroupCommand.setName( agendaGroup );
-		      return agendaGroupCommand;
-		   }
-		
+	public static AgendaGroupSetFocusCommand buildAgendaGroupSetFocusCommand( String agendaGroup ) {
+		AgendaGroupSetFocusCommand agendaGroupCommand = new AgendaGroupSetFocusCommand();
+		agendaGroupCommand.setName( agendaGroup );
+		return agendaGroupCommand;
+	}
+
 }

@@ -19,27 +19,26 @@ import com.rhc.brms.ref.util.CommandBuilderUtil;
 
 /**
  * 
- * A simple service that determines if a Customer is eligible for a Mortgage
- * based off their application.
+ * A simple service that determines if a Customer is eligible for a Mortgage based off their application.
  * 
  */
 public class MortageApplicationService extends DroolsApplication<MortageApplicationRequest, MortageApplicationResponse> {
 
-	
 	private static KnowledgeBase kbase;
 
 	public MortageApplicationService() {
 		// overwrite the logger. Is this the right way to that?
 		logger = LoggerFactory.getLogger( MortageApplicationService.class );
-		
+
 		// set up the configuration for the runtime
 		DroolsRuntimeConfiguration conf = new DroolsRuntimeConfiguration();
 		conf.setFullyQualifiedLogFileName( "MortageApplicationAuditLog" );
 
 		this.droolsRuntime = new StatelessDroolsRuntime( conf );
 		this.resultsTransformer = new MortageApplicationResultsTransformer();
-		
-		// build the knowledgeBase upon object creation. We don't want the hit of compilation the first time we run the run rules
+
+		// build the knowledgeBase upon object creation. We don't want the hit of compilation the first time we run the
+		// run rules
 		kbase = buildKnowledgeBase();
 	}
 

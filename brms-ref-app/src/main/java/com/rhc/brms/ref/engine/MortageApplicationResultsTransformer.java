@@ -10,8 +10,7 @@ import com.rhc.brms.ref.core.ExecutionResultsTransformer;
 public class MortageApplicationResultsTransformer implements ExecutionResultsTransformer<MortageApplicationResponse> {
 
 	/**
-	 * Queries to grab references from the engine. These are objects we will
-	 * return to the caller.
+	 * Queries to grab references from the engine. These are objects we will return to the caller.
 	 */
 	@SuppressWarnings("rawtypes")
 	private final List<Command> queryCommandList = buildQueryCommandList();
