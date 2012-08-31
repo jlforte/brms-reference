@@ -18,13 +18,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
- * This class handles everything related to executing rules and building a knowledge base.
- * 
+ * Drools Concern #3: Lifecycle of the Knowledge Session (e.g. the runtime framework). The implementation presented
+ * here is completely reusable component that manages the lifecycle of a <code>StatefulKnowledgeSession</code>
+ * behind a Stateless API. You should not need to write any code interacting with a <code>StatefulKnowledgeSession</code>.
+ * We've also provide the <code>DroolsRuntimeConfiguration</code> class which allows you to rename log files and the
+ * sort.
  */
 public class StatelessDroolsRuntime {
 
 	private static final Logger logger = LoggerFactory.getLogger( StatelessDroolsRuntime.class );
+	
 	private HashMap<String, List<AfterActivationFiredEvent>> firedActivations;
 	private DroolsRuntimeConfiguration configuration;
 
@@ -39,7 +42,6 @@ public class StatelessDroolsRuntime {
 	@SuppressWarnings("rawtypes")
 	public ExecutionResults executeCommandList( KnowledgeBase kbase, List<Command> commands ) {
 
-		// Setup of the session and audit logger
 		StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
 
 		// Audit Log can be turned on and off
@@ -54,12 +56,13 @@ public class StatelessDroolsRuntime {
 			addFiredRulesEventListener( ksession );
 		}
 
+		// keep track of how long the rule firing is taking
 		long startTime = System.currentTimeMillis();
 		logger.debug( "Executing Drools commands..." );
 		ExecutionResults results = ksession.execute( CommandFactory.newBatchExecution( commands ) );
 		logger.debug( "Executing Drools commands took " + ( System.currentTimeMillis() - startTime ) + " ms" );
 
-		// tear it down
+		// tear down the session and the log
 		if ( configuration.isRecordingAuditLog() ) {
 			droolsAuditLogger.close();
 		}
@@ -73,7 +76,7 @@ public class StatelessDroolsRuntime {
 	}
 
 	/**
-	 * This is a slick way to capture all activations fired in the session so they can be interrogated
+	 * This is a slick way to capture all activations fired in the session so they can be interrogated by tests
 	 * 
 	 * @param kSession
 	 */

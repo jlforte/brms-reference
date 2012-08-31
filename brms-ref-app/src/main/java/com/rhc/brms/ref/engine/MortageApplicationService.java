@@ -44,7 +44,7 @@ public class MortageApplicationService extends DroolsApplication<MortageApplicat
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	protected List<Command> buildCommandList( MortageApplicationRequest request ) {
+	protected List<Command> buildBusinessLogicCommandList( MortageApplicationRequest request ) {
 		List<Command> commands = new ArrayList<Command>();
 
 		// Add list of commands to insert corresponding objects in request
