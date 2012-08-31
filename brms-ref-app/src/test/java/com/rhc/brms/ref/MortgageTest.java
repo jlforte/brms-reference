@@ -30,13 +30,43 @@ public class MortgageTest {
 	private final static Long APPLICATION_ID_3 = Long.valueOf( 3 );
 
 	@Test
-	public void shouldDoSomeStuff() {
+	public void shouldApproveCustomer1and2DeniedCustomer3() {
 		MortageApplicationRequest request = new MortageApplicationRequest( createApplications(), createCustomers() );
 
-		// Response the Rules engine
 		MortageApplicationResponse response = droolsExecService.executeAllRules( request );
 
 		Assert.assertNotNull( response );
+
+		Assert.assertEquals( 2, response.getApprovedApplications().size() );
+
+		// TODO how do I do this cleaner?
+		boolean containsCustomer1 = false;
+		boolean containsCustomer2 = false;
+		boolean containsCustomer3 = false;
+		for ( Application application : response.getApprovedApplications() ) {
+			if ( application.getCustomerId() == 1L ) {
+				containsCustomer1 = true;
+			} else if ( application.getCustomerId() == 2L ) {
+				containsCustomer2 = true;
+			}
+		}
+		Assert.assertTrue( containsCustomer1 );
+		Assert.assertTrue( containsCustomer2 );
+		Assert.assertFalse( containsCustomer3 );
+
+		Assert.assertEquals( 1, response.getDeniedApplications().size() );
+
+		containsCustomer1 = false;
+		containsCustomer2 = false;
+		containsCustomer3 = false;
+		for ( Application application : response.getDeniedApplications() ) {
+			if ( application.getCustomerId() == 3L ) {
+				containsCustomer3 = true;
+			}
+		}
+		Assert.assertFalse( containsCustomer1 );
+		Assert.assertFalse( containsCustomer2 );
+		Assert.assertTrue( containsCustomer3 );
 	}
 
 	private Set<Customer> createCustomers() {

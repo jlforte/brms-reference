@@ -12,8 +12,8 @@ import org.drools.command.Command;
 import org.drools.io.ResourceFactory;
 import org.slf4j.LoggerFactory;
 
-import com.rhc.brms.ref.drools.DroolsApplication;
 import com.rhc.brms.ref.drools.DroolsRuntimeConfiguration;
+import com.rhc.brms.ref.drools.StatelessDroolsComponent;
 import com.rhc.brms.ref.drools.StatelessDroolsRuntime;
 import com.rhc.brms.ref.util.CommandBuilderUtil;
 
@@ -22,7 +22,7 @@ import com.rhc.brms.ref.util.CommandBuilderUtil;
  * A simple service that determines if a Customer is eligible for a Mortgage based off their application.
  * 
  */
-public class MortageApplicationService extends DroolsApplication<MortageApplicationRequest, MortageApplicationResponse> {
+public class MortageApplicationService extends StatelessDroolsComponent<MortageApplicationRequest, MortageApplicationResponse> {
 
 	private static KnowledgeBase kbase;
 
@@ -82,6 +82,7 @@ public class MortageApplicationService extends DroolsApplication<MortageApplicat
 		kbuilder.add( ResourceFactory.newClassPathResource( "ApplicationValidation.drl", getClass() ), ResourceType.DRL );
 		kbuilder.add( ResourceFactory.newClassPathResource( "CustomerValidation.drl", getClass() ), ResourceType.DRL );
 		kbuilder.add( ResourceFactory.newClassPathResource( "MortgageRules.drl", getClass() ), ResourceType.DRL );
+		kbuilder.add( ResourceFactory.newClassPathResource( "Queries.drl", getClass() ), ResourceType.DRL );
 
 		if ( kbuilder.hasErrors() ) {
 			logger.error( kbuilder.getErrors().toString() );

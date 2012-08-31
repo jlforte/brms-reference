@@ -2,8 +2,11 @@ package com.rhc.brms.ref.mortageApplication;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.drools.event.rule.AfterActivationFiredEvent;
+
+import com.rhc.brms.ref.domain.Application;
 
 /**
  * Holds all objects that tell us the result of our Mortgage Applications.
@@ -17,6 +20,9 @@ import org.drools.event.rule.AfterActivationFiredEvent;
  */
 public class MortageApplicationResponse {
 
+	private Set<Application> approvedApplications;
+	private Set<Application> deniedApplications;
+	
 	// TODO Still need to relocate this guy, as he is a Drools artifact and
 	// ought to else where
 	private Map<String, List<AfterActivationFiredEvent>> firedRules;
@@ -27,6 +33,22 @@ public class MortageApplicationResponse {
 
 	public void setFiredRules( Map<String, List<AfterActivationFiredEvent>> firedRules ) {
 		this.firedRules = firedRules;
+	}
+
+	public void setApprovedApplications( Set<Application> approvedApplications ) {
+		this.approvedApplications = approvedApplications;
+	}
+
+	public Set<Application> getApprovedApplications() {
+		return approvedApplications;
+	}
+
+	public void setDeniedApplications( Set<Application> deniedApplications ) {
+		this.deniedApplications = deniedApplications;
+	}
+
+	public Set<Application> getDeniedApplications() {
+		return deniedApplications;
 	}
 
 }
