@@ -1,11 +1,12 @@
-package com.rhc.brms.ref.engine;
+package com.rhc.brms.ref.mortageApplication;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.drools.command.Command;
 import org.drools.runtime.ExecutionResults;
 
-import com.rhc.brms.ref.core.ExecutionResultsTransformer;
+import com.rhc.brms.ref.drools.ExecutionResultsTransformer;
 
 public class MortageApplicationResultsTransformer implements ExecutionResultsTransformer<MortageApplicationResponse> {
 
@@ -16,7 +17,7 @@ public class MortageApplicationResultsTransformer implements ExecutionResultsTra
 	private final List<Command> queryCommandList = buildQueryCommandList();
 
 	public MortageApplicationResponse transform( ExecutionResults results ) {
-		return null;
+		return new MortageApplicationResponse();
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -26,6 +27,6 @@ public class MortageApplicationResultsTransformer implements ExecutionResultsTra
 
 	@SuppressWarnings("rawtypes")
 	private static List<Command> buildQueryCommandList() {
-		return null;
+		return new ArrayList<Command>();
 	}
 }

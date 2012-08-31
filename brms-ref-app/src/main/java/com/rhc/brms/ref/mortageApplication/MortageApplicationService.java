@@ -1,4 +1,4 @@
-package com.rhc.brms.ref.engine;
+package com.rhc.brms.ref.mortageApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +12,9 @@ import org.drools.command.Command;
 import org.drools.io.ResourceFactory;
 import org.slf4j.LoggerFactory;
 
-import com.rhc.brms.ref.core.DroolsApplication;
-import com.rhc.brms.ref.core.DroolsRuntimeConfiguration;
-import com.rhc.brms.ref.core.StatelessDroolsRuntime;
+import com.rhc.brms.ref.drools.DroolsApplication;
+import com.rhc.brms.ref.drools.DroolsRuntimeConfiguration;
+import com.rhc.brms.ref.drools.StatelessDroolsRuntime;
 import com.rhc.brms.ref.util.CommandBuilderUtil;
 
 /**

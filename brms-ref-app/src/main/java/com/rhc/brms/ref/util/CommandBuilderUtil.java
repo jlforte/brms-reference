@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import com.rhc.brms.ref.domain.Application;
 import com.rhc.brms.ref.domain.Customer;
-import com.rhc.brms.ref.engine.MortageApplicationRequest;
-import com.rhc.brms.ref.engine.MortageApplicationResponse;
+import com.rhc.brms.ref.mortageApplication.MortageApplicationRequest;
+import com.rhc.brms.ref.mortageApplication.MortageApplicationResponse;
 
 public class CommandBuilderUtil {
 

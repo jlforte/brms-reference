@@ -1,4 +1,4 @@
-package com.rhc.brms.ref.core;
+package com.rhc.brms.ref.drools;
 
 import java.util.List;
 

@@ -7,13 +7,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.drools.event.rule.AfterActivationFiredEvent;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.rhc.brms.ref.domain.Application;
 import com.rhc.brms.ref.domain.Customer;
-import com.rhc.brms.ref.engine.MortageApplicationRequest;
-import com.rhc.brms.ref.engine.MortageApplicationResponse;
-import com.rhc.brms.ref.engine.MortageApplicationService;
+import com.rhc.brms.ref.mortageApplication.MortageApplicationRequest;
+import com.rhc.brms.ref.mortageApplication.MortageApplicationResponse;
+import com.rhc.brms.ref.mortageApplication.MortageApplicationService;
 
 public class MortgageTest {
 
@@ -35,7 +36,7 @@ public class MortgageTest {
 		// Response the Rules engine
 		MortageApplicationResponse response = droolsExecService.executeAllRules( request );
 
-		// Assert.assertNotNull( response );
+		Assert.assertNotNull( response );
 	}
 
 	private Set<Customer> createCustomers() {
