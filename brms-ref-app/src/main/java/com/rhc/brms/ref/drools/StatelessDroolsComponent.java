@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
  * identifies 4 concerns related to a Drools Application and wraps them all in a web service style request/response API.
  * 
  */
-public abstract class DroolsApplication<Request, Response> {
+public abstract class StatelessDroolsComponent<Request, Response> {
 
-	protected static Logger logger = LoggerFactory.getLogger( DroolsApplication.class );
+	protected static Logger logger = LoggerFactory.getLogger( StatelessDroolsComponent.class );
 	// Drools Concern #3
 	protected StatelessDroolsRuntime droolsRuntime;
 	// Drools Concern #4
