@@ -9,9 +9,12 @@ import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.command.Command;
+import org.drools.command.CommandFactory;
 import org.drools.io.ResourceFactory;
 import org.slf4j.LoggerFactory;
 
+import com.rhc.brms.ref.domain.Application;
+import com.rhc.brms.ref.domain.Customer;
 import com.rhc.brms.ref.drools.DroolsRuntimeConfiguration;
 import com.rhc.brms.ref.drools.StatelessDroolsComponent;
 import com.rhc.brms.ref.drools.StatelessDroolsRuntime;
@@ -22,7 +25,8 @@ import com.rhc.brms.ref.util.CommandBuilderUtil;
  * A simple service that determines if a Customer is eligible for a Mortgage based off their application.
  * 
  */
-public class MortageApplicationService extends StatelessDroolsComponent<MortageApplicationRequest, MortageApplicationResponse> {
+public class MortageApplicationService extends
+		StatelessDroolsComponent<MortageApplicationRequest, MortageApplicationResponse> {
 
 	private static KnowledgeBase kbase;
 
@@ -47,18 +51,24 @@ public class MortageApplicationService extends StatelessDroolsComponent<MortageA
 	protected List<Command> buildBusinessLogicCommandList( MortageApplicationRequest request ) {
 		List<Command> commands = new ArrayList<Command>();
 
-		// Add list of commands to insert corresponding objects in request
-		commands.addAll( CommandBuilderUtil.buildInsertObjectCommands( request ) );
+		// Insert all of the customers from the request
+		for ( Customer customer : request.getCustomers() ) {
+			logger.info( "Adding Customer " + customer );
+			commands.add( CommandFactory.newInsert( customer ) );
+		}
+		// Insert all of the applications from the request
+		for ( Application application : request.getApplications() ) {
+			logger.info( "Adding application " + application );
+			commands.add( CommandFactory.newInsert( application ) );
+		}
+		
+		// The agenda is a stack, so agenda groups are First In, Last Out
+		commands.add( CommandBuilderUtil.buildAgendaGroupSetFocusCommand( "approve" ) );
+		commands.add( CommandBuilderUtil.buildAgendaGroupSetFocusCommand( "eligible" ) );
+		commands.add( CommandBuilderUtil.buildAgendaGroupSetFocusCommand( "validate-data" ) );
 
-		// Set the Response Object
-		MortageApplicationResponse response = new MortageApplicationResponse();
-		commands.add( CommandBuilderUtil.buildInsertResponseCommand( response ) );
-
-		// Set the Agenda groups
-		commands.addAll( CommandBuilderUtil.buildAgendaGroupFocusCommands() );
-
-		// Build and add fireAllRules command for execution
-		commands.add( CommandBuilderUtil.buildFireAllRulesCommand() );
+		// Then fire all the rules
+		commands.add( CommandFactory.newFireAllRules() );
 
 		return commands;
 	}
