@@ -15,10 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import com.rhc.brms.ref.domain.Application;
 import com.rhc.brms.ref.domain.Customer;
+import com.rhc.brms.ref.drools.CommandBuilderUtil;
 import com.rhc.brms.ref.drools.DroolsRuntimeConfiguration;
 import com.rhc.brms.ref.drools.StatelessDroolsComponent;
 import com.rhc.brms.ref.drools.StatelessDroolsRuntime;
-import com.rhc.brms.ref.util.CommandBuilderUtil;
 
 /**
  * 

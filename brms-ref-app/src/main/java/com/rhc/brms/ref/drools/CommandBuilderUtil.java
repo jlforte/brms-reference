@@ -1,4 +1,4 @@
-package com.rhc.brms.ref.util;
+package com.rhc.brms.ref.drools;
 
 import org.drools.command.runtime.rule.AgendaGroupSetFocusCommand;
 
