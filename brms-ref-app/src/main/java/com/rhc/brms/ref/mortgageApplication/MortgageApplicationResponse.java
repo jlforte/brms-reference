@@ -1,4 +1,4 @@
-package com.rhc.brms.ref.mortageApplication;
+package com.rhc.brms.ref.mortgageApplication;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +18,7 @@ import com.rhc.brms.ref.domain.Application;
  * that do not use Drools.
  * 
  */
-public class MortageApplicationResponse {
+public class MortgageApplicationResponse {
 
 	private Set<Application> approvedApplications;
 	private Set<Application> deniedApplications;

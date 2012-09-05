@@ -12,14 +12,14 @@ import org.junit.Test;
 
 import com.rhc.brms.ref.domain.Application;
 import com.rhc.brms.ref.domain.Customer;
-import com.rhc.brms.ref.mortageApplication.MortageApplicationRequest;
-import com.rhc.brms.ref.mortageApplication.MortageApplicationResponse;
-import com.rhc.brms.ref.mortageApplication.MortageApplicationService;
+import com.rhc.brms.ref.mortgageApplication.MortgageApplicationRequest;
+import com.rhc.brms.ref.mortgageApplication.MortgageApplicationResponse;
+import com.rhc.brms.ref.mortgageApplication.MortgageApplicationService;
 
 public class MortgageTest {
 
 	private static HashMap<String, List<AfterActivationFiredEvent>> firedActivations;
-	private static MortageApplicationService droolsExecService = new MortageApplicationService();
+	private static MortgageApplicationService droolsExecService = new MortgageApplicationService();
 
 	private final static Long CUSTOMER_ID_1 = Long.valueOf( 1 );
 	private final static Long CUSTOMER_ID_2 = Long.valueOf( 2 );
@@ -31,9 +31,9 @@ public class MortgageTest {
 
 	@Test
 	public void shouldApproveCustomer1and2DeniedCustomer3() {
-		MortageApplicationRequest request = new MortageApplicationRequest( createApplications(), createCustomers() );
+		MortgageApplicationRequest request = new MortgageApplicationRequest( createApplications(), createCustomers() );
 
-		MortageApplicationResponse response = droolsExecService.executeAllRules( request );
+		MortgageApplicationResponse response = droolsExecService.executeAllRules( request );
 
 		Assert.assertNotNull( response );
 
