@@ -1,4 +1,4 @@
-package com.rhc.brms.ref.mortageApplication;
+package com.rhc.brms.ref.mortgageApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,21 +25,21 @@ import com.rhc.brms.ref.drools.StatelessDroolsRuntime;
  * A simple service that determines if a Customer is eligible for a Mortgage based off their application.
  * 
  */
-public class MortageApplicationService extends
-		StatelessDroolsComponent<MortageApplicationRequest, MortageApplicationResponse> {
+public class MortgageApplicationService extends
+		StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse> {
 
 	private static KnowledgeBase kbase;
 
-	public MortageApplicationService() {
+	public MortgageApplicationService() {
 		// overwrite the logger. Is this the right way to that?
-		logger = LoggerFactory.getLogger( MortageApplicationService.class );
+		logger = LoggerFactory.getLogger( MortgageApplicationService.class );
 
 		// set up the configuration for the runtime
 		DroolsRuntimeConfiguration conf = new DroolsRuntimeConfiguration();
-		conf.setFullyQualifiedLogFileName( "MortageApplicationAuditLog" );
+		conf.setFullyQualifiedLogFileName( "MortgageApplicationAuditLog" );
 
 		this.droolsRuntime = new StatelessDroolsRuntime( conf );
-		this.resultsTransformer = new MortageApplicationResultsTransformer();
+		this.resultsTransformer = new MortgageApplicationResultsTransformer();
 
 		// build the knowledgeBase upon object creation. We don't want the hit of compilation the first time we run the
 		// run rules
@@ -48,7 +48,7 @@ public class MortageApplicationService extends
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	protected List<Command> buildBusinessLogicCommandList( MortageApplicationRequest request ) {
+	protected List<Command> buildBusinessLogicCommandList( MortgageApplicationRequest request ) {
 		List<Command> commands = new ArrayList<Command>();
 
 		// Insert all of the customers from the request

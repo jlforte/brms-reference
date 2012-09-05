@@ -1,4 +1,4 @@
-package com.rhc.brms.ref.mortageApplication;
+package com.rhc.brms.ref.mortgageApplication;
 
 import java.util.Set;
 
@@ -16,12 +16,12 @@ import com.rhc.brms.ref.domain.Customer;
  * 
  * 
  */
-public class MortageApplicationRequest {
+public class MortgageApplicationRequest {
 
 	private Set<Application> applications;
 	private Set<Customer> customers;
 
-	public MortageApplicationRequest( Set<Application> applications, Set<Customer> customers ) {
+	public MortgageApplicationRequest( Set<Application> applications, Set<Customer> customers ) {
 		this.applications = applications;
 		this.customers = customers;
 	}

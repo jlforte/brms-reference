@@ -1,4 +1,4 @@
-package com.rhc.brms.ref.mortageApplication;
+package com.rhc.brms.ref.mortgageApplication;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,7 +15,7 @@ import com.rhc.brms.ref.domain.Application;
 import com.rhc.brms.ref.domain.Mortgage;
 import com.rhc.brms.ref.drools.ExecutionResultsTransformer;
 
-public class MortageApplicationResultsTransformer implements ExecutionResultsTransformer<MortageApplicationResponse> {
+public class MortgageApplicationResultsTransformer implements ExecutionResultsTransformer<MortgageApplicationResponse> {
 
 	/**
 	 * Queries to grab references from the engine. These are objects we will return to the caller.
@@ -23,8 +23,8 @@ public class MortageApplicationResultsTransformer implements ExecutionResultsTra
 	@SuppressWarnings("rawtypes")
 	private final List<Command> queryCommandList = buildQueryCommandList();
 
-	public MortageApplicationResponse transform( ExecutionResults results ) {
-		MortageApplicationResponse response = new MortageApplicationResponse();
+	public MortgageApplicationResponse transform( ExecutionResults results ) {
+		MortgageApplicationResponse response = new MortgageApplicationResponse();
 
 		response.setApprovedApplications( extractSetFromQueryResult( Application.class, "$application",
 				(QueryResults) results.getValue( "allApprovedApplications" ) ) );
