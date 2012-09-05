@@ -31,21 +31,20 @@
 			<artifactId>knowledge-api</artifactId>
 			<version>5.4.0.Final</version>
 		</dependency>
-		<dependency>
-<<<<<<< HEAD
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>RELEASE</version>
-=======
+		<dependency>	
 			<groupId>org.drools</groupId>
 			<artifactId>drools-compiler</artifactId>
 			<version>5.4.0.Final</version>
 		</dependency>
 		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>RELEASE</version>
+		</dependency>		
+		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
 			<version>1.4.1</version>
->>>>>>> upstream/master
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -59,19 +58,10 @@
 			<version>1.6.6</version>
 		</dependency>
 		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>1.0.7</version>
-		</dependency>
-<<<<<<< HEAD
-		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
 			<version>1.4.3</version>
 		</dependency>
 	</dependencies>      
 </project>
-=======
-	</dependencies>
-</project>
->>>>>>> upstream/master
+
