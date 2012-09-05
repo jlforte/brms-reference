@@ -12,6 +12,7 @@ import org.drools.runtime.rule.QueryResults;
 import org.drools.runtime.rule.QueryResultsRow;
 
 import com.rhc.brms.ref.domain.Application;
+import com.rhc.brms.ref.domain.Mortgage;
 import com.rhc.brms.ref.drools.ExecutionResultsTransformer;
 
 public class MortageApplicationResultsTransformer implements ExecutionResultsTransformer<MortageApplicationResponse> {
@@ -30,6 +31,9 @@ public class MortageApplicationResultsTransformer implements ExecutionResultsTra
 		
 		response.setDeniedApplications( extractSetFromQueryResult( Application.class, "$application",
 				(QueryResults) results.getValue( "allDeniedApplications" ) )  );
+		
+		response.setNewMortgagesCreated( extractSetFromQueryResult( Mortgage.class, "$mortgage", 
+				(QueryResults) results.getValue( "allNewMortgages")  ) );
 
 		return response;
 	}
@@ -44,6 +48,7 @@ public class MortageApplicationResultsTransformer implements ExecutionResultsTra
 		List<Command> commands = new ArrayList<Command>();
 		commands.add( CommandFactory.newQuery( "allApprovedApplications", "Get All Approved Applications" ) );
 		commands.add( CommandFactory.newQuery( "allDeniedApplications", "Get All Denied Applications" ) );
+		commands.add( CommandFactory.newQuery( "allNewMortgages" , "Get All New Mortgages" ) );
 		return commands;
 	}
 

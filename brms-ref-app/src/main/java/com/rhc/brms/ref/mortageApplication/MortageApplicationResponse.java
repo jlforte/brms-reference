@@ -7,6 +7,7 @@ import java.util.Set;
 import org.drools.event.rule.AfterActivationFiredEvent;
 
 import com.rhc.brms.ref.domain.Application;
+import com.rhc.brms.ref.domain.Mortgage;
 
 /**
  * Holds all objects that tell us the result of our Mortgage Applications.
@@ -22,6 +23,7 @@ public class MortageApplicationResponse {
 
 	private Set<Application> approvedApplications;
 	private Set<Application> deniedApplications;
+	private Set<Mortgage> newMortgagesCreated;
 	
 	// TODO Still need to relocate this guy, as he is a Drools artifact and
 	// ought to else where
@@ -51,4 +53,11 @@ public class MortageApplicationResponse {
 		return deniedApplications;
 	}
 
+	public Set<Mortgage> getNewMortgagesCreated() {
+		return newMortgagesCreated;
+	}
+
+	public void setNewMortgagesCreated( Set<Mortgage> newMortgagesCreated ) {
+		this.newMortgagesCreated = newMortgagesCreated;
+	}
 }

@@ -1,6 +1,7 @@
 package com.rhc.brms.ref;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.junit.Test;
 
 import com.rhc.brms.ref.domain.Application;
 import com.rhc.brms.ref.domain.Customer;
+import com.rhc.brms.ref.domain.Mortgage;
 import com.rhc.brms.ref.mortageApplication.MortageApplicationRequest;
 import com.rhc.brms.ref.mortageApplication.MortageApplicationResponse;
 import com.rhc.brms.ref.mortageApplication.MortageApplicationService;
@@ -29,6 +31,33 @@ public class MortgageTest {
 	private final static Long APPLICATION_ID_2 = Long.valueOf( 2 );
 	private final static Long APPLICATION_ID_3 = Long.valueOf( 3 );
 
+	/*
+	 * This is just to test that my query worked
+	 */
+	@Test
+	public void shouldApproveCustomerAndApplicationAndCreateOneMortgage(){ 
+		Application application = new Application( new BigDecimal( 9000 ), 1L, 10L );
+		Customer customer = new Customer( "Bob", 25, 700, 1L );
+		
+		HashSet<Application> applications = new HashSet<Application>();
+		applications.add(application);
+
+		HashSet<Customer> customers = new HashSet<Customer>();
+		customers.add(customer);
+
+		MortageApplicationRequest request = new MortageApplicationRequest( applications, customers);
+
+		MortageApplicationResponse response = droolsExecService .executeAllRules(request);
+
+		Assert.assertTrue( response != null );
+		
+		Collection<Application> approvedApplications = response.getApprovedApplications();
+		Assert.assertTrue( approvedApplications.size() == 1);
+
+		Collection<Mortgage> mortgages = response.getNewMortgagesCreated();
+		Assert.assertTrue(mortgages.size() == 1);
+	}
+	
 	@Test
 	public void shouldApproveCustomer1and2DeniedCustomer3() {
 		MortageApplicationRequest request = new MortageApplicationRequest( createApplications(), createCustomers() );

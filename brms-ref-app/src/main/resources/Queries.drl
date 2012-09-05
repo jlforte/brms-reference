@@ -20,3 +20,11 @@ query "Get All Denied Applications"
     $application : Application( approved == false )
 
 end
+
+query "Get All New Mortgages"
+
+	$mortgage : Mortgage()
+
+end
+
+
