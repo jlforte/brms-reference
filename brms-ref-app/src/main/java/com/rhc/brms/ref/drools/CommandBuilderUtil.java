@@ -1,8 +1,8 @@
-package com.rhc.brms.ref.util;
+package com.rhc.brms.ref.drools;
 
 import org.drools.command.runtime.rule.AgendaGroupSetFocusCommand;
 
-public class AgendaGroupCommandUtil {
+public class CommandBuilderUtil {
 
 	/**
 	 * Utility class to create an AgendaGroupSetFocusCommand for the incoming agendaGroup parameter.
