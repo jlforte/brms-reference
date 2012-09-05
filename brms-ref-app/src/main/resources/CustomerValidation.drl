@@ -4,21 +4,25 @@ package com.rhc.brms.ref.rules
 //list any import classes here.
 import com.rhc.brms.ref.domain.Customer;
 
-
-
 rule "Invalid Customer Age"
 	agenda-group "validate-data"
 	no-loop
+    
     when
+        
         $customer : Customer 
-        	(
-        	$age:  		age == null 
-        			|| 	age < 0,
-        	valid 	!=	false 
-        	)
+    	(
+	    	$age : age == null || 	
+	    	age < 0,
+	    	valid != false 
+	    )
+    
     then
-    	$customer.setValid(false);
-    	update($customer);
+    		
+    	modify( $customer ){
+    		setValid( false )
+    	};
+    	
         System.out.println( "Invalid age of " + $age + " for customer " + $customer );
 
 end
@@ -26,17 +30,23 @@ end
 rule "Invalid Customer Credit Score"
 	agenda-group "validate-data"
 	no-loop
+    
     when
+    
         $customer : Customer 
-        	(
-        	$score:  	creditScore == null 
-        			|| 	creditScore < 0 
-        			|| 	creditScore > 800,
+		(
+	    	$score:  	creditScore == null  ||
+	    	creditScore < 0  ||
+	    	creditScore > 800,
         	valid 	!=	false 
-        	)
+        )
+        
     then
-    	$customer.setValid(false);
-    	update($customer);
+    	
+    	modify( $customer ){
+    		setValid( false )
+    	};
+    	
         System.out.println( "Invalid credit score of " + $score + " for customer " + $customer );
 
 end
@@ -44,15 +54,21 @@ end
 rule "No Customer Name"
 	agenda-group "validate-data"
 	no-loop
+    
     when
-        $customer 	: 	Customer 
-        	(
-        	$name	:  	name == null,
-        	valid 	!=	false 
-        	)
+    
+	    $customer : Customer 
+		(
+			$name : name == null,
+			valid != false 
+		)
+    
     then
-    	$customer.setValid(false);
-    	update($customer);
+    	
+    	modify( $customer ){
+    		setValid( false )
+    	};
+    	
         System.out.println( "Invalid credit score of " + $name + " for customer " + $customer );
 
 end
@@ -60,15 +76,19 @@ end
 rule "No Customer ID"
 	agenda-group "validate-data"
 	no-loop
+    
     when
-        $customer 	: 	Customer 
-        	(
-        	$id	:  	id == null,
-        	valid 	!=	false 
-        	)
+        $customer : Customer 
+    	(
+	    	$id	:  	id == null,
+	    	valid 	!=	false 
+    	)
     then
-    	$customer.setValid(false);
-    	update($customer);
+    	
+		modify( $customer ){
+			setValid( false )
+		};
+
         System.out.println( "Invalid credit score of " + $id + " for customer " + $customer );
 
 end

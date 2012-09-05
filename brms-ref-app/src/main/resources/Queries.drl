@@ -10,9 +10,13 @@ import java.math.BigDecimal;
 
 
 query "Get All Approved Applications"
+    
     $application : Application( approved == true )
+
 end
 
 query "Get All Denied Applications"
+    
     $application : Application( approved == false )
+
 end

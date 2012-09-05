@@ -12,66 +12,91 @@ import java.math.BigDecimal;
 rule "Customer is a Minor"
     agenda-group "eligible"
     when
-        $customer	:	Customer	(
-        		valid == true,
-        		$id		:	id,
-        		$age	: 	age < 18
-        		) 
-        $app		:	Application	(
+        $customer : Customer
+		(
+			valid == true,
+			$id		:	id,
+			$age	: 	age < 18
+        )
+         
+        $application : Application
+		(
         		valid == true,	
         		reviewed != true,
         		customerId == $id,
         		$appId	:	applicationId
         )
+        
     then
-        $app.setReviewed( true );
-        $app.setApproved( false );
-        update( $app );
+        
+        modify( $application ){
+        	setReviewed( true ),
+        	setApproved( false )
+        };
+        
         System.out.println( "Application " + $appId + " denied due to applicant being a minor" );
 end
 
 rule "Poor Credit Score"
 	agenda-group "approve"
     when
-        $customer	:	Customer	(
-        		valid == true,
-        		$id		:	id,
-        		$score	:	creditScore < 650
-        		) 
-        $app		:	Application	(
-        		valid == true,
-        		reviewed != true,
-        		customerId == $id,
-        		$appId	:	applicationId
+        
+        $customer :	Customer	
+        (
+			valid == true,
+			$id		:	id,
+			$score	:	creditScore < 650
+		) 
+		
+        $application : Application
+        (
+			valid == true,
+			reviewed != true,
+			customerId == $id,
+			$appId	:	applicationId
         )
+        
     then
-        $app.setReviewed( true );
-        $app.setApproved( false );
-        update( $app );
+        
+        modify( $application ){
+        	setReviewed( true ),
+        	setApproved( false )
+        };
+        
         System.out.println( "Application " + $appId + " denied due to poor credit score" );
 
 end
 
 rule "Auto-Approve Under 10k"
 	agenda-group "approve"
+    
     when
-        $customer	:	Customer	(
-        		valid == true,
-        		$id		:	id,
-        		$score	:	creditScore > 650
-        		) 
-        $app		:	Application	(
-        		valid == true,
-        		reviewed != true,
-        		customerId == $id,
-        		$amount : 	amount < 10000,
-        		$appId	:	applicationId
+        
+        $customer : Customer	
+        (
+			valid == true,
+			$id		:	id,
+			$score	:	creditScore > 650
+		)
+		 
+        $application : Application
+        (
+			valid == true,
+			reviewed != true,
+			customerId == $id,
+			$amount : 	amount < 10000,
+			$appId	:	applicationId
         )
+        
     then
-        $app.setReviewed( true );
-        $app.setApproved( true );
-        update( $app );
+
+        modify( $application ){
+        	setReviewed( true ),
+        	setApproved( true )
+        };
+        
         insert( new Mortgage( $id, $appId, $amount ) );
+
         System.out.println( "Application " + $appId + " approved for amount " + $amount );
 
 end
@@ -79,23 +104,32 @@ end
 rule "Limit mortgage at 10k"
 	agenda-group "approve"
     when
-        $customer	:	Customer	(
-        		valid == true,
-        		$id		:	id,
-        		$score	:	creditScore > 650
-        		) 
-        $app		:	Application	(
-        		valid == true,
-        		reviewed != true,
-        		customerId == $id,
-        		$amount : 	amount > 10000,
-        		$appId	:	applicationId
+        
+        $customer	:	Customer	
+        (
+			valid == true,
+			$id		:	id,
+			$score	:	creditScore > 650
         )
+         
+        $application : Application
+        (
+			valid == true,
+			reviewed != true,
+			customerId == $id,
+			$amount : 	amount > 10000,
+			$appId	:	applicationId
+        )
+        
     then
-        $app.setReviewed( true );
-        $app.setApproved( true );
-        update( $app );
+        
+        modify( $application ){
+        	setReviewed( true ),
+        	setApproved( true )
+        }
+        
         insert( new Mortgage( $id, $appId, new BigDecimal( 10000 ) ) );
+        
         System.out.println( "Application " + $appId + " approved for max of $10,000" );
 
 end
