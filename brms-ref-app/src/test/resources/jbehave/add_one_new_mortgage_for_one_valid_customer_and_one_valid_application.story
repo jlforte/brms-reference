@@ -10,4 +10,4 @@ When I evaluate these objects in the mortgage application
 
 Then I except the mortgages added to be
 | custId | appId | amount |
-|1       |100    | 8000   |
+|1       | 100   | 8000  |
