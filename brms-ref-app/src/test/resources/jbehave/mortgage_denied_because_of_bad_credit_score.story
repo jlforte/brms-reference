@@ -4,10 +4,9 @@ Given there are these applications
 
 And these customers
 |  id  |   name   | age | creditScore |
-|1     |Bob       |20   | 700         |
+|1     |Bob       | 20  | 900         |
 
 When I evaluate these objects in the mortgage application
 
 Then I expect the mortgages added to be
 | custId | appId | amount |
-|1       | 100   | 8000  |

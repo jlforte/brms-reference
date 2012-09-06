@@ -70,7 +70,7 @@ public class MortgageApplicationStepper {
 		response = droolsService.executeAllRules( request );
 	}
 
-	@Then( "I except the mortgages added to be $mortgagesTable" )
+	@Then( "I expect the mortgages added to be $mortgagesTable" )
 	public void iExpectTheNumberOfMortgageApplicationsToBe( ExamplesTable mortgagesTable ) {
 		Set<Mortgage> expectedSet = makeMortgages( mortgagesTable );
 		Set<Mortgage> actualSet = response.getNewMortgagesCreated();
