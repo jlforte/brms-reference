@@ -37,7 +37,7 @@ public class MortgageApplicationStories extends JUnitStories {
 		return new MostUsefulConfiguration()
 						.useStoryReporterBuilder( new StoryReporterBuilder() 
 						.withDefaultFormats()
-						.withFormats(Format.CONSOLE,Format.TXT)
+						.withFormats(Format.CONSOLE,Format.TXT).withFailureTrace(true)
 					);
 	}
 
