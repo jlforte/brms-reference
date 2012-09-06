@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.jbehave.core.junit.JUnitStories;
 
-public class MortgageApplicationStepper extends JUnitStories {
+public class MortgageApplicationStories extends JUnitStories {
 
+	
+	
 	@Override
 	protected List<String> storyPaths() {
 		// TODO Auto-generated method stub
