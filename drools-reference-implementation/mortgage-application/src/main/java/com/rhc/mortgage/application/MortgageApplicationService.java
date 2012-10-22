@@ -11,10 +11,10 @@ import org.drools.builder.ResourceType;
 import org.drools.command.Command;
 import org.drools.command.CommandFactory;
 import org.drools.io.ResourceFactory;
-import org.slf4j.LoggerFactory;
 
 import com.rhc.drools.reference.CommandBuilderUtil;
 import com.rhc.drools.reference.DroolsRuntimeConfiguration;
+import com.rhc.drools.reference.ExecutionResultsTransformer;
 import com.rhc.drools.reference.StatelessDroolsComponent;
 import com.rhc.drools.reference.StatelessDroolsRuntime;
 import com.rhc.mortgage.domain.Application;
@@ -32,22 +32,6 @@ public class MortgageApplicationService extends
 		StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse> {
 
 	private static KnowledgeBase kbase;
-
-	public MortgageApplicationService() {
-		// overwrite the logger. Is this the right way to that?
-		logger = LoggerFactory.getLogger( MortgageApplicationService.class );
-
-		// set up the configuration for the runtime
-		DroolsRuntimeConfiguration conf = new DroolsRuntimeConfiguration();
-		conf.setFullyQualifiedLogFileName( "MortgageApplicationAuditLog" );
-
-		this.droolsRuntime = new StatelessDroolsRuntime( conf );
-		this.resultsTransformer = new MortgageApplicationResultsTransformer();
-
-		// build the knowledgeBase upon object creation. We don't want the hit of compilation the first time we run the
-		// run rules
-		kbase = buildKnowledgeBase();
-	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
@@ -107,6 +91,20 @@ public class MortgageApplicationService extends
 		logger.debug( "Building Knowledge Base took " + ( System.currentTimeMillis() - startTime ) + " ms" );
 
 		return kbase;
+	}
+
+	@Override
+	protected StatelessDroolsRuntime getRuntime() {
+		
+		DroolsRuntimeConfiguration conf = new DroolsRuntimeConfiguration();
+		conf.setFullyQualifiedLogFileName( "MortgageApplicationAuditLog" );
+
+		return new StatelessDroolsRuntime( conf );
+	}
+
+	@Override
+	protected ExecutionResultsTransformer<MortgageApplicationResponse> getTransformer() {
+		return new MortgageApplicationResultsTransformer();
 	}
 
 }

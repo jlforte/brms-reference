@@ -8,6 +8,8 @@ import org.drools.runtime.ExecutionResults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+
 /**
  * An abstract class that outlines a stateless Drools component within a Java Application. This design pattern
  * identifies 4 concerns related to a Drools Application and wraps them all in a web service style request/response API.
@@ -20,7 +22,14 @@ public abstract class StatelessDroolsComponent<Request, Response> {
 	protected StatelessDroolsRuntime droolsRuntime;
 	// Drools Concern #4
 	protected ExecutionResultsTransformer<Response> resultsTransformer;
-
+	
+	public StatelessDroolsComponent(){
+		logger = LoggerFactory.getLogger( this.getClass());	
+		droolsRuntime = getRuntime();
+		resultsTransformer = getTransformer();
+	}
+	
+	
 	@SuppressWarnings("rawtypes")
 	public Response executeAllRules( Request request ) {
 
@@ -64,5 +73,9 @@ public abstract class StatelessDroolsComponent<Request, Response> {
 	 */
 	@SuppressWarnings("rawtypes")
 	protected abstract List<Command> buildBusinessLogicCommandList( Request request );
+	
+	
+	protected abstract StatelessDroolsRuntime getRuntime();
+	protected abstract ExecutionResultsTransformer<Response> getTransformer();
 
 }
