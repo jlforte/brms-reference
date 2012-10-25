@@ -1,10 +1,8 @@
 package com.rhc.drools.reference;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.drools.KnowledgeBase;
 import org.drools.command.Command;
 import org.drools.event.rule.AfterActivationFiredEvent;
 import org.drools.runtime.ExecutionResults;
@@ -16,34 +14,42 @@ import org.slf4j.LoggerFactory;
  * identifies 4 concerns related to a Drools Application and wraps them all in a web service style request/response API.
  * 
  */
-public abstract class StatelessDroolsComponent<Request, Response> {
+public class StatelessDroolsComponent<Request, Response> {
 
-	protected Logger logger = LoggerFactory.getLogger( StatelessDroolsComponent.class );
+	protected static Logger logger = LoggerFactory.getLogger( StatelessDroolsComponent.class );
+
+	// Drools Concern #1
+	private KnowledgeBaseBuilder kBaseBuilder;
+	// Drools Concern #2
+	private CommandListBuilder<Request> commandListBuilder;
 	// Drools Concern #3
-	protected StatelessDroolsRuntime droolsRuntime;
+	private StatelessDroolsRuntime droolsRuntime;
 	// Drools Concern #4
-	protected ExecutionResultsTransformer<Response> resultsTransformer;
+	private ExecutionResultsTransformer<Response> resultsTransformer;
 
-	public StatelessDroolsComponent( StatelessDroolsRuntime droolsRuntime, ExecutionResultsTransformer<Response> resultsTransformer ){
-		this.logger = LoggerFactory.getLogger( this.getClass() );	
+	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, CommandListBuilder<Request> commandListBuilder,
+			StatelessDroolsRuntime droolsRuntime, ExecutionResultsTransformer<Response> resultsTransformer ) {
+		
+		this.kBaseBuilder = kBaseBuilder;
+		this.commandListBuilder = commandListBuilder;
 		this.droolsRuntime = droolsRuntime;
 		this.resultsTransformer = resultsTransformer;
 	}
-	
-	public StatelessDroolsComponent(){
-		this.logger = LoggerFactory.getLogger( this.getClass() );
+
+	public StatelessDroolsComponent() {
 	}
 
 	@SuppressWarnings("rawtypes")
 	public Response executeAllRules( Request request ) {
 
-		List<Command> commandList = buildBusinessLogicCommandList( request );
+		List<Command> commandList = commandListBuilder.buildBusinessLogicCommandList( request );
+
 		// append the queries to the end of the list so they are executed after the business logic
 		commandList.addAll( resultsTransformer.getQueryCommands() );
 
 		long startTime = System.currentTimeMillis();
 		logger.debug( "Executing Drools Application..." );
-		ExecutionResults results = droolsRuntime.executeCommandList( getKnowledgeBase(), commandList );
+		ExecutionResults results = droolsRuntime.executeCommandList( kBaseBuilder.buildKnowledgeBase(), commandList );
 		logger.debug( "Executing Drools Application took " + ( System.currentTimeMillis() - startTime ) + " ms" );
 
 		Response response = resultsTransformer.transform( results );
@@ -52,38 +58,11 @@ public abstract class StatelessDroolsComponent<Request, Response> {
 	}
 
 	/**
-	 * Drools Concern #1: Accumulation of Knowledge Resources (i.e. rules, queries, workflows, templates, decision
-	 * tables), compilation of those resources into Knowledge Packages, and creation of a Knowledge Base from the
-	 * Knowledge Packages. This tends to be the element that varies most application to application, so we've left
-	 * problem to be solved by a concrete class. All this solution needs is a KnowledgeBase to returned - it doesn't
-	 * care how you create it. Here are just a few ways that you could tackle Knowledge Asset Management:
-	 * 
-	 * 1) One time compilation from the class path using the KnowledgeBuilder. This is the solution we present here. <br>
-	 * 2) Compilation of remote resources using a KnowledgeAgent. This is useful when rules live in Guvnor or a remote
-	 * file store. <br>
-	 * 3) Application wide caching strategy that builds and stores KnowledgeBases for numerous business processes. <br>
-	 * 4) Pre-compiled KnowledgePackages or KnowledgeBase. This can be done with the ant task or Guvnor
-	 */
-	protected abstract KnowledgeBase getKnowledgeBase();
-
-	/**
-	 * Drools Concern #2: Business Logic needed to interact with the Drools Runtime (i.e. insert domain objects, set
-	 * agenda groups and fire all rules). The Drools Batch Command API offers an excellent out of the box solution for
-	 * this problem. With the Batch Command API, our business logic is entirely separate from the Drools runtime
-	 * framework which makes for cleaner code.
-	 * 
-	 * @param request
-	 * @return List of Drools Commands that encapsulate our business logic.
-	 */
-	@SuppressWarnings("rawtypes")
-	protected abstract List<Command> buildBusinessLogicCommandList( Request request );
-
-	/**
 	 * Convenience method for testing to return activations from previous the previous execution.
 	 * 
 	 * @return Map<Rule name, List<Activations of that rule fired>>
 	 */
-	protected Map<String, List<AfterActivationFiredEvent>> getPreviouslyFiredActivations() {
+	public Map<String, List<AfterActivationFiredEvent>> getPreviouslyFiredActivations() {
 		return droolsRuntime.getFiredActivations();
 	}
 }

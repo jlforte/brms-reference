@@ -13,26 +13,34 @@ import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.model.ExamplesTable;
 
-import com.rhc.mortgage.application.MortgageApplicationService;
+import com.rhc.drools.reference.DroolsRuntimeConfiguration;
+import com.rhc.drools.reference.StatelessDroolsComponent;
+import com.rhc.drools.reference.StatelessDroolsRuntime;
+import com.rhc.mortgage.application.MortgageApplicationCommandListBuilder;
+import com.rhc.mortgage.application.MortgageApplicationKBaseBuilder;
+import com.rhc.mortgage.application.MortgageApplicationRequest;
+import com.rhc.mortgage.application.MortgageApplicationResponse;
+import com.rhc.mortgage.application.MortgageApplicationResultsTransformer;
 import com.rhc.mortgage.domain.Application;
 import com.rhc.mortgage.domain.Customer;
 import com.rhc.mortgage.domain.Mortgage;
-import com.rhc.mortgage.drools.MortgageApplicationRequest;
-import com.rhc.mortgage.drools.MortgageApplicationResponse;
 
 public class MortgageApplicationStepper {
 
-	MortgageApplicationService droolsService;
+	StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse> droolsComponent;
 	private MortgageApplicationRequest request;
 	private MortgageApplicationResponse response;
 
 	@BeforeStories
 	public void setUp() {
-		droolsService = new MortgageApplicationService();
+		droolsComponent = new StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse>( new MortgageApplicationKBaseBuilder(),
+				new MortgageApplicationCommandListBuilder(), new StatelessDroolsRuntime(
+						new DroolsRuntimeConfiguration( "MortageApplicationLog" ) ),
+				new MortgageApplicationResultsTransformer() );
 		request = new MortgageApplicationRequest( null, null );
 	}
 
-	@Given( "there are these applications $applicationsTable" )
+	@Given("there are these applications $applicationsTable")
 	public void givenTheseApplications( ExamplesTable applicationsTable ) {
 		Set<Application> appSet = new HashSet<Application>();
 		for ( Map<String, String> row : applicationsTable.getRows() ) {
@@ -40,14 +48,13 @@ public class MortgageApplicationStepper {
 			BigDecimal amount = new BigDecimal( row.get( "amount" ) );
 			Long customerId = new Long( row.get( "custId" ) );
 			Long applicationId = new Long( row.get( "appId" ) );
-			Application app = new Application( amount, customerId,
-					applicationId );
+			Application app = new Application( amount, customerId, applicationId );
 			appSet.add( app );
 		}
 		request.setApplications( appSet );
 	}
 
-	@Given( "these customers $customerTable" )
+	@Given("these customers $customerTable")
 	public void andTheseCustomers( ExamplesTable customersTable ) {
 		Set<Customer> custSet = new HashSet<Customer>();
 		for ( Map<String, String> row : customersTable.getRows() ) {
@@ -62,12 +69,12 @@ public class MortgageApplicationStepper {
 		request.setCustomers( custSet );
 	}
 
-	@When( "I evaluate these objects in the mortgage application" )
+	@When("I evaluate these objects in the mortgage application")
 	public void whenIEvaluateTheseObjectsInTheMortgageApplication() {
-		response = droolsService.executeAllRules( request );
+		response = droolsComponent.executeAllRules( request );
 	}
 
-	@Then( "I expect the mortgages added to be $mortgagesTable" )
+	@Then("I expect the mortgages added to be $mortgagesTable")
 	public void iExpectTheNumberOfMortgageApplicationsToBe( ExamplesTable mortgagesTable ) {
 		Set<Mortgage> expectedSet = makeMortgages( mortgagesTable );
 		Set<Mortgage> actualSet = response.getNewMortgagesCreated();

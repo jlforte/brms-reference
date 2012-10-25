@@ -2,26 +2,25 @@ package com.rhc.mortgage.application;
 
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import org.drools.event.rule.AfterActivationFiredEvent;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.rhc.drools.reference.DroolsRuntimeConfiguration;
+import com.rhc.drools.reference.StatelessDroolsComponent;
+import com.rhc.drools.reference.StatelessDroolsRuntime;
 import com.rhc.mortgage.domain.Application;
 import com.rhc.mortgage.domain.Customer;
 import com.rhc.mortgage.domain.Mortgage;
-import com.rhc.mortgage.drools.MortgageApplicationRequest;
-import com.rhc.mortgage.drools.MortgageApplicationResponse;
-
 
 public class MortgageServiceTest {
 
-	private static HashMap<String, List<AfterActivationFiredEvent>> firedActivations;
-	private static MortgageApplicationService mortageApplicationService = new MortgageApplicationService();
+	private static StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse> droolsComponent = new StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse>(
+			new MortgageApplicationKBaseBuilder(), new MortgageApplicationCommandListBuilder(),
+			new StatelessDroolsRuntime( new DroolsRuntimeConfiguration( "MortageApplicationLog" ) ),
+			new MortgageApplicationResultsTransformer() );
 
 	private final static Long CUSTOMER_ID_1 = Long.valueOf( 1 );
 	private final static Long CUSTOMER_ID_2 = Long.valueOf( 2 );
@@ -35,34 +34,34 @@ public class MortgageServiceTest {
 	 * This is just to test that my query worked
 	 */
 	@Test
-	public void shouldApproveCustomerAndApplicationAndCreateOneMortgage(){ 
+	public void shouldApproveCustomerAndApplicationAndCreateOneMortgage() {
 		Application application = new Application( new BigDecimal( 9000 ), 1L, 10L );
 		Customer customer = new Customer( "Bob", 25, 700, 1L );
-		
+
 		HashSet<Application> applications = new HashSet<Application>();
-		applications.add(application);
+		applications.add( application );
 
 		HashSet<Customer> customers = new HashSet<Customer>();
-		customers.add(customer);
+		customers.add( customer );
 
-		MortgageApplicationRequest request = new MortgageApplicationRequest( applications, customers);
+		MortgageApplicationRequest request = new MortgageApplicationRequest( applications, customers );
 
-		MortgageApplicationResponse response = mortageApplicationService .executeAllRules(request);
+		MortgageApplicationResponse response = droolsComponent.executeAllRules( request );
 
 		Assert.assertTrue( response != null );
-		
+
 		Collection<Application> approvedApplications = response.getApprovedApplications();
-		Assert.assertTrue( approvedApplications.size() == 1);
+		Assert.assertTrue( approvedApplications.size() == 1 );
 
 		Collection<Mortgage> mortgages = response.getNewMortgagesCreated();
-		Assert.assertTrue(mortgages.size() == 1);
+		Assert.assertTrue( mortgages.size() == 1 );
 	}
-	
+
 	@Test
 	public void shouldApproveCustomer1and2DeniedCustomer3() {
 		MortgageApplicationRequest request = new MortgageApplicationRequest( createApplications(), createCustomers() );
 
-		MortgageApplicationResponse response = mortageApplicationService.executeAllRules( request );
+		MortgageApplicationResponse response = droolsComponent.executeAllRules( request );
 
 		Assert.assertNotNull( response );
 
