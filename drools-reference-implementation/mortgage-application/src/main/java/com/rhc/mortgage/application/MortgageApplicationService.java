@@ -33,6 +33,11 @@ public class MortgageApplicationService extends
 
 	private static KnowledgeBase kbase;
 
+	public MortgageApplicationService() {
+		super( new StatelessDroolsRuntime( new DroolsRuntimeConfiguration( "MortageApplicationServiceLog" ) ),
+				new MortgageApplicationResultsTransformer() );
+	}
+
 	@Override
 	@SuppressWarnings("rawtypes")
 	protected List<Command> buildBusinessLogicCommandList( MortgageApplicationRequest request ) {
@@ -48,7 +53,7 @@ public class MortgageApplicationService extends
 			logger.info( "Adding application " + application );
 			commands.add( CommandFactory.newInsert( application ) );
 		}
-		
+
 		// The agenda is a stack, so agenda groups are First In, Last Out
 		commands.add( CommandBuilderUtil.buildAgendaGroupSetFocusCommand( "approve" ) );
 		commands.add( CommandBuilderUtil.buildAgendaGroupSetFocusCommand( "eligible" ) );
@@ -91,20 +96,6 @@ public class MortgageApplicationService extends
 		logger.debug( "Building Knowledge Base took " + ( System.currentTimeMillis() - startTime ) + " ms" );
 
 		return kbase;
-	}
-
-	@Override
-	protected StatelessDroolsRuntime getRuntime() {
-		
-		DroolsRuntimeConfiguration conf = new DroolsRuntimeConfiguration();
-		conf.setFullyQualifiedLogFileName( "MortgageApplicationAuditLog" );
-
-		return new StatelessDroolsRuntime( conf );
-	}
-
-	@Override
-	protected ExecutionResultsTransformer<MortgageApplicationResponse> getTransformer() {
-		return new MortgageApplicationResultsTransformer();
 	}
 
 }

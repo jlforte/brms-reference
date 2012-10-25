@@ -72,7 +72,7 @@ public class StatelessDroolsRuntime {
 	}
 
 	public Map<String, List<AfterActivationFiredEvent>> getFiredActivations() {
-		return firedActivations;
+		return firedActivations == null ? null : firedActivations;
 	}
 
 	/**

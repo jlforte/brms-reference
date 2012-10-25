@@ -21,7 +21,7 @@ import com.rhc.mortgage.drools.MortgageApplicationResponse;
 public class MortgageServiceTest {
 
 	private static HashMap<String, List<AfterActivationFiredEvent>> firedActivations;
-	private static MortgageApplicationService droolsExecService = new MortgageApplicationService();
+	private static MortgageApplicationService mortageApplicationService = new MortgageApplicationService();
 
 	private final static Long CUSTOMER_ID_1 = Long.valueOf( 1 );
 	private final static Long CUSTOMER_ID_2 = Long.valueOf( 2 );
@@ -47,7 +47,7 @@ public class MortgageServiceTest {
 
 		MortgageApplicationRequest request = new MortgageApplicationRequest( applications, customers);
 
-		MortgageApplicationResponse response = droolsExecService .executeAllRules(request);
+		MortgageApplicationResponse response = mortageApplicationService .executeAllRules(request);
 
 		Assert.assertTrue( response != null );
 		
@@ -62,7 +62,7 @@ public class MortgageServiceTest {
 	public void shouldApproveCustomer1and2DeniedCustomer3() {
 		MortgageApplicationRequest request = new MortgageApplicationRequest( createApplications(), createCustomers() );
 
-		MortgageApplicationResponse response = droolsExecService.executeAllRules( request );
+		MortgageApplicationResponse response = mortageApplicationService.executeAllRules( request );
 
 		Assert.assertNotNull( response );
 

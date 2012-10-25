@@ -1,14 +1,15 @@
 package com.rhc.drools.reference;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.drools.KnowledgeBase;
 import org.drools.command.Command;
+import org.drools.event.rule.AfterActivationFiredEvent;
 import org.drools.runtime.ExecutionResults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-
 
 /**
  * An abstract class that outlines a stateless Drools component within a Java Application. This design pattern
@@ -17,19 +18,22 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class StatelessDroolsComponent<Request, Response> {
 
-	protected static Logger logger = LoggerFactory.getLogger( StatelessDroolsComponent.class );
+	protected Logger logger = LoggerFactory.getLogger( StatelessDroolsComponent.class );
 	// Drools Concern #3
 	protected StatelessDroolsRuntime droolsRuntime;
 	// Drools Concern #4
 	protected ExecutionResultsTransformer<Response> resultsTransformer;
-	
-	public StatelessDroolsComponent(){
-		logger = LoggerFactory.getLogger( this.getClass());	
-		droolsRuntime = getRuntime();
-		resultsTransformer = getTransformer();
+
+	public StatelessDroolsComponent( StatelessDroolsRuntime droolsRuntime, ExecutionResultsTransformer<Response> resultsTransformer ){
+		this.logger = LoggerFactory.getLogger( this.getClass() );	
+		this.droolsRuntime = droolsRuntime;
+		this.resultsTransformer = resultsTransformer;
 	}
 	
-	
+	public StatelessDroolsComponent(){
+		this.logger = LoggerFactory.getLogger( this.getClass() );
+	}
+
 	@SuppressWarnings("rawtypes")
 	public Response executeAllRules( Request request ) {
 
@@ -73,9 +77,13 @@ public abstract class StatelessDroolsComponent<Request, Response> {
 	 */
 	@SuppressWarnings("rawtypes")
 	protected abstract List<Command> buildBusinessLogicCommandList( Request request );
-	
-	
-	protected abstract StatelessDroolsRuntime getRuntime();
-	protected abstract ExecutionResultsTransformer<Response> getTransformer();
 
+	/**
+	 * Convenience method for testing to return activations from previous the previous execution.
+	 * 
+	 * @return Map<Rule name, List<Activations of that rule fired>>
+	 */
+	protected Map<String, List<AfterActivationFiredEvent>> getPreviouslyFiredActivations() {
+		return droolsRuntime.getFiredActivations();
+	}
 }

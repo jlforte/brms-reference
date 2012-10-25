@@ -6,6 +6,13 @@ public class DroolsRuntimeConfiguration {
 	private boolean isRecordingAuditLog = true;
 	private String fullyQualifiedLogFileName = "DroolsAuditLog";
 
+	public DroolsRuntimeConfiguration( String fullyQualifiedLogFileName ) {
+		this.fullyQualifiedLogFileName = fullyQualifiedLogFileName;
+	}
+
+	public DroolsRuntimeConfiguration() {
+	}
+
 	public boolean isRecordingFiredRuleActivations() {
 		return isRecordingFiredRuleActivations;
 	}
