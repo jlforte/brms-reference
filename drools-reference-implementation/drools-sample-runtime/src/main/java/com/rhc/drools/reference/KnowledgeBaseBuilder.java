@@ -3,11 +3,13 @@ package com.rhc.drools.reference;
 import org.drools.KnowledgeBase;
 
 /**
+ * <p>
  * Drools Concern #1: Accumulation of Knowledge Resources (i.e. rules, queries, workflows, templates, decision tables),
  * compilation of those resources into Knowledge Packages, and the creation of a Knowledge Base from the Knowledge
  * Packages. This tends to be the element that varies most application to application, so we've left problem to be
  * solved by a concrete class. All this solution needs is a KnowledgeBase to returned - it doesn't care how you create
  * it. Here are a few ideas:
+ * </p>
  * 
  * 1) Runtime compilation from the class path using the KnowledgeBuilder (e.g MortgageApplicationKBaseBuilder TODO link
  * here) <br>

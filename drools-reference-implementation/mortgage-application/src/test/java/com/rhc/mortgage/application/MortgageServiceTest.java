@@ -8,9 +8,7 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.rhc.drools.reference.DroolsRuntimeConfiguration;
 import com.rhc.drools.reference.StatelessDroolsComponent;
-import com.rhc.drools.reference.StatelessDroolsRuntime;
 import com.rhc.mortgage.domain.Application;
 import com.rhc.mortgage.domain.Customer;
 import com.rhc.mortgage.domain.Mortgage;
@@ -18,9 +16,10 @@ import com.rhc.mortgage.domain.Mortgage;
 public class MortgageServiceTest {
 
 	private static StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse> droolsComponent = new StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse>(
-			new MortgageApplicationKBaseBuilder(), new MortgageApplicationCommandListBuilder(),
-			new StatelessDroolsRuntime( new DroolsRuntimeConfiguration( "MortageApplicationLog" ) ),
-			new MortgageApplicationResultsTransformer( MortgageApplicationResultsTransformer.buildQueryDeclarations() ) );
+			new MortgageApplicationKBaseBuilder(),
+			new MortgageApplicationCommandListBuilder(),
+			new MortgageApplicationResultsTransformer( MortgageApplicationResultsTransformer.buildQueryDeclarations() ),
+			"MortgageApplicationAuditLog" );
 
 	private final static Long CUSTOMER_ID_1 = Long.valueOf( 1 );
 	private final static Long CUSTOMER_ID_2 = Long.valueOf( 2 );
@@ -46,7 +45,7 @@ public class MortgageServiceTest {
 
 		MortgageApplicationRequest request = new MortgageApplicationRequest( applications, customers );
 
-		MortgageApplicationResponse response = droolsComponent.executeAllRules( request );
+		MortgageApplicationResponse response = droolsComponent.execute( request );
 
 		Assert.assertTrue( response != null );
 
@@ -61,7 +60,7 @@ public class MortgageServiceTest {
 	public void shouldApproveCustomer1and2DeniedCustomer3() {
 		MortgageApplicationRequest request = new MortgageApplicationRequest( createApplications(), createCustomers() );
 
-		MortgageApplicationResponse response = droolsComponent.executeAllRules( request );
+		MortgageApplicationResponse response = droolsComponent.execute( request );
 
 		Assert.assertNotNull( response );
 

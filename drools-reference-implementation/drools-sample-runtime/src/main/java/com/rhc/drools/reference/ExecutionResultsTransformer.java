@@ -9,10 +9,12 @@ import org.drools.runtime.rule.QueryResults;
 import org.drools.runtime.rule.QueryResultsRow;
 
 /**
- * Drools Concern #4: Extracting objects from the Drools Knowledge Session and transforming them into a response the
+ * <p>
+ * Drools Concern #3: Extracting objects from the Drools Knowledge Session and transforming them into a response the
  * calling code can use. Since we use the Drools Batch Command API in this design pattern, all logic to extract objects
  * from the Knowledge Session will be contained in Drools queries and the objects themselves will be returned in a
  * <code>ExecutionResults</code>, which we transform into a response object.
+ * </p>
  * 
  */
 public abstract class ExecutionResultsTransformer<Response> {
@@ -29,6 +31,14 @@ public abstract class ExecutionResultsTransformer<Response> {
 
 	public ExecutionResultsTransformer() {
 	}
+
+	/**
+	 * Defines transformation to a response the application can understand
+	 * 
+	 * @param results
+	 *            from a Drools Batch Execution
+	 */
+	public abstract Response transform( ExecutionResults results );
 
 	@SuppressWarnings("rawtypes")
 	public Set<Command> getQueryCommands() {
@@ -63,10 +73,4 @@ public abstract class ExecutionResultsTransformer<Response> {
 		this.queryDeclarations = queryDeclarations;
 	}
 
-	/**
-	 * 
-	 * @param results
-	 *            from a Drools Batch Execution
-	 */
-	public abstract Response transform( ExecutionResults results );
 }

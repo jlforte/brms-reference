@@ -3,6 +3,11 @@ package com.rhc.drools.reference;
 import org.drools.command.Command;
 import org.drools.command.CommandFactory;
 
+/**
+ * Simple class that encapsulates pertinent information about a Drools Query.
+ * 
+ * 
+ */
 public class QueryDeclaration<T> {
 
 	private String queryName;

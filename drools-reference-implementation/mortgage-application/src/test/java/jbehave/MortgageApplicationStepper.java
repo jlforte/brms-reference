@@ -13,9 +13,7 @@ import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.model.ExamplesTable;
 
-import com.rhc.drools.reference.DroolsRuntimeConfiguration;
 import com.rhc.drools.reference.StatelessDroolsComponent;
-import com.rhc.drools.reference.StatelessDroolsRuntime;
 import com.rhc.mortgage.application.MortgageApplicationCommandListBuilder;
 import com.rhc.mortgage.application.MortgageApplicationKBaseBuilder;
 import com.rhc.mortgage.application.MortgageApplicationRequest;
@@ -35,8 +33,8 @@ public class MortgageApplicationStepper {
 	public void setUp() {
 		droolsComponent = new StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse>(
 				new MortgageApplicationKBaseBuilder(), new MortgageApplicationCommandListBuilder(),
-				new StatelessDroolsRuntime( new DroolsRuntimeConfiguration( "MortageApplicationLog" ) ),
-				new MortgageApplicationResultsTransformer( MortgageApplicationResultsTransformer.buildQueryDeclarations() ) );
+				new MortgageApplicationResultsTransformer(
+						MortgageApplicationResultsTransformer.buildQueryDeclarations() ), "MortgageApplicationAuditLog" );
 		request = new MortgageApplicationRequest( null, null );
 	}
 
@@ -71,7 +69,7 @@ public class MortgageApplicationStepper {
 
 	@When("I evaluate these objects in the mortgage application")
 	public void whenIEvaluateTheseObjectsInTheMortgageApplication() {
-		response = droolsComponent.executeAllRules( request );
+		response = droolsComponent.execute( request );
 	}
 
 	@Then("I expect the mortgages added to be $mortgagesTable")
