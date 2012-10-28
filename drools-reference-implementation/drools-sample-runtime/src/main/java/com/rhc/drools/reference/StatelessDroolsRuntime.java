@@ -71,9 +71,7 @@ public class StatelessDroolsRuntime {
 		return results;
 	}
 
-	public Map<String, List<AfterActivationFiredEvent>> getFiredActivations() {
-		return firedActivations == null ? null : firedActivations;
-	}
+
 
 	/**
 	 * This is a slick way to capture all activations fired in the session so they can be interrogated by tests
@@ -100,4 +98,12 @@ public class StatelessDroolsRuntime {
 
 	}
 
+	public void setConfiguration( DroolsRuntimeConfiguration configuration ) {
+		this.configuration = configuration;
+	}
+
+	protected Map<String, List<AfterActivationFiredEvent>> getFiredActivations() {
+		return firedActivations == null ? null : firedActivations;
+	}
+	
 }

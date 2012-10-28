@@ -33,10 +33,10 @@ public class MortgageApplicationStepper {
 
 	@BeforeStories
 	public void setUp() {
-		droolsComponent = new StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse>( new MortgageApplicationKBaseBuilder(),
-				new MortgageApplicationCommandListBuilder(), new StatelessDroolsRuntime(
-						new DroolsRuntimeConfiguration( "MortageApplicationLog" ) ),
-				new MortgageApplicationResultsTransformer() );
+		droolsComponent = new StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse>(
+				new MortgageApplicationKBaseBuilder(), new MortgageApplicationCommandListBuilder(),
+				new StatelessDroolsRuntime( new DroolsRuntimeConfiguration( "MortageApplicationLog" ) ),
+				new MortgageApplicationResultsTransformer( MortgageApplicationResultsTransformer.buildQueryDeclarations() ) );
 		request = new MortgageApplicationRequest( null, null );
 	}
 
@@ -93,4 +93,5 @@ public class MortgageApplicationStepper {
 		}
 		return tempSet;
 	}
+
 }

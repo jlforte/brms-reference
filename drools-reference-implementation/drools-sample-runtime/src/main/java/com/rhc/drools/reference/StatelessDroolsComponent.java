@@ -10,13 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * An abstract class that outlines a stateless Drools component within a Java Application. This design pattern
- * identifies 4 concerns related to a Drools Application and wraps them all in a web service style request/response API.
+ * A component that identifies all concerns for a stateless Drools interaction in a Java Application wraps them all in a
+ * request/response API.
  * 
  */
 public class StatelessDroolsComponent<Request, Response> {
 
-	protected static Logger logger = LoggerFactory.getLogger( StatelessDroolsComponent.class );
+	private static Logger logger = LoggerFactory.getLogger( StatelessDroolsComponent.class );
 
 	// Drools Concern #1
 	private KnowledgeBaseBuilder kBaseBuilder;
@@ -29,7 +29,7 @@ public class StatelessDroolsComponent<Request, Response> {
 
 	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, CommandListBuilder<Request> commandListBuilder,
 			StatelessDroolsRuntime droolsRuntime, ExecutionResultsTransformer<Response> resultsTransformer ) {
-		
+
 		this.kBaseBuilder = kBaseBuilder;
 		this.commandListBuilder = commandListBuilder;
 		this.droolsRuntime = droolsRuntime;
@@ -49,7 +49,7 @@ public class StatelessDroolsComponent<Request, Response> {
 
 		long startTime = System.currentTimeMillis();
 		logger.debug( "Executing Drools Application..." );
-		ExecutionResults results = droolsRuntime.executeCommandList( kBaseBuilder.buildKnowledgeBase(), commandList );
+		ExecutionResults results = droolsRuntime.executeCommandList( kBaseBuilder.getKnowledgeBase(), commandList );
 		logger.debug( "Executing Drools Application took " + ( System.currentTimeMillis() - startTime ) + " ms" );
 
 		Response response = resultsTransformer.transform( results );
@@ -65,4 +65,21 @@ public class StatelessDroolsComponent<Request, Response> {
 	public Map<String, List<AfterActivationFiredEvent>> getPreviouslyFiredActivations() {
 		return droolsRuntime.getFiredActivations();
 	}
+
+	public void setKnowledgeBaseBuilder( KnowledgeBaseBuilder kBaseBuilder ) {
+		this.kBaseBuilder = kBaseBuilder;
+	}
+
+	public void setCommandListBuilder( CommandListBuilder<Request> commandListBuilder ) {
+		this.commandListBuilder = commandListBuilder;
+	}
+
+	public void setDroolsRuntime( StatelessDroolsRuntime droolsRuntime ) {
+		this.droolsRuntime = droolsRuntime;
+	}
+
+	public void setResultsTransformer( ExecutionResultsTransformer<Response> resultsTransformer ) {
+		this.resultsTransformer = resultsTransformer;
+	}
+
 }

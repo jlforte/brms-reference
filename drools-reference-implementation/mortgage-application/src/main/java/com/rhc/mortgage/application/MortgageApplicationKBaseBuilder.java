@@ -16,18 +16,18 @@ public class MortgageApplicationKBaseBuilder implements KnowledgeBaseBuilder {
 
 	private static Logger logger = LoggerFactory.getLogger( StatelessDroolsComponent.class );
 	private static KnowledgeBase kBase;
-	
+
 	@Override
-	public KnowledgeBase buildKnowledgeBase() {
-		
-		if (kBase != null){
+	public KnowledgeBase getKnowledgeBase() {
+
+		if ( kBase != null ) {
 			return kBase;
-		}	
-		
+		}
+
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 
 		long startTime = System.currentTimeMillis();
-		logger.debug( "Building Knowledge Base..." );
+		logger.debug( "Building KnowknowledgeBaseBuilderknowledgeBaseBuilderledge Base..." );
 
 		// add any new rules here
 		kbuilder.add( ResourceFactory.newClassPathResource( "ApplicationValidation.drl", getClass() ), ResourceType.DRL );
@@ -46,7 +46,7 @@ public class MortgageApplicationKBaseBuilder implements KnowledgeBaseBuilder {
 
 		// cache the kBase - its expensive to build
 		kBase = kbase;
-		
+
 		return kbase;
 	}
 

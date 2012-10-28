@@ -20,7 +20,7 @@ public class MortgageServiceTest {
 	private static StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse> droolsComponent = new StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse>(
 			new MortgageApplicationKBaseBuilder(), new MortgageApplicationCommandListBuilder(),
 			new StatelessDroolsRuntime( new DroolsRuntimeConfiguration( "MortageApplicationLog" ) ),
-			new MortgageApplicationResultsTransformer() );
+			new MortgageApplicationResultsTransformer( MortgageApplicationResultsTransformer.buildQueryDeclarations() ) );
 
 	private final static Long CUSTOMER_ID_1 = Long.valueOf( 1 );
 	private final static Long CUSTOMER_ID_2 = Long.valueOf( 2 );
