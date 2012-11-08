@@ -1,9 +1,9 @@
 package com.rhc.drools.reference;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.drools.command.Command;
 import org.drools.command.CommandFactory;
@@ -36,7 +36,7 @@ public class StatelessDroolsComponent<Request, Response> {
 	// User Concern #4 Am I testing or not?
 	private String fullyQualifiedLogFileName;
 
-	private HashMap<String, List<AfterActivationFiredEvent>> firedActivations;
+	private ConcurrentHashMap<String, List<AfterActivationFiredEvent>> firedActivations;
 
 	/**
 	 * Standard Constructor.
@@ -120,7 +120,7 @@ public class StatelessDroolsComponent<Request, Response> {
 	 */
 	private void addFiredRulesEventListener( StatelessKnowledgeSession kSession ) {
 
-		firedActivations = new HashMap<String, List<AfterActivationFiredEvent>>();
+		firedActivations = new ConcurrentHashMap<String, List<AfterActivationFiredEvent>>();
 		kSession.addEventListener( new DefaultAgendaEventListener() {
 			@Override
 			public void afterActivationFired( AfterActivationFiredEvent event ) {
