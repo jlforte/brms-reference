@@ -1,7 +1,6 @@
 package com.rhc.mortgage.application;
 
 import org.drools.KnowledgeBase;
-import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
@@ -39,8 +38,7 @@ public class MortgageApplicationKBaseBuilder implements KnowledgeBaseBuilder {
 			logger.error( kbuilder.getErrors().toString() );
 		}
 
-		KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
-		kbase.addKnowledgePackages( kbuilder.getKnowledgePackages() );
+		KnowledgeBase kbase = kbuilder.newKnowledgeBase();
 
 		logger.debug( "Building Knowledge Base took " + ( System.currentTimeMillis() - startTime ) + " ms" );
 
