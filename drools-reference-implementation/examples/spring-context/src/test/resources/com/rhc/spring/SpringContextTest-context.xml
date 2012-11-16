@@ -9,5 +9,32 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 
 
 <!-- Add bean definitions here -->
+			
+	<bean id="SpringContextTest" class="com.rhc.spring.SpringContextTest" >
+		<property name="droolsComponent">
+			<ref bean="mortgageComponentImpl" />
+		</property>
+	</bean>
+	
+	<bean id="mortgageComponentImpl" class="com.rhc.drools.reference.StatelessDroolsComponent" >
 
+   		<constructor-arg index="0" >
+			<ref bean="mortgageKBase"/>
+		</constructor-arg>
+		
+        <constructor-arg index="1" >
+        	<ref bean="mortgageCommandList"/>
+        </constructor-arg>	
+	
+        <constructor-arg index="2">
+            <ref bean="mortgageResultTransform"/>
+        </constructor-arg>	
+        
+        <constructor-arg index="3" type="java.lang.String" value="MortgageApplicationAuditLog"/>
+	</bean>
+	
+	<bean id="mortgageKBase" 			class="com.rhc.mortgage.application.MortgageApplicationKBaseBuilder"/>
+	<bean id="mortgageCommandList" 		class="com.rhc.mortgage.application.MortgageApplicationCommandListBuilder"/>
+	<bean id="mortgageResultTransform" 	class="com.rhc.mortgage.application.MortgageApplicationResultsTransformer"/>
+		
 </beans>
