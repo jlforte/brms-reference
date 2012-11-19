@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -27,19 +29,6 @@ import com.rhc.mortgage.domain.Mortgage;
  */
 @ContextConfiguration
 public class SpringContextTest extends AbstractJUnit4SpringContextTests {
-
-	@Autowired
-	private static StatelessDroolsComponent droolsComponent;
-		
-	public void setDroolsComponent(StatelessDroolsComponent droolsComponent){
-		SpringContextTest.droolsComponent = droolsComponent;
-	}
-	
-	@Test
-	public void test() {
-		System.out.println(droolsComponent.getClass());
-		Assert.assertNotNull("droolsComponent should not be null", droolsComponent);
-	}
 	
 	private final static Long CUSTOMER_ID_1 = Long.valueOf( 1 );
 	private final static Long CUSTOMER_ID_2 = Long.valueOf( 2 );
@@ -48,6 +37,13 @@ public class SpringContextTest extends AbstractJUnit4SpringContextTests {
 	private final static Long APPLICATION_ID_1 = Long.valueOf( 1 );
 	private final static Long APPLICATION_ID_2 = Long.valueOf( 2 );
 	private final static Long APPLICATION_ID_3 = Long.valueOf( 3 );
+
+	@Resource
+	private StatelessDroolsComponent droolsComponent;
+		
+	public void setDroolsComponent(StatelessDroolsComponent droolsComponent){
+		this.droolsComponent = droolsComponent;
+	}
 
 	/*
 	 * This is just to test that my query worked

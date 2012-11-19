@@ -7,34 +7,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-
-<!-- Add bean definitions here -->
-			
 	<bean id="SpringContextTest" class="com.rhc.spring.SpringContextTest" >
 		<property name="droolsComponent">
-			<ref bean="mortgageComponentImpl" />
+			<ref bean="mortgageDroolsComponentImpl" />
 		</property>
 	</bean>
 	
-	<bean id="mortgageComponentImpl" class="com.rhc.drools.reference.StatelessDroolsComponent" >
-
-   		<constructor-arg index="0" >
-			<ref bean="mortgageKBase"/>
-		</constructor-arg>
-		
-        <constructor-arg index="1" >
-        	<ref bean="mortgageCommandList"/>
-        </constructor-arg>	
-	
-        <constructor-arg index="2">
-            <ref bean="mortgageResultTransform"/>
-        </constructor-arg>	
-        
-        <constructor-arg index="3" type="java.lang.String" value="MortgageApplicationAuditLog"/>
+	<bean id="mortgageDroolsComponentImpl" class="com.rhc.drools.reference.StatelessDroolsComponent" >
+		<property name="knowledgeBaseBuilder" 	ref="mortgageKBase"/>
+		<property name="commandListBuilder" 	ref="mortgageCommandList"/>
+		<property name="resultsTransformer" 	ref="mortgageResultTransform"/>
 	</bean>
 	
 	<bean id="mortgageKBase" 			class="com.rhc.mortgage.application.MortgageApplicationKBaseBuilder"/>
 	<bean id="mortgageCommandList" 		class="com.rhc.mortgage.application.MortgageApplicationCommandListBuilder"/>
-	<bean id="mortgageResultTransform" 	class="com.rhc.mortgage.application.MortgageApplicationResultsTransformer"/>
-		
+	<bean id="mortgageResultTransform" 	class="com.rhc.mortgage.application.MortgageApplicationResultsTransformer">	
+		<property name="queryDeclarations" value="#{mortgageResultTransform.buildQueryDeclarations()}"/>
+	</bean>
+	
 </beans>
