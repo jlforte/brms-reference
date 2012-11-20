@@ -1,28 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-xsi:schemaLocation="
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-	<bean id="SpringContextTest" class="com.rhc.spring.SpringContextTest" >
+	<bean id="SpringContextTest" class="com.rhc.spring.SpringContextTest">
 		<property name="droolsComponent">
 			<ref bean="mortgageDroolsComponentImpl" />
 		</property>
 	</bean>
-	
-	<bean id="mortgageDroolsComponentImpl" class="com.rhc.drools.reference.StatelessDroolsComponent" >
-		<property name="knowledgeBaseBuilder" 	ref="mortgageKBase"/>
-		<property name="commandListBuilder" 	ref="mortgageCommandList"/>
-		<property name="resultsTransformer" 	ref="mortgageResultTransform"/>
+
+	<bean id="mortgageDroolsComponentImpl" class="com.rhc.drools.reference.StatelessDroolsComponent">
+		<property name="knowledgeBaseBuilder" ref="mortgageKBase" />
+		<property name="commandListBuilder" ref="mortgageCommandList" />
+		<property name="resultsTransformer" ref="mortgageResultTransform" />
 	</bean>
-	
-	<bean id="mortgageKBase" 			class="com.rhc.mortgage.application.MortgageApplicationKBaseBuilder"/>
-	<bean id="mortgageCommandList" 		class="com.rhc.mortgage.application.MortgageApplicationCommandListBuilder"/>
-	<bean id="mortgageResultTransform" 	class="com.rhc.mortgage.application.MortgageApplicationResultsTransformer">	
-		<property name="queryDeclarations" value="#{mortgageResultTransform.buildQueryDeclarations()}"/>
+
+	<bean id="mortgageKBase"
+		class="com.rhc.mortgage.application.MortgageApplicationKBaseBuilder" />
+	<bean id="mortgageCommandList"
+		class="com.rhc.mortgage.application.MortgageApplicationCommandListBuilder" />
+	<bean id="mortgageResultTransform"
+		class="com.rhc.mortgage.application.MortgageApplicationResultsTransformer">
+		<property name="queryDeclarations">
+			<set>
+				<bean class="com.rhc.drools.reference.QueryDeclaration">
+					<property name="queryName">
+						<value>Get All Approved Applications</value>
+					</property>
+					<property name="variableDeclaration">
+						<value>$application</value>
+					</property>
+				</bean>
+				<bean class="com.rhc.drools.reference.QueryDeclaration">
+					<property name="queryName">
+						<value>Get All Denied Applications</value>
+					</property>
+					<property name="variableDeclaration">
+						<value>$application</value>
+					</property>
+				</bean>
+				<bean class="com.rhc.drools.reference.QueryDeclaration">
+					<property name="queryName">
+						<value>Get All New Mortgages</value>
+					</property>
+					<property name="variableDeclaration">
+						<value>$mortgage</value>
+					</property>
+				</bean>
+			</set>
+		</property>
 	</bean>
-	
+
 </beans>
