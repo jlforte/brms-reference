@@ -1,6 +1,5 @@
 package com.rhc.mortgage.application;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.drools.runtime.ExecutionResults;
