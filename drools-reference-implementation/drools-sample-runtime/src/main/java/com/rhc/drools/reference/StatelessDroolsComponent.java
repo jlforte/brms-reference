@@ -3,6 +3,7 @@ package com.rhc.drools.reference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.drools.command.Command;
@@ -30,12 +31,19 @@ public class StatelessDroolsComponent<Request, Response> {
 	private KnowledgeBaseBuilder kBaseBuilder;
 	// User Concern #2
 	private CommandListBuilder<Request> commandListBuilder;
-	// User Concern #3
+	// User Concern #3 - All information to be extracted from the session must be declared in a query
+	@SuppressWarnings("rawtypes")
+	private Set<QueryDeclaration> queryDeclarations;
+	// User Concern #4
 	private ExecutionResultsTransformer<Response> resultsTransformer;
-
-	// User Concern #4 Am I testing or not?
+	
+	// User Concern #5 Am I testing or not? Setting this value means you are testing
 	private String fullyQualifiedLogFileName;
 
+	// Simple way to cache commands so they don't need to be rebuilt
+	@SuppressWarnings("rawtypes")
+	private Set<Command> queryCommands;
+	
 	private ConcurrentHashMap<String, List<AfterActivationFiredEvent>> firedActivations;
 
 	/**
@@ -45,12 +53,14 @@ public class StatelessDroolsComponent<Request, Response> {
 	 * @param commandListBuilder
 	 * @param resultsTransformer
 	 */
+	@SuppressWarnings("rawtypes")
 	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, CommandListBuilder<Request> commandListBuilder,
-			ExecutionResultsTransformer<Response> resultsTransformer ) {
+			ExecutionResultsTransformer<Response> resultsTransformer, Set<QueryDeclaration> queryDeclarations  ) {
 
 		this.kBaseBuilder = kBaseBuilder;
 		this.commandListBuilder = commandListBuilder;
 		this.resultsTransformer = resultsTransformer;
+		this.queryDeclarations = queryDeclarations;
 	}
 
 	/**
@@ -62,13 +72,15 @@ public class StatelessDroolsComponent<Request, Response> {
 	 * @param resultsTransformer
 	 * @param fullyQualifiedLogFileName
 	 */
+	@SuppressWarnings("rawtypes")
 	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, CommandListBuilder<Request> commandListBuilder,
-			ExecutionResultsTransformer<Response> resultsTransformer, String fullyQualifiedLogFileName ) {
+			ExecutionResultsTransformer<Response> resultsTransformer, Set<QueryDeclaration> queryDeclarations, String fullyQualifiedLogFileName ) {
 
 		this.kBaseBuilder = kBaseBuilder;
 		this.commandListBuilder = commandListBuilder;
 		this.resultsTransformer = resultsTransformer;
 		this.fullyQualifiedLogFileName = fullyQualifiedLogFileName;
+		this.queryDeclarations = queryDeclarations;
 	}
 
 	/**
@@ -80,13 +92,16 @@ public class StatelessDroolsComponent<Request, Response> {
 	@SuppressWarnings("rawtypes")
 	public Response execute( Request request ) {
 
-		// logging is optional and should be done when testing, as it slows down the engine
+		// logging is optional and should only be done when testing, as it slows down the engine
 		KnowledgeRuntimeLogger droolsAuditLogger = null;
 
 		List<Command> commandList = commandListBuilder.buildBusinessLogicCommandList( request );
 
 		// append the queries to the end of the list so they are executed after the business logic
-		commandList.addAll( resultsTransformer.getQueryCommands() );
+		if ( queryCommands == null ){
+			queryCommands = QueryUtils.buildQueryCommands( queryDeclarations );
+		}
+		commandList.addAll( queryCommands );
 
 		StatelessKnowledgeSession kSession = kBaseBuilder.getKnowledgeBase().newStatelessKnowledgeSession();
 
@@ -107,7 +122,7 @@ public class StatelessDroolsComponent<Request, Response> {
 			droolsAuditLogger.close();
 		}
 
-		Response response = resultsTransformer.transform( results );
+		Response response = resultsTransformer.transform( results, queryDeclarations );
 
 		return response;
 	}
@@ -157,6 +172,11 @@ public class StatelessDroolsComponent<Request, Response> {
 
 	public void setResultsTransformer( ExecutionResultsTransformer<Response> resultsTransformer ) {
 		this.resultsTransformer = resultsTransformer;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public void setQueryDeclarations( Set<QueryDeclaration> queryDeclarations ) {
+		this.queryDeclarations = queryDeclarations;
 	}
 
 }

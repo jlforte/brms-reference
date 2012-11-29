@@ -8,6 +8,7 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.rhc.drools.reference.QueryDeclaration;
 import com.rhc.drools.reference.StatelessDroolsComponent;
 import com.rhc.mortgage.domain.Application;
 import com.rhc.mortgage.domain.Customer;
@@ -18,7 +19,8 @@ public class MortgageServiceTest {
 	private static StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse> droolsComponent = new StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse>(
 			new MortgageApplicationKBaseBuilder(),
 			new MortgageApplicationCommandListBuilder(),
-			new MortgageApplicationResultsTransformer( MortgageApplicationResultsTransformer.buildQueryDeclarations() ),
+			new MortgageApplicationResultsTransformer(),
+			buildQueryDeclarations() ,
 			"MortgageApplicationAuditLog" );
 
 	private final static Long CUSTOMER_ID_1 = Long.valueOf( 1 );
@@ -114,6 +116,15 @@ public class MortgageServiceTest {
 		applications.add( new Application( new BigDecimal( 85000 ), CUSTOMER_ID_2, APPLICATION_ID_3 ) );
 
 		return applications;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static Set<QueryDeclaration> buildQueryDeclarations() {
+		Set<QueryDeclaration> queryDeclarations = new HashSet<QueryDeclaration>();
+		queryDeclarations.add( new QueryDeclaration<Application>( "Get All Approved Applications", "$application" ) );
+		queryDeclarations.add( new QueryDeclaration<Application>( "Get All Denied Applications", "$application" ) );
+		queryDeclarations.add( new QueryDeclaration<Application>( "Get All New Mortgages", "$mortgage" ) );
+		return queryDeclarations;
 	}
 
 }

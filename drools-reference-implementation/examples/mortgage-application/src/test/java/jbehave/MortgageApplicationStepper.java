@@ -13,6 +13,7 @@ import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.model.ExamplesTable;
 
+import com.rhc.drools.reference.QueryDeclaration;
 import com.rhc.drools.reference.StatelessDroolsComponent;
 import com.rhc.mortgage.application.MortgageApplicationCommandListBuilder;
 import com.rhc.mortgage.application.MortgageApplicationKBaseBuilder;
@@ -33,8 +34,7 @@ public class MortgageApplicationStepper {
 	public void setUp() {
 		droolsComponent = new StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse>(
 				new MortgageApplicationKBaseBuilder(), new MortgageApplicationCommandListBuilder(),
-				new MortgageApplicationResultsTransformer(
-						MortgageApplicationResultsTransformer.buildQueryDeclarations() ), "MortgageApplicationAuditLog" );
+				new MortgageApplicationResultsTransformer(), buildQueryDeclarations(), "MortgageApplicationAuditLog" );
 		request = new MortgageApplicationRequest( null, null );
 	}
 
@@ -90,6 +90,15 @@ public class MortgageApplicationStepper {
 			tempSet.add( temp );
 		}
 		return tempSet;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static Set<QueryDeclaration> buildQueryDeclarations() {
+		Set<QueryDeclaration> queryDeclarations = new HashSet<QueryDeclaration>();
+		queryDeclarations.add( new QueryDeclaration<Application>( "Get All Approved Applications", "$application" ) );
+		queryDeclarations.add( new QueryDeclaration<Application>( "Get All Denied Applications", "$application" ) );
+		queryDeclarations.add( new QueryDeclaration<Application>( "Get All New Mortgages", "$mortgage" ) );
+		return queryDeclarations;
 	}
 
 }

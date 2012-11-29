@@ -7,27 +7,19 @@ import org.drools.runtime.ExecutionResults;
 
 import com.rhc.drools.reference.ExecutionResultsTransformer;
 import com.rhc.drools.reference.QueryDeclaration;
+import com.rhc.drools.reference.QueryUtils;
 import com.rhc.mortgage.domain.Application;
 import com.rhc.mortgage.domain.Mortgage;
 
-public class MortgageApplicationResultsTransformer extends ExecutionResultsTransformer<MortgageApplicationResponse> {
+public class MortgageApplicationResultsTransformer implements ExecutionResultsTransformer<MortgageApplicationResponse> {
 
-	@SuppressWarnings("rawtypes")
-	public MortgageApplicationResultsTransformer( Set<QueryDeclaration> queryDeclarations ) {
-		super( queryDeclarations );
-	}
-
-	public MortgageApplicationResultsTransformer() {
-		super();
-	}
-
-	@SuppressWarnings("unchecked")
-	public MortgageApplicationResponse transform( ExecutionResults results ) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public MortgageApplicationResponse transform( ExecutionResults results, Set<QueryDeclaration> queryDeclarations  ) {
 		MortgageApplicationResponse response = new MortgageApplicationResponse();
 
 		// switch on string would be really nice...
 		for ( QueryDeclaration<?> q : queryDeclarations ) {
-			Set<?> set = extractSetFromExecutionResults( results, q );
+			Set<?> set = QueryUtils.extractSetFromExecutionResults( results, q );
 			if ( q.getQueryName().equals( "Get All Approved Applications" ) ) {
 				response.setApprovedApplications( (Set<Application>) set );
 			} else if ( q.getQueryName().equals( "Get All Denied Applications" ) ) {
@@ -38,18 +30,6 @@ public class MortgageApplicationResultsTransformer extends ExecutionResultsTrans
 		}
 
 		return response;
-	}
-
-	/**
-	 * This is a bit of a hack here just to make the not DI test classes easier.
-	 */
-	@SuppressWarnings("rawtypes")
-	public static Set<QueryDeclaration> buildQueryDeclarations() {
-		Set<QueryDeclaration> queryDeclarations = new HashSet<QueryDeclaration>();
-		queryDeclarations.add( new QueryDeclaration<Application>( "Get All Approved Applications", "$application" ) );
-		queryDeclarations.add( new QueryDeclaration<Application>( "Get All Denied Applications", "$application" ) );
-		queryDeclarations.add( new QueryDeclaration<Application>( "Get All New Mortgages", "$mortgage" ) );
-		return queryDeclarations;
 	}
 
 }

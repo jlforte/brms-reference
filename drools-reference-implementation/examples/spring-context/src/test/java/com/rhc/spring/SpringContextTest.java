@@ -10,16 +10,12 @@ import javax.annotation.Resource;
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.junit.runner.JUnitCore;
-import org.junit.runner.Result;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import com.rhc.drools.reference.StatelessDroolsComponent;
 import com.rhc.mortgage.application.MortgageApplicationRequest;
 import com.rhc.mortgage.application.MortgageApplicationResponse;
-import com.rhc.mortgage.application.MortgageServiceTest;
 import com.rhc.mortgage.domain.Application;
 import com.rhc.mortgage.domain.Customer;
 import com.rhc.mortgage.domain.Mortgage;
@@ -38,7 +34,7 @@ public class SpringContextTest extends AbstractJUnit4SpringContextTests {
 	private final static Long APPLICATION_ID_2 = Long.valueOf( 2 );
 	private final static Long APPLICATION_ID_3 = Long.valueOf( 3 );
 
-	@Resource
+	@Resource(name="mortgageDroolsComponent")
 	private StatelessDroolsComponent droolsComponent;
 		
 	public void setDroolsComponent(StatelessDroolsComponent droolsComponent){

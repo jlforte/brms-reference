@@ -8,24 +8,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-	<bean id="SpringContextTest" class="com.rhc.spring.SpringContextTest">
-		<property name="droolsComponent">
-			<ref bean="mortgageDroolsComponentImpl" />
-		</property>
-	</bean>
-
-	<bean id="mortgageDroolsComponentImpl" class="com.rhc.drools.reference.StatelessDroolsComponent">
+	<bean id="mortgageDroolsComponent" class="com.rhc.drools.reference.StatelessDroolsComponent">
 		<property name="knowledgeBaseBuilder" ref="mortgageKBase" />
 		<property name="commandListBuilder" ref="mortgageCommandList" />
 		<property name="resultsTransformer" ref="mortgageResultTransform" />
-	</bean>
-
-	<bean id="mortgageKBase"
-		class="com.rhc.mortgage.application.MortgageApplicationKBaseBuilder" />
-	<bean id="mortgageCommandList"
-		class="com.rhc.mortgage.application.MortgageApplicationCommandListBuilder" />
-	<bean id="mortgageResultTransform"
-		class="com.rhc.mortgage.application.MortgageApplicationResultsTransformer">
 		<property name="queryDeclarations">
 			<set>
 				<bean class="com.rhc.drools.reference.QueryDeclaration">
@@ -54,6 +40,14 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 				</bean>
 			</set>
 		</property>
+	</bean>
+
+	<bean id="mortgageKBase"
+		class="com.rhc.mortgage.application.MortgageApplicationKBaseBuilder" />
+	<bean id="mortgageCommandList"
+		class="com.rhc.mortgage.application.MortgageApplicationCommandListBuilder" />
+	<bean id="mortgageResultTransform"
+		class="com.rhc.mortgage.application.MortgageApplicationResultsTransformer">
 	</bean>
 
 </beans>

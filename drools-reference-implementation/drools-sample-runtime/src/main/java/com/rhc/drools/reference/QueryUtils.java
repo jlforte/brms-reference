@@ -9,12 +9,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
- 
+
 package com.rhc.drools.reference;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.drools.command.Command;
+import org.drools.runtime.ExecutionResults;
+import org.drools.runtime.rule.QueryResults;
+import org.drools.runtime.rule.QueryResultsRow;
 
 /**
  * 
  */
 public class QueryUtils {
 
+	@SuppressWarnings("rawtypes")
+	public static Set<Command> buildQueryCommands( Set<QueryDeclaration> queryDeclarations ) {
+		Set<Command> queryCommands = new HashSet<Command>();
+		if ( queryDeclarations != null ) {
+			for ( QueryDeclaration<?> qi : queryDeclarations ) {
+				queryCommands.add( qi.buildQueryCommand() );
+			}
+		}
+		return queryCommands;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> Set<T> extractSetFromExecutionResults( ExecutionResults exectionResults,
+			QueryDeclaration<T> queryDeclaration ) {
+		Set<T> set = new HashSet<T>();
+		if ( exectionResults != null ) {
+			QueryResults queryResult = (QueryResults) exectionResults.getValue( queryDeclaration.getQueryName() );
+			if ( queryResult != null ) {
+				for ( QueryResultsRow row : queryResult ) {
+					set.add( (T) row.get( queryDeclaration.getVariableDeclaration() ) );
+				}
+			}
+		}
+		return set;
+	}
 }
