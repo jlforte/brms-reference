@@ -11,6 +11,5 @@
   
 	<modules>
 		<module>mortgage-application</module>
-		<module>spring-context</module>
 	</modules>
 </project>

@@ -1,4 +1,4 @@
-package com.rhc.spring;
+package com.rhc.mortgage.application;
 
 import java.math.BigDecimal;
 import java.util.Collection;
