@@ -24,7 +24,7 @@ public class DiscountTest {
 	
 	
 	@Before
-	private void init(){
+	public void init(){
 		this.customer = new Customer( "customer" );
 		
 		Product hat = new Product( "scarf", 10.0f );
