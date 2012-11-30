@@ -11,5 +11,6 @@
   
 	<modules>
 		<module>mortgage-application</module>
+		<module>discounts</module>
 	</modules>
 </project>

@@ -8,10 +8,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-	<bean id="mortgageDroolsComponent" class="com.rhc.drools.reference.StatelessDroolsComponent">
-		<property name="knowledgeBaseBuilder" ref="mortgageKBaseBuilder" />
-		<property name="commandListBuilder" ref="mortgageCommandList" />
-		<property name="resultsTransformer" ref="mortgageResultTransform" />
+	<bean id="discountsDroolsComponent" class="com.rhc.drools.reference.StatelessDroolsComponent">
+		<property name="knowledgeBaseBuilder" ref="discountsKBaseBuilder" />
+		<property name="commandListBuilder" ref="discountsCommandList" />
+		<property name="resultsTransformer" ref="discountsTransformer" />
+		<!--  
 		<property name="queryDeclarations">
 			<set>
 				<bean class="com.rhc.drools.reference.QueryDeclaration">
@@ -40,22 +41,23 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 				</bean>
 			</set>
 		</property>
+		-->
 	</bean>
 
-	<bean id="mortgageKBaseBuilder" class="com.rhc.drools.reference.ClasspathKnowledgeBaseBuilder">
+
+	<bean id="discountsKBaseBuilder" class="com.rhc.drools.reference.ClasspathKnowledgeBaseBuilder">
 		<property name="knowledgeResources">
 			<set>
 				<value>Queries.drl</value>
-				<value>ApplicationValidation.drl</value>
-				<value>CustomerValidation.drl</value>
-				<value>MortgageRules.drl</value>
 			</set>
 		</property>
 	</bean>
-	<bean id="mortgageCommandList"
-		class="com.rhc.mortgage.application.MortgageApplicationCommandListBuilder" />
-	<bean id="mortgageResultTransform"
-		class="com.rhc.mortgage.application.MortgageApplicationResultsTransformer">
+ 
+	<bean id="discountsCommandList"
+		class="com.rhc.discounts.application.DiscountsCommandListBuilder" />
+		
+	<bean id="discountsTransformer"
+		class="com.rhc.discounts.application.DiscountsExecutionResultsTransformer">
 	</bean>
 
 </beans>
