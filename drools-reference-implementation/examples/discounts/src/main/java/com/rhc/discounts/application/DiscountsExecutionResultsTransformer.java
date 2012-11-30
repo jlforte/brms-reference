@@ -16,8 +16,9 @@ public class DiscountsExecutionResultsTransformer implements ExecutionResultsTra
 	/* (non-Javadoc)
 	 * @see com.rhc.drools.reference.ExecutionResultsTransformer#transform(org.drools.runtime.ExecutionResults, java.util.Set)
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
-	public Customer transform( ExecutionResults results, Set<QueryDeclaration> queryDeclarations ) {
+	public Customer transform( ExecutionResults results,  Set<QueryDeclaration> queryDeclarations ) {
 		// TODO Auto-generated method stub
 		return null;
 	}

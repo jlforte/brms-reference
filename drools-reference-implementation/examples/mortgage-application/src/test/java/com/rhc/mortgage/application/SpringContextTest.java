@@ -14,8 +14,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import com.rhc.drools.reference.StatelessDroolsComponent;
-import com.rhc.mortgage.application.MortgageApplicationRequest;
-import com.rhc.mortgage.application.MortgageApplicationResponse;
 import com.rhc.mortgage.domain.Application;
 import com.rhc.mortgage.domain.Customer;
 import com.rhc.mortgage.domain.Mortgage;
@@ -35,11 +33,7 @@ public class SpringContextTest extends AbstractJUnit4SpringContextTests {
 	private final static Long APPLICATION_ID_3 = Long.valueOf( 3 );
 
 	@Resource(name="mortgageDroolsComponent")
-	private StatelessDroolsComponent droolsComponent;
-		
-	public void setDroolsComponent(StatelessDroolsComponent droolsComponent){
-		this.droolsComponent = droolsComponent;
-	}
+	private StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse> droolsComponent;
 
 	/*
 	 * This is just to test that my query worked
