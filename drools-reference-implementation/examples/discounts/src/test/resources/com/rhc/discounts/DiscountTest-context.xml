@@ -48,7 +48,7 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 	<bean id="discountsKBaseBuilder" class="com.rhc.drools.reference.ClasspathKnowledgeBaseBuilder">
 		<property name="knowledgeResources">
 			<set>
-				<value>Queries.drl</value>
+				<value>discount_rules.drl</value>
 			</set>
 		</property>
 	</bean>

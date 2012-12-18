@@ -7,7 +7,8 @@ import org.drools.command.Command;
 import org.drools.command.CommandFactory;
 
 import com.rhc.discounts.domain.Customer;
-import com.rhc.discounts.domain.Purchase;
+import com.rhc.discounts.domain.IDiscount;
+import com.rhc.discounts.domain.Product;
 import com.rhc.drools.reference.CommandListBuilder;
 
 /**
@@ -28,10 +29,15 @@ public class DiscountsCommandListBuilder implements CommandListBuilder<Customer>
 
 		commands.add( CommandFactory.newInsert( customer) );
 		
-		for ( Purchase p : customer.getPurchases() ) {
+		for ( Product p : customer.getProducts()) {
 			commands.add( CommandFactory.newInsert( p ) );
-			commands.add( CommandFactory.newInsert( p.getProduct() ) );
 		}
+		
+		for (IDiscount d : customer.getEligbleDiscounts()){
+			commands.add( CommandFactory.newInsert( d ) );
+		}
+		
+		commands.add( CommandFactory.newInsert( customer ) );
 		
 		// The agenda is a stack, so agenda groups are First In, Last Out
 		/*
@@ -44,5 +50,4 @@ public class DiscountsCommandListBuilder implements CommandListBuilder<Customer>
 		commands.add( CommandFactory.newFireAllRules() );
 		return commands;
 	}
-
 }
