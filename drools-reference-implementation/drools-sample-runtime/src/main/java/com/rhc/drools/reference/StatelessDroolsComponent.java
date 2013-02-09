@@ -29,25 +29,28 @@ public class StatelessDroolsComponent<Request, Response> {
 
 	// User Concern #1
 	private KnowledgeBaseBuilder kBaseBuilder;
-	// User Concern #2
+	// User Concern #2 -- Use commands or JBPM
 	private CommandListBuilder<Request> commandListBuilder;
+
+	private String processName = "test";
+
 	// User Concern #3 - All information to be extracted from the session must be declared in a query
 	@SuppressWarnings("rawtypes")
 	private Set<QueryDeclaration> queryDeclarations;
 	// User Concern #4
 	private ExecutionResultsTransformer<Response> resultsTransformer;
-	
+
 	// User Concern #5 Am I testing or not? Setting this value means you are testing
 	private String fullyQualifiedLogFileName;
 
 	// Simple way to cache commands so they don't need to be rebuilt
 	@SuppressWarnings("rawtypes")
 	private Set<Command> queryCommands;
-	
+
 	private ConcurrentHashMap<String, List<AfterActivationFiredEvent>> firedActivations;
 
 	/**
-	 * Standard Constructor.
+	 * Standard Constructor when using CommandLists
 	 * 
 	 * @param kBaseBuilder
 	 * @param commandListBuilder
@@ -55,7 +58,7 @@ public class StatelessDroolsComponent<Request, Response> {
 	 */
 	@SuppressWarnings("rawtypes")
 	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, CommandListBuilder<Request> commandListBuilder,
-			ExecutionResultsTransformer<Response> resultsTransformer, Set<QueryDeclaration> queryDeclarations  ) {
+			ExecutionResultsTransformer<Response> resultsTransformer, Set<QueryDeclaration> queryDeclarations ) {
 
 		this.kBaseBuilder = kBaseBuilder;
 		this.commandListBuilder = commandListBuilder;
@@ -64,8 +67,8 @@ public class StatelessDroolsComponent<Request, Response> {
 	}
 
 	/**
-	 * Constructor for testing. Setting the log name will activate the audit log and trigger the capturing of fired rule
-	 * events. Note: this will slow performance
+	 * Constructor for testing w/ CommandLists. Setting the log name will activate the audit log and trigger the
+	 * capturing of fired rule events. Note: this will slow performance
 	 * 
 	 * @param kBaseBuilder
 	 * @param commandListBuilder
@@ -74,10 +77,49 @@ public class StatelessDroolsComponent<Request, Response> {
 	 */
 	@SuppressWarnings("rawtypes")
 	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, CommandListBuilder<Request> commandListBuilder,
-			ExecutionResultsTransformer<Response> resultsTransformer, Set<QueryDeclaration> queryDeclarations, String fullyQualifiedLogFileName ) {
+			ExecutionResultsTransformer<Response> resultsTransformer, Set<QueryDeclaration> queryDeclarations,
+			String fullyQualifiedLogFileName ) {
 
 		this.kBaseBuilder = kBaseBuilder;
 		this.commandListBuilder = commandListBuilder;
+		this.resultsTransformer = resultsTransformer;
+		this.fullyQualifiedLogFileName = fullyQualifiedLogFileName;
+		this.queryDeclarations = queryDeclarations;
+	}
+
+	/**
+	 * Standard Constructor when using jBPM for orchestration
+	 * 
+	 * @param kBaseBuilder
+	 * @param commandListBuilder
+	 * @param resultsTransformer
+	 */
+	@SuppressWarnings("rawtypes")
+	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, String processName,
+			ExecutionResultsTransformer<Response> resultsTransformer, Set<QueryDeclaration> queryDeclarations ) {
+
+		this.kBaseBuilder = kBaseBuilder;
+		this.processName = processName;
+		this.resultsTransformer = resultsTransformer;
+		this.queryDeclarations = queryDeclarations;
+	}
+
+	/**
+	 * Constructor for testing when using jBPM. Setting the log name will activate the audit log and trigger the
+	 * capturing of fired rule events. Note: this will slow performance
+	 * 
+	 * @param kBaseBuilder
+	 * @param commandListBuilder
+	 * @param resultsTransformer
+	 * @param fullyQualifiedLogFileName
+	 */
+	@SuppressWarnings("rawtypes")
+	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, String processName,
+			ExecutionResultsTransformer<Response> resultsTransformer, Set<QueryDeclaration> queryDeclarations,
+			String fullyQualifiedLogFileName ) {
+
+		this.kBaseBuilder = kBaseBuilder;
+		this.processName = processName;
 		this.resultsTransformer = resultsTransformer;
 		this.fullyQualifiedLogFileName = fullyQualifiedLogFileName;
 		this.queryDeclarations = queryDeclarations;
@@ -95,10 +137,11 @@ public class StatelessDroolsComponent<Request, Response> {
 		// logging is optional and should only be done when testing, as it slows down the engine
 		KnowledgeRuntimeLogger droolsAuditLogger = null;
 
-		List<Command> commandList = commandListBuilder.buildBusinessLogicCommandList( request );
+		// TODO 
+		List<Command> commandList = buildCommandList( request );
 
 		// append the queries to the end of the list so they are executed after the business logic
-		if ( queryCommands == null ){
+		if ( queryCommands == null ) {
 			queryCommands = QueryUtils.buildQueryCommands( queryDeclarations );
 		}
 		commandList.addAll( queryCommands );
@@ -125,6 +168,30 @@ public class StatelessDroolsComponent<Request, Response> {
 		Response response = resultsTransformer.transform( results, queryDeclarations );
 
 		return response;
+	}
+
+	/**
+	 * Helper method to build the command list from either a commandList
+	 * @param request
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	private List<Command> buildCommandList( Request request ) {
+		List<Command> commands = new ArrayList<Command>();
+
+		if ( commandListBuilder != null && processName != null ) {
+			System.err.println( "Cannot declare a CommandListBuilder and a Process in the same componenet" );
+		}
+
+		if ( commandListBuilder != null ) {
+			commands = commandListBuilder.buildBusinessLogicCommandList( request );
+		}
+
+		if ( processName != null ) {
+			commands.add( CommandFactory.newStartProcess( processName ) );
+		}
+
+		return commands;
 	}
 
 	/**
@@ -173,7 +240,7 @@ public class StatelessDroolsComponent<Request, Response> {
 	public void setResultsTransformer( ExecutionResultsTransformer<Response> resultsTransformer ) {
 		this.resultsTransformer = resultsTransformer;
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	public void setQueryDeclarations( Set<QueryDeclaration> queryDeclarations ) {
 		this.queryDeclarations = queryDeclarations;

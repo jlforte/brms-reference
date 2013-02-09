@@ -7,7 +7,8 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<droolsVersion>5.4.0.Final</droolsVersion>
+		<droolsVersion>5.5.0.Final</droolsVersion>
+		<jbpmVersion>5.4.0.Final</jbpmVersion>
 	</properties>
 
 	<dependencyManagement>
@@ -26,6 +27,11 @@
 				<groupId>org.drools</groupId>
 				<artifactId>drools-compiler</artifactId>
 				<version>${droolsVersion}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jbpm</groupId>
+				<artifactId>jbpm-bpmn2</artifactId>
+				<version>${jbpmVersion}</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.qos.logback</groupId>

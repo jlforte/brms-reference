@@ -1,5 +1,6 @@
 package com.rhc.drools.reference;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.drools.KnowledgeBase;
@@ -28,23 +29,30 @@ public class ClasspathKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 
 	@Override
 	public KnowledgeBase getKnowledgeBase() {
-		
+
 		if ( this.kBase == null ) {
 			this.kBase = buildKnowledgeBase();
-		} 
+		}
 		return this.kBase;
 	}
-	
-	public KnowledgeBase buildKnowledgeBase(){
-	
+
+	private KnowledgeBase buildKnowledgeBase() {
+
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 
 		long startTime = System.currentTimeMillis();
 		logger.debug( "Building Knowledge Base..." );
 
 		if ( knowledgeResources != null ) {
-			for ( String resource : knowledgeResources ) {
-				kbuilder.add( ResourceFactory.newClassPathResource( resource, getClass() ), ResourceType.DRL );
+			for ( String resourceFile : knowledgeResources ) {
+
+				if ( resourceFile.endsWith( ".drl" ) ) {
+					kbuilder.add( ResourceFactory.newClassPathResource( resourceFile, getClass() ), ResourceType.DRL );
+				} 
+				else if ( resourceFile.endsWith( ".bpmn" ) ) {
+					kbuilder.add( ResourceFactory.newClassPathResource( resourceFile, getClass() ), ResourceType.BPMN2 );
+				}
+
 			}
 		}
 
@@ -61,6 +69,14 @@ public class ClasspathKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 
 	public void setKnowledgeResources( Set<String> knowledgeResources ) {
 		this.knowledgeResources = knowledgeResources;
+	}
+
+	public void addKnowledgeResource( String resourceFile ) {
+		if ( this.knowledgeResources == null ) {
+			this.knowledgeResources = new HashSet<String>();
+		}
+
+		this.knowledgeResources.add( resourceFile );
 	}
 
 }
