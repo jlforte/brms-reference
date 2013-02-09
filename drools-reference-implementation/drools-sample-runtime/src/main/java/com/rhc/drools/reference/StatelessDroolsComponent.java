@@ -31,9 +31,6 @@ public class StatelessDroolsComponent<Request, Response> {
 	private KnowledgeBaseBuilder kBaseBuilder;
 	// User Concern #2 -- Use commands or JBPM
 	private CommandListBuilder<Request> commandListBuilder;
-
-	private String processName = "test";
-
 	// User Concern #3 - All information to be extracted from the session must be declared in a query
 	@SuppressWarnings("rawtypes")
 	private Set<QueryDeclaration> queryDeclarations;
@@ -88,44 +85,6 @@ public class StatelessDroolsComponent<Request, Response> {
 	}
 
 	/**
-	 * Standard Constructor when using jBPM for orchestration
-	 * 
-	 * @param kBaseBuilder
-	 * @param commandListBuilder
-	 * @param resultsTransformer
-	 */
-	@SuppressWarnings("rawtypes")
-	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, String processName,
-			ExecutionResultsTransformer<Response> resultsTransformer, Set<QueryDeclaration> queryDeclarations ) {
-
-		this.kBaseBuilder = kBaseBuilder;
-		this.processName = processName;
-		this.resultsTransformer = resultsTransformer;
-		this.queryDeclarations = queryDeclarations;
-	}
-
-	/**
-	 * Constructor for testing when using jBPM. Setting the log name will activate the audit log and trigger the
-	 * capturing of fired rule events. Note: this will slow performance
-	 * 
-	 * @param kBaseBuilder
-	 * @param commandListBuilder
-	 * @param resultsTransformer
-	 * @param fullyQualifiedLogFileName
-	 */
-	@SuppressWarnings("rawtypes")
-	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, String processName,
-			ExecutionResultsTransformer<Response> resultsTransformer, Set<QueryDeclaration> queryDeclarations,
-			String fullyQualifiedLogFileName ) {
-
-		this.kBaseBuilder = kBaseBuilder;
-		this.processName = processName;
-		this.resultsTransformer = resultsTransformer;
-		this.fullyQualifiedLogFileName = fullyQualifiedLogFileName;
-		this.queryDeclarations = queryDeclarations;
-	}
-
-	/**
 	 * Nullary Constructor for use with Dependency Injection
 	 */
 	public StatelessDroolsComponent() {
@@ -137,8 +96,7 @@ public class StatelessDroolsComponent<Request, Response> {
 		// logging is optional and should only be done when testing, as it slows down the engine
 		KnowledgeRuntimeLogger droolsAuditLogger = null;
 
-		// TODO 
-		List<Command> commandList = buildCommandList( request );
+		List<Command> commandList = commandListBuilder.buildBusinessLogicCommandList( request );
 
 		// append the queries to the end of the list so they are executed after the business logic
 		if ( queryCommands == null ) {
@@ -168,30 +126,6 @@ public class StatelessDroolsComponent<Request, Response> {
 		Response response = resultsTransformer.transform( results, queryDeclarations );
 
 		return response;
-	}
-
-	/**
-	 * Helper method to build the command list from either a commandList
-	 * @param request
-	 * @return
-	 */
-	@SuppressWarnings("rawtypes")
-	private List<Command> buildCommandList( Request request ) {
-		List<Command> commands = new ArrayList<Command>();
-
-		if ( commandListBuilder != null && processName != null ) {
-			System.err.println( "Cannot declare a CommandListBuilder and a Process in the same componenet" );
-		}
-
-		if ( commandListBuilder != null ) {
-			commands = commandListBuilder.buildBusinessLogicCommandList( request );
-		}
-
-		if ( processName != null ) {
-			commands.add( CommandFactory.newStartProcess( processName ) );
-		}
-
-		return commands;
 	}
 
 	/**
