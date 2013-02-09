@@ -8,7 +8,7 @@ rule "Test"
 	when
 
 	then
-		System.out.println( "Hello World 1" );
+		System.out.println( "Fired Rule Group 1" );
 end
 
 rule "Test 2"
@@ -16,5 +16,5 @@ rule "Test 2"
 	when
 
 	then
-		System.out.println( "Hello World 2" );
+		System.out.println( "Fired Rule Group 2" );
 end

@@ -123,7 +123,8 @@ public class StatelessDroolsComponent<Request, Response> {
 			droolsAuditLogger.close();
 		}
 
-		Response response = resultsTransformer.transform( results, queryDeclarations );
+		Response response = ( resultsTransformer != null ) ? resultsTransformer.transform( results, queryDeclarations )
+				: null;
 
 		return response;
 	}
@@ -178,6 +179,10 @@ public class StatelessDroolsComponent<Request, Response> {
 	@SuppressWarnings("rawtypes")
 	public void setQueryDeclarations( Set<QueryDeclaration> queryDeclarations ) {
 		this.queryDeclarations = queryDeclarations;
+	}
+
+	public void setFullyQualifiedLogFileName( String fullyQualifiedLogFileName ) {
+		this.fullyQualifiedLogFileName = fullyQualifiedLogFileName;
 	}
 
 }

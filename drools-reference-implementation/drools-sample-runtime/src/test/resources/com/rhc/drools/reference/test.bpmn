@@ -16,9 +16,6 @@
 
     <!-- nodes -->
     <startEvent id="_1" name="StartProcess" />
-    <endEvent id="_3" name="End" >
-        <terminateEventDefinition/>
-    </endEvent>
     <scriptTask id="_4" name="Script" >
       <script>System.out.println("Starting test Process");</script>
     </scriptTask>
@@ -26,12 +23,19 @@
     </businessRuleTask>
     <businessRuleTask id="_6" name="Rule 2" g:ruleFlowGroup="2" >
     </businessRuleTask>
+    <scriptTask id="_7" name="Script" >
+      <script>System.out.println("Ending test process");</script>
+    </scriptTask>
+    <endEvent id="_8" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
 
     <!-- connections -->
-    <sequenceFlow id="_6-_3" sourceRef="_6" targetRef="_3" />
     <sequenceFlow id="_1-_4" sourceRef="_1" targetRef="_4" />
     <sequenceFlow id="_4-_5" sourceRef="_4" targetRef="_5" />
     <sequenceFlow id="_5-_6" sourceRef="_5" targetRef="_6" />
+    <sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7" />
+    <sequenceFlow id="_7-_8" sourceRef="_7" targetRef="_8" />
 
   </process>
 
@@ -39,9 +43,6 @@
     <bpmndi:BPMNPlane bpmnElement="com.rhc.drools.test" >
       <bpmndi:BPMNShape bpmnElement="_1" >
         <dc:Bounds x="16" y="16" width="48" height="48" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_3" >
-        <dc:Bounds x="432" y="16" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_4" >
         <dc:Bounds x="96" y="16" width="80" height="48" />
@@ -52,10 +53,12 @@
       <bpmndi:BPMNShape bpmnElement="_6" >
         <dc:Bounds x="320" y="16" width="80" height="48" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="_6-_3" >
-        <di:waypoint x="360" y="40" />
-        <di:waypoint x="456" y="40" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="432" y="16" width="80" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="544" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="_1-_4" >
         <di:waypoint x="40" y="40" />
         <di:waypoint x="136" y="40" />
@@ -67,6 +70,14 @@
       <bpmndi:BPMNEdge bpmnElement="_5-_6" >
         <di:waypoint x="248" y="40" />
         <di:waypoint x="360" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_7" >
+        <di:waypoint x="360" y="40" />
+        <di:waypoint x="472" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_8" >
+        <di:waypoint x="472" y="40" />
+        <di:waypoint x="568" y="40" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

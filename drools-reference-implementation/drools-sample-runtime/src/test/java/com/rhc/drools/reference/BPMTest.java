@@ -13,6 +13,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.rhc.drools.reference.ClasspathKnowledgeBaseBuilder;
+
 public class BPMTest{
 	
 	private static KnowledgeBase kBase;
