@@ -1,0 +1,17 @@
+//created on: Feb 8, 2013
+package com.rhc.drools.test;
+
+//list any import classes here.
+
+query "Get Strings"
+    
+    $string : String()
+    
+end
+
+
+query "Get Integers"
+    
+    $integer : Integer()
+    
+end

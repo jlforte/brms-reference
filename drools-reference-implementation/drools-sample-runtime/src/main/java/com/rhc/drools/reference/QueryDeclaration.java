@@ -27,9 +27,32 @@ import org.drools.command.CommandFactory;
  */
 public class QueryDeclaration<T> {
 
+	// The name of the Drools Query
 	private String queryName;
+	
+	// The declared variable name that the query result set is bound to in the Drools Query
 	private String variableDeclaration;
+	
+	// The class of the result set. Drools does not require that the result set has a single type but we do
+	private Class<?> resultClass;
+	
+	// The name of the property on the Response object you wish to set with the result set
+	private String responsePropertyName;
 
+	/**
+	 * For use with the ReflectiveExecutionResultsTransformer
+	 */
+	public QueryDeclaration( String queryName, String variableDeclaration, Class<?> resultClass,
+			String responsePropertyName ) {
+		this.queryName = queryName;
+		this.variableDeclaration = variableDeclaration;
+		this.resultClass = resultClass;
+		this.responsePropertyName = responsePropertyName;
+	}
+	
+	/**
+	 * For custom implementations of the ExecutionResultsTransformer
+	 */
 	public QueryDeclaration( String queryName, String variableDeclaration ) {
 		this.queryName = queryName;
 		this.variableDeclaration = variableDeclaration;
@@ -58,6 +81,22 @@ public class QueryDeclaration<T> {
 
 	public void setVariableDeclaration( String variableDeclaration ) {
 		this.variableDeclaration = variableDeclaration;
+	}
+
+	public void setResultClass( Class<?> resultClass ) {
+		this.resultClass = resultClass;
+	}
+
+	public Class<?> getResultClass() {
+		return resultClass;
+	}
+
+	public void setResponsePropertyName( String responsePropertyName ) {
+		this.responsePropertyName = responsePropertyName;
+	}
+
+	public String getResponsePropertyName() {
+		return responsePropertyName;
 	}
 
 }

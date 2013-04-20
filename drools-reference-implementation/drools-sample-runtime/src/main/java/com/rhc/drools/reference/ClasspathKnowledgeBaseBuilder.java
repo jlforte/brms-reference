@@ -64,7 +64,7 @@ public class ClasspathKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 			for ( String resourceFile : knowledgeResources ) {
 
 				if ( resourceFile.endsWith( ".drl" ) ) {
-					kbuilder.add( ResourceFactory.newClassPathResource( resourceFile ), ResourceType.DRL );
+					kbuilder.add( ResourceFactory.newClassPathResource( resourceFile, getClass() ), ResourceType.DRL );
 				} else if ( resourceFile.endsWith( ".bpmn" ) ) {
 					kbuilder.add( ResourceFactory.newClassPathResource( resourceFile, getClass() ), ResourceType.BPMN2 );
 				}
