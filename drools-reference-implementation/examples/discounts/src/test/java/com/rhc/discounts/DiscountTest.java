@@ -22,7 +22,7 @@ import com.rhc.drools.reference.StatelessDroolsComponent;
 public class DiscountTest {
 	
 	@Resource(name="discountsDroolsComponent")
-	private StatelessDroolsComponent<Customer,Customer> drools;
+	private StatelessDroolsComponent<Customer> drools;
 	private Customer customer;
 	
 	

@@ -33,7 +33,7 @@ public class SpringContextTest extends AbstractJUnit4SpringContextTests {
 	private final static Long APPLICATION_ID_3 = Long.valueOf( 3 );
 
 	@Resource(name="mortgageDroolsComponent")
-	private StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse> droolsComponent;
+	private StatelessDroolsComponent<MortgageApplicationResponse> droolsComponent;
 
 	/*
 	 * This is just to test that my query worked
@@ -51,7 +51,7 @@ public class SpringContextTest extends AbstractJUnit4SpringContextTests {
 
 		MortgageApplicationRequest request = new MortgageApplicationRequest( applications, customers );
 
-		MortgageApplicationResponse response = (MortgageApplicationResponse) droolsComponent.execute( request );
+		MortgageApplicationResponse response = droolsComponent.execute( request );
 
 		Assert.assertTrue( response != null );
 

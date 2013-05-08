@@ -36,8 +36,9 @@ import org.drools.command.Command;
  * @return List of Drools Commands that encapsulate our business logic.
  */
 
-public interface CommandListBuilder<Request> {
+public interface CommandListBuilder {
 
 	@SuppressWarnings("rawtypes")
 	public List<Command> buildBusinessLogicCommandList( Request request );
+
 }

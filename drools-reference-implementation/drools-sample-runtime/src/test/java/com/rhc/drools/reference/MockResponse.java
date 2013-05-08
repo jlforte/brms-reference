@@ -18,6 +18,7 @@ public class MockResponse {
 		return strings;
 	}
 
+	@QueryInfo(queryName = "Get Strings", binding = "$string")
 	public void setStrings( Set<String> strings ) {
 		this.strings = strings;
 	}
@@ -26,6 +27,7 @@ public class MockResponse {
 		return integers;
 	}
 
+	@QueryInfo(queryName = "Get Integers", binding = "$integer")
 	public void setIntegers( Set<Integer> integers ) {
 		this.integers = integers;
 	}

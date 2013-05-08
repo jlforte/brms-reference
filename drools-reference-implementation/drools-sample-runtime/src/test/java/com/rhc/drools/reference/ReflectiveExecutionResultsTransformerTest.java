@@ -17,6 +17,8 @@
 
 package com.rhc.drools.reference;
 
+import static org.junit.Assert.assertTrue;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,59 +38,46 @@ import org.junit.Test;
 
 /**
  * @author Justin Holmes
+ * @author Justin Goldsmith
  * 
  */
 
 public class ReflectiveExecutionResultsTransformerTest {
 
-	private static Set<QueryDeclaration> queries = new HashSet<QueryDeclaration>();
-	private static ExecutionResults executionResults;
-
-	@BeforeClass
-	public static void setUp() {
-		QueryDeclaration<String> stringDeclaration = new QueryDeclaration<String>();
-		stringDeclaration.setQueryName( "Get Strings" );
-		stringDeclaration.setResponsePropertyName( "strings" );
-		stringDeclaration.setResultClass( MockResponse.class );
-		stringDeclaration.setVariableDeclaration( "$string" );
-		queries.add( stringDeclaration );
-
-		QueryDeclaration<Integer> integerDeclaration = new QueryDeclaration<Integer>();
-		integerDeclaration.setQueryName( "Get Integers" );
-		integerDeclaration.setResponsePropertyName( "integers" );
-		integerDeclaration.setResultClass( MockResponse.class );
-		integerDeclaration.setVariableDeclaration( "$integer" );
-		queries.add( integerDeclaration );
-
-		List<Command> commands = new ArrayList<Command>();
-		commands.add( CommandFactory.newInsert( new String( "Calvin" ) ) );
-		commands.add( CommandFactory.newInsert( new String( "Hobbes" ) ) );
-		commands.add( CommandFactory.newInsert( new Integer( "1" ) ) );
-		commands.add( CommandFactory.newInsert( new Integer( "2" ) ) );
-		commands.add( CommandFactory.newFireAllRules() );
-		commands.addAll( QueryUtils.buildQueryCommands( queries ) );
-
-		ClasspathKnowledgeBaseBuilder kBuilder = new ClasspathKnowledgeBaseBuilder();
-		kBuilder.addKnowledgeResource( "ExecutionResultsTest.drl" );
-		StatelessKnowledgeSession kSession = kBuilder.getKnowledgeBase().newStatelessKnowledgeSession();
-		KnowledgeRuntimeLogger log = KnowledgeRuntimeLoggerFactory.newFileLogger( kSession, "ReflectiveExecutionResults" );
-		executionResults = kSession.execute( CommandFactory.newBatchExecution( commands ) );
-		log.close();
-	}
-
 	@Test
 	public void test() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException,
 			ClassNotFoundException, InstantiationException {
 
-		for ( QueryDeclaration<?> query : queries ) {
-			Assert.assertTrue( QueryUtils.extractSetFromExecutionResults( executionResults, query ).size() > 0 );
-		}
+		CommandListBuilder commandListBuilder = new RuleFlowCommandListBuilder();
 		
-		MockResponse response = (MockResponse) ReflectiveExecutionResultsTransformer.transform( executionResults, queries,
-				MockResponse.class );
+		ClasspathKnowledgeBaseBuilder kBuilder = new ClasspathKnowledgeBaseBuilder();
+		kBuilder.addKnowledgeResource( "ExecutionResultsTest.drl" );
 		
-		System.out.println( response );
-
+		ExecutionResultsTransformer<MockResponse> transformer = new ReflectiveExecutionAnnotationResultsTransformer<MockResponse>(MockResponse.class);
+		
+		StatelessDroolsComponent<MockResponse> engine = new StatelessDroolsComponent<MockResponse>();
+		engine.setResponse(MockResponse.class);
+		engine.setCommandListBuilder(commandListBuilder);
+		engine.setKnowledgeBaseBuilder(kBuilder);
+		engine.setResultsTransformer(transformer);
+		
+		MockRequest request = new MockRequest();
+		request.addObject("Calvin");
+		request.addObject("Hobbes");
+		request.addObject(new Integer(1));
+		request.addObject(new Integer(2));
+		
+		MockResponse response = engine.execute(request);
+		Set<String> expectedStrings = new HashSet<String>();
+		expectedStrings.add("Calvin");
+		expectedStrings.add("Hobbes");
+		Set<Integer> expectedIntegers = new HashSet<Integer>();
+		expectedIntegers.add(1);
+		expectedIntegers.add(2);
+		
+		
+		assertTrue("Strings are not correct", response.getStrings().equals(expectedStrings));
+		assertTrue("Integers are not correct" , response.getIntegers().equals(expectedIntegers));
 	}
 
 }

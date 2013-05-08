@@ -14,27 +14,30 @@ import org.jbehave.core.annotations.When;
 import org.jbehave.core.model.ExamplesTable;
 
 import com.rhc.drools.reference.ClasspathKnowledgeBaseBuilder;
-import com.rhc.drools.reference.QueryDeclaration;
+import com.rhc.drools.reference.ReflectiveExecutionAnnotationResultsTransformer;
 import com.rhc.drools.reference.StatelessDroolsComponent;
 import com.rhc.mortgage.application.MortgageApplicationCommandListBuilder;
 import com.rhc.mortgage.application.MortgageApplicationRequest;
 import com.rhc.mortgage.application.MortgageApplicationResponse;
-import com.rhc.mortgage.application.MortgageApplicationResultsTransformer;
 import com.rhc.mortgage.domain.Application;
 import com.rhc.mortgage.domain.Customer;
 import com.rhc.mortgage.domain.Mortgage;
 
 public class MortgageApplicationStepper {
 
-	StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse> droolsComponent;
+	StatelessDroolsComponent<MortgageApplicationResponse> droolsComponent;
 	private MortgageApplicationRequest request;
 	private MortgageApplicationResponse response;
 
 	@BeforeStories
 	public void setUp() {
-		droolsComponent = new StatelessDroolsComponent<MortgageApplicationRequest, MortgageApplicationResponse>(
-				new ClasspathKnowledgeBaseBuilder( buildDrls() ), new MortgageApplicationCommandListBuilder(),
-				new MortgageApplicationResultsTransformer(), buildQueryDeclarations(), "MortgageApplicationAuditLog" );
+		droolsComponent = new StatelessDroolsComponent<MortgageApplicationResponse>();
+		droolsComponent.setCommandListBuilder(new MortgageApplicationCommandListBuilder());
+		droolsComponent.setKnowledgeBaseBuilder(new ClasspathKnowledgeBaseBuilder( buildDrls() ));
+		ReflectiveExecutionAnnotationResultsTransformer<MortgageApplicationResponse> resultsTransformer = new ReflectiveExecutionAnnotationResultsTransformer<MortgageApplicationResponse>();
+		resultsTransformer.setResponse(MortgageApplicationResponse.class);
+		droolsComponent.setResultsTransformer(resultsTransformer);
+		droolsComponent.setResponse(MortgageApplicationResponse.class);
 		request = new MortgageApplicationRequest( null, null );
 	}
 
@@ -92,14 +95,6 @@ public class MortgageApplicationStepper {
 		return tempSet;
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public static Set<QueryDeclaration> buildQueryDeclarations() {
-		Set<QueryDeclaration> queryDeclarations = new HashSet<QueryDeclaration>();
-		queryDeclarations.add( new QueryDeclaration<Application>( "Get All Approved Applications", "$application" ) );
-		queryDeclarations.add( new QueryDeclaration<Application>( "Get All Denied Applications", "$application" ) );
-		queryDeclarations.add( new QueryDeclaration<Application>( "Get All New Mortgages", "$mortgage" ) );
-		return queryDeclarations;
-	}
 	
 	public static Set<String> buildDrls(){
 		Set<String> drls = new HashSet<String>();

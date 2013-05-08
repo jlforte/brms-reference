@@ -29,7 +29,7 @@ import org.drools.command.CommandFactory;
  * Simple implementation of the CommandListBuilder Interface to use jBPM to control rule flow
  * 
  */
-public class RuleFlowCommandListBuilder implements CommandListBuilder<Collection<Object>> {
+public class RuleFlowCommandListBuilder implements CommandListBuilder{
 
 	private String ruleFlowName;
 
@@ -42,10 +42,12 @@ public class RuleFlowCommandListBuilder implements CommandListBuilder<Collection
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	public List<Command> buildBusinessLogicCommandList( Collection<Object> request ) {
+	public List<Command> buildBusinessLogicCommandList( Request request) {
 		List<Command> commands = new ArrayList<Command>();
-		commands.add( CommandFactory.newInsertElements( request ) );
-		commands.add( CommandFactory.newStartProcess( ruleFlowName ) );
+		commands.add( CommandFactory.newInsertElements( request.getAllObjects() ) );
+		if(ruleFlowName != null){
+			commands.add( CommandFactory.newStartProcess( ruleFlowName ) );
+		}
 		commands.add( CommandFactory.newFireAllRules() );
 		return commands;
 	}
@@ -54,4 +56,5 @@ public class RuleFlowCommandListBuilder implements CommandListBuilder<Collection
 		this.ruleFlowName = ruleFlowName;
 	}
 
+	
 }

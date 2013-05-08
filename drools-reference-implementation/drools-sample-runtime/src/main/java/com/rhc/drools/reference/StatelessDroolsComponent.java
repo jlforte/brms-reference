@@ -18,17 +18,22 @@
 package com.rhc.drools.reference;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.drools.KnowledgeBase;
 import org.drools.command.Command;
 import org.drools.command.CommandFactory;
+import org.drools.definition.KnowledgePackage;
 import org.drools.event.rule.AfterActivationFiredEvent;
 import org.drools.event.rule.DefaultAgendaEventListener;
 import org.drools.logger.KnowledgeRuntimeLogger;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
+import org.drools.definition.rule.Query;
 import org.drools.runtime.ExecutionResults;
 import org.drools.runtime.StatelessKnowledgeSession;
 import org.slf4j.Logger;
@@ -40,17 +45,15 @@ import org.slf4j.LoggerFactory;
  * 
  */
 
-public class StatelessDroolsComponent<Request, Response> {
+public class StatelessDroolsComponent<Response> {
 
 	private static Logger logger = LoggerFactory.getLogger( StatelessDroolsComponent.class );
 
 	// User Concern #1
 	private KnowledgeBaseBuilder kBaseBuilder;
 	// User Concern #2 -- Use commands or JBPM
-	private CommandListBuilder<Request> commandListBuilder;
-	// User Concern #3 - All information to be extracted from the session must be declared in a query
-	@SuppressWarnings("rawtypes")
-	private Set<QueryDeclaration> queryDeclarations;
+	private CommandListBuilder commandListBuilder;
+	
 	// User Concern #4
 	private ExecutionResultsTransformer<Response> resultsTransformer;
 
@@ -62,6 +65,11 @@ public class StatelessDroolsComponent<Request, Response> {
 	private Set<Command> queryCommands;
 
 	private ConcurrentHashMap<String, List<AfterActivationFiredEvent>> firedActivations;
+	
+	//Used with transformer so transform methods knows type
+	private Class<Response> response;
+	
+	
 
 	/**
 	 * Standard Constructor when using CommandLists
@@ -70,14 +78,13 @@ public class StatelessDroolsComponent<Request, Response> {
 	 * @param commandListBuilder
 	 * @param resultsTransformer
 	 */
-	@SuppressWarnings("rawtypes")
-	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, CommandListBuilder<Request> commandListBuilder,
-			ExecutionResultsTransformer<Response> resultsTransformer, Set<QueryDeclaration> queryDeclarations ) {
+	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, CommandListBuilder commandListBuilder,
+			ExecutionResultsTransformer<Response> resultsTransformer, Class<Response> response) {
 
 		this.kBaseBuilder = kBaseBuilder;
 		this.commandListBuilder = commandListBuilder;
 		this.resultsTransformer = resultsTransformer;
-		this.queryDeclarations = queryDeclarations;
+		this.setResponse(response);
 	}
 
 	/**
@@ -89,16 +96,15 @@ public class StatelessDroolsComponent<Request, Response> {
 	 * @param resultsTransformer
 	 * @param fullyQualifiedLogFileName
 	 */
-	@SuppressWarnings("rawtypes")
-	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, CommandListBuilder<Request> commandListBuilder,
-			ExecutionResultsTransformer<Response> resultsTransformer, Set<QueryDeclaration> queryDeclarations,
+	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, CommandListBuilder commandListBuilder,
+			ExecutionResultsTransformer<Response> resultsTransformer, Class<Response> response, 
 			String fullyQualifiedLogFileName ) {
 
 		this.kBaseBuilder = kBaseBuilder;
 		this.commandListBuilder = commandListBuilder;
 		this.resultsTransformer = resultsTransformer;
 		this.fullyQualifiedLogFileName = fullyQualifiedLogFileName;
-		this.queryDeclarations = queryDeclarations;
+		this.setResponse(response);
 	}
 
 	/**
@@ -109,20 +115,23 @@ public class StatelessDroolsComponent<Request, Response> {
 
 	@SuppressWarnings("rawtypes")
 	public Response execute( Request request ) {
-
 		// logging is optional and should only be done when testing, as it slows down the engine
 		KnowledgeRuntimeLogger droolsAuditLogger = null;
 
 		List<Command> commandList = commandListBuilder.buildBusinessLogicCommandList( request );
 
+		
 		// append the queries to the end of the list so they are executed after the business logic
-		if ( queryCommands == null ) {
-			queryCommands = QueryUtils.buildQueryCommands( queryDeclarations );
+	
+		KnowledgeBase kbase = kBaseBuilder.getKnowledgeBase();
+		
+		if(queryCommands  == null){
+			queryCommands = QueryUtils.buildQueryCommands(response);
 		}
-		commandList.addAll( queryCommands );
+		
+		commandList.addAll(queryCommands);
 
-		StatelessKnowledgeSession kSession = kBaseBuilder.getKnowledgeBase().newStatelessKnowledgeSession();
-
+		StatelessKnowledgeSession kSession = kbase.newStatelessKnowledgeSession();
 		// setting the audit log file name will cause the component to log and capture fired rule events
 		if ( fullyQualifiedLogFileName != null ) {
 			droolsAuditLogger = KnowledgeRuntimeLoggerFactory.newFileLogger( kSession, fullyQualifiedLogFileName );
@@ -131,20 +140,20 @@ public class StatelessDroolsComponent<Request, Response> {
 
 		long startTime = System.currentTimeMillis();
 		logger.debug( "Executing Drools Application..." );
-
 		ExecutionResults results = kSession.execute( CommandFactory.newBatchExecution( commandList ) );
-
+		
 		logger.debug( "Executing Drools Application took " + ( System.currentTimeMillis() - startTime ) + " ms" );
 
 		if ( fullyQualifiedLogFileName != null ) {
 			droolsAuditLogger.close();
 		}
 
-		Response response = ( resultsTransformer != null ) ? resultsTransformer.transform( results, queryDeclarations )
+		Response response = ( resultsTransformer != null ) ? resultsTransformer.transform( results )
 				: null;
 
 		return response;
 	}
+
 
 	/**
 	 * This is a slick way to capture all activations fired in the session so they can be interrogated by tests. This
@@ -185,7 +194,7 @@ public class StatelessDroolsComponent<Request, Response> {
 		this.kBaseBuilder = kBaseBuilder;
 	}
 
-	public void setCommandListBuilder( CommandListBuilder<Request> commandListBuilder ) {
+	public void setCommandListBuilder( CommandListBuilder commandListBuilder ) {
 		this.commandListBuilder = commandListBuilder;
 	}
 
@@ -193,13 +202,17 @@ public class StatelessDroolsComponent<Request, Response> {
 		this.resultsTransformer = resultsTransformer;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public void setQueryDeclarations( Set<QueryDeclaration> queryDeclarations ) {
-		this.queryDeclarations = queryDeclarations;
-	}
-
+	
 	public void setFullyQualifiedLogFileName( String fullyQualifiedLogFileName ) {
 		this.fullyQualifiedLogFileName = fullyQualifiedLogFileName;
+	}
+
+	public Class<?> getResponse() {
+		return response;
+	}
+
+	public void setResponse(Class<Response> response) {
+		this.response = response;
 	}
 
 }

@@ -17,10 +17,12 @@
 
 package com.rhc.drools.reference;
 
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.drools.command.Command;
+import org.drools.command.CommandFactory;
 import org.drools.runtime.ExecutionResults;
 import org.drools.runtime.rule.QueryResults;
 import org.drools.runtime.rule.QueryResultsRow;
@@ -29,27 +31,30 @@ import org.drools.runtime.rule.QueryResultsRow;
  * 
  */
 public class QueryUtils {
-
 	@SuppressWarnings("rawtypes")
-	public static Set<Command> buildQueryCommands( Set<QueryDeclaration> queryDeclarations ) {
+	protected static Set<Command> buildQueryCommands(Class clazz){
 		Set<Command> queryCommands = new HashSet<Command>();
-		if ( queryDeclarations != null ) {
-			for ( QueryDeclaration<?> qi : queryDeclarations ) {
-				queryCommands.add( qi.buildQueryCommand() );
+		if(clazz != null){
+			Method[] methods = clazz.getMethods();
+			for(Method method : methods){
+				QueryInfo queryInfo = method.getAnnotation(QueryInfo.class);
+				if(queryInfo != null){
+					String queryName = queryInfo.queryName();
+					queryCommands.add(CommandFactory.newQuery(queryName, queryName));
+				}
 			}
 		}
 		return queryCommands;
 	}
+	
 
-	@SuppressWarnings("unchecked")
-	public static <T> Set<T> extractSetFromExecutionResults( ExecutionResults exectionResults,
-			QueryDeclaration<T> queryDeclaration ) {
-		Set<T> set = new HashSet<T>();
+	public static Set<?> extractSetFromExecutionResults( ExecutionResults exectionResults, String queryName, String binding) {
+		Set<Object> set = new HashSet<Object>();
 		if ( exectionResults != null ) {
-			QueryResults queryResult = (QueryResults) exectionResults.getValue( queryDeclaration.getQueryName() );
+			QueryResults queryResult = (QueryResults) exectionResults.getValue( queryName );
 			if ( queryResult != null ) {
 				for ( QueryResultsRow row : queryResult ) {
-					set.add( (T) row.get( queryDeclaration.getVariableDeclaration() ) );
+					set.add(row.get(binding));
 				}
 			}
 		}

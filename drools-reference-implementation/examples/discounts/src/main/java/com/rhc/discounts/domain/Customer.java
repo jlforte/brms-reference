@@ -2,8 +2,12 @@ package com.rhc.discounts.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-public class Customer implements ICustomer {
+import com.rhc.drools.reference.Request;
+
+public class Customer implements ICustomer,  Request {
 
 	private String name;
 	private Collection<Product> products;
@@ -12,6 +16,10 @@ public class Customer implements ICustomer {
 	private int discountsOffered;
 	private float totalCost;
 	private float amountSaved;
+	
+	public Customer(){
+		
+	}
 	
 	public Customer( String name ) {
 		this.name = name;
@@ -84,6 +92,15 @@ public class Customer implements ICustomer {
 
 	public void setAmountSaved(float amountSaved) {
 		this.amountSaved = amountSaved;
+	}
+
+	@Override
+	public Set<Object> getAllObjects() {
+		Set<Object> set = new HashSet<Object>();
+		set.addAll(getProducts());
+		set.addAll(getEligbleDiscounts());
+		set.add(this);
+		return set;
 	}
 
 }

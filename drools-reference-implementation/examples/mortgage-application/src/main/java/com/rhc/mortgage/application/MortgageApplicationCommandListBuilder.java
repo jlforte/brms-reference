@@ -8,19 +8,19 @@ import org.drools.command.CommandFactory;
 
 import com.rhc.drools.reference.CommandBuilderUtil;
 import com.rhc.drools.reference.CommandListBuilder;
+import com.rhc.drools.reference.Request;
 
-public class MortgageApplicationCommandListBuilder implements CommandListBuilder<MortgageApplicationRequest> {
+public class MortgageApplicationCommandListBuilder implements CommandListBuilder{
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public List<Command> buildBusinessLogicCommandList( MortgageApplicationRequest request ) {
+	public List<Command> buildBusinessLogicCommandList( Request request ) {
 		List<Command> commands = new ArrayList<Command>();
 
-		// Insert all of the customers from the request
-		commands.add( CommandFactory.newInsertElements( request.getCustomers() ) );
+		// Insert all of the Objects from the request
+		commands.add( CommandFactory.newInsertElements( request.getAllObjects() ) );
 
-		// Insert all of the applications from the request
-		commands.add( CommandFactory.newInsertElements( request.getApplications() ) );
+	
 
 		// The agenda is a stack, so agenda groups are First In, Last Out
 		commands.add( CommandBuilderUtil.buildAgendaGroupSetFocusCommand( "approve" ) );

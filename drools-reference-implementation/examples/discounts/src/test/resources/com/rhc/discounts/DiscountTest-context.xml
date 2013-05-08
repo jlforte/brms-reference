@@ -12,36 +12,7 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 		<property name="knowledgeBaseBuilder" ref="discountsKBaseBuilder" />
 		<property name="commandListBuilder" ref="discountsCommandList" />
 		<property name="resultsTransformer" ref="discountsTransformer" />
-		<!--  
-		<property name="queryDeclarations">
-			<set>
-				<bean class="com.rhc.drools.reference.QueryDeclaration">
-					<property name="queryName">
-						<value>Get All Approved Applications</value>
-					</property>
-					<property name="variableDeclaration">
-						<value>$application</value>
-					</property>
-				</bean>
-				<bean class="com.rhc.drools.reference.QueryDeclaration">
-					<property name="queryName">
-						<value>Get All Denied Applications</value>
-					</property>
-					<property name="variableDeclaration">
-						<value>$application</value>
-					</property>
-				</bean>
-				<bean class="com.rhc.drools.reference.QueryDeclaration">
-					<property name="queryName">
-						<value>Get All New Mortgages</value>
-					</property>
-					<property name="variableDeclaration">
-						<value>$mortgage</value>
-					</property>
-				</bean>
-			</set>
-		</property>
-		-->
+		<property name="response" value="com.rhc.discounts.domain.Customer"/>
 	</bean>
 
 
@@ -54,10 +25,11 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 	</bean>
  
 	<bean id="discountsCommandList"
-		class="com.rhc.discounts.application.DiscountsCommandListBuilder" />
+		class="com.rhc.drools.reference.RuleFlowCommandListBuilder" />
 		
 	<bean id="discountsTransformer"
-		class="com.rhc.discounts.application.DiscountsExecutionResultsTransformer">
+		class="com.rhc.drools.reference.ReflectiveExecutionAnnotationResultsTransformer">
+		<property name="response" value="com.rhc.discounts.domain.Customer"/>
 	</bean>
 
 </beans>

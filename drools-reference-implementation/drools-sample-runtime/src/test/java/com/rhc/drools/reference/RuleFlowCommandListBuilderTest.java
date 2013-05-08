@@ -1,7 +1,7 @@
 package com.rhc.drools.reference;
 
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -17,13 +17,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class RuleFlowCommandListBuilderTest {
 
 	@Resource(name = "droolsComponent")
-	private StatelessDroolsComponent<Collection<Object>, Collection<Object>> drools;
+	private StatelessDroolsComponent<Object> drools;
 
 	@Test
 	public void test() {
 		Assert.assertNotNull( drools );
 
-		drools.execute( new HashSet<Object>() );
+		drools.execute( new Request(){
+
+			@Override
+			public Set<Object> getAllObjects() {
+				return new HashSet<Object>();
+			}} );
 
 		Assert.assertEquals( 2, drools.getPreviouslyFiredActivations().size() );
 	}

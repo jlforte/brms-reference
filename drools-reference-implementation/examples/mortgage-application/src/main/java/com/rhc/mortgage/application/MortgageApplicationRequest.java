@@ -1,7 +1,9 @@
 package com.rhc.mortgage.application;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import com.rhc.drools.reference.Request;
 import com.rhc.mortgage.domain.Application;
 import com.rhc.mortgage.domain.Customer;
 
@@ -16,7 +18,7 @@ import com.rhc.mortgage.domain.Customer;
  * 
  * 
  */
-public class MortgageApplicationRequest {
+public class MortgageApplicationRequest implements Request {
 
 	private Set<Application> applications;
 	private Set<Customer> customers;
@@ -40,6 +42,14 @@ public class MortgageApplicationRequest {
 
 	public void setCustomers( Set<Customer> customers ) {
 		this.customers = customers;
+	}
+
+	@Override
+	public Set<Object> getAllObjects() {
+		Set<Object> set = new HashSet<Object>();
+		set.addAll(applications);
+		set.addAll(customers);
+		return set;
 	}
 
 }

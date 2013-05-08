@@ -2,6 +2,7 @@ package com.rhc.mortgage.application;
 
 import java.util.Set;
 
+import com.rhc.drools.reference.QueryInfo;
 import com.rhc.mortgage.domain.Application;
 import com.rhc.mortgage.domain.Mortgage;
 
@@ -21,6 +22,8 @@ public class MortgageApplicationResponse {
 	private Set<Application> deniedApplications;
 	private Set<Mortgage> newMortgagesCreated;
 
+	
+	@QueryInfo(queryName = "Get All Approved Applications", binding = "$application")
 	public void setApprovedApplications( Set<Application> approvedApplications ) {
 		this.approvedApplications = approvedApplications;
 	}
@@ -29,6 +32,7 @@ public class MortgageApplicationResponse {
 		return approvedApplications;
 	}
 
+	@QueryInfo(queryName = "Get All Denied Applications", binding = "$application")
 	public void setDeniedApplications( Set<Application> deniedApplications ) {
 		this.deniedApplications = deniedApplications;
 	}
@@ -41,6 +45,7 @@ public class MortgageApplicationResponse {
 		return newMortgagesCreated;
 	}
 
+	@QueryInfo(queryName = "Get All New Mortgages", binding = "$mortgage")
 	public void setNewMortgagesCreated( Set<Mortgage> newMortgagesCreated ) {
 		this.newMortgagesCreated = newMortgagesCreated;
 	}

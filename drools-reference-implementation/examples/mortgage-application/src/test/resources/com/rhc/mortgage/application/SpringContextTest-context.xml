@@ -12,34 +12,8 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 		<property name="knowledgeBaseBuilder" ref="mortgageKBaseBuilder" />
 		<property name="commandListBuilder" ref="mortgageCommandList" />
 		<property name="resultsTransformer" ref="mortgageResultTransform" />
-		<property name="queryDeclarations">
-			<set>
-				<bean class="com.rhc.drools.reference.QueryDeclaration">
-					<property name="queryName">
-						<value>Get All Approved Applications</value>
-					</property>
-					<property name="variableDeclaration">
-						<value>$application</value>
-					</property>
-				</bean>
-				<bean class="com.rhc.drools.reference.QueryDeclaration">
-					<property name="queryName">
-						<value>Get All Denied Applications</value>
-					</property>
-					<property name="variableDeclaration">
-						<value>$application</value>
-					</property>
-				</bean>
-				<bean class="com.rhc.drools.reference.QueryDeclaration">
-					<property name="queryName">
-						<value>Get All New Mortgages</value>
-					</property>
-					<property name="variableDeclaration">
-						<value>$mortgage</value>
-					</property>
-				</bean>
-			</set>
-		</property>
+		<property name="response" value="com.rhc.mortgage.application.MortgageApplicationResponse"/>
+		
 	</bean>
 
 	<bean id="mortgageKBaseBuilder" class="com.rhc.drools.reference.ClasspathKnowledgeBaseBuilder">
@@ -55,7 +29,9 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 	<bean id="mortgageCommandList"
 		class="com.rhc.mortgage.application.MortgageApplicationCommandListBuilder" />
 	<bean id="mortgageResultTransform"
-		class="com.rhc.mortgage.application.MortgageApplicationResultsTransformer">
+		class="com.rhc.drools.reference.ReflectiveExecutionAnnotationResultsTransformer">
+		<property name="response" value="com.rhc.mortgage.application.MortgageApplicationResponse"/>
 	</bean>
+		
 
 </beans>

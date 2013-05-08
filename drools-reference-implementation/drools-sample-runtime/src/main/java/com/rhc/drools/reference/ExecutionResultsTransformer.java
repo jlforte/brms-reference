@@ -17,8 +17,6 @@
 
 package com.rhc.drools.reference;
 
-import java.util.Set;
-
 import org.drools.runtime.ExecutionResults;
 
 /**
@@ -35,7 +33,8 @@ public interface ExecutionResultsTransformer<Response> {
 	 * @param results
 	 *            from a Drools Batch Execution
 	 */
-	@SuppressWarnings("rawtypes")
-	public Response transform( ExecutionResults results, Set<QueryDeclaration> queryDeclarations );
+	public Response transform( ExecutionResults results);
+	
+	
 
 }
