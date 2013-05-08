@@ -5,9 +5,19 @@ import java.lang.reflect.Method;
 import java.util.Set;
 
 import org.drools.runtime.ExecutionResults;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/**
+ * Default Transformer. This class will set the Response based on the QueryInfo annotation on a method in the response.
+ * 
+ * @author justin
+ * 
+ * @param <Response>
+ */
 public class ReflectiveExecutionAnnotationResultsTransformer<Response> implements ExecutionResultsTransformer<Response> {
 
+	private static Logger logger = LoggerFactory.getLogger( ReflectiveExecutionAnnotationResultsTransformer.class );
 	private Class<Response> response;
 
 	public ReflectiveExecutionAnnotationResultsTransformer() {
@@ -31,18 +41,24 @@ public class ReflectiveExecutionAnnotationResultsTransformer<Response> implement
 			if ( queryInfo != null ) {
 				String queryName = queryInfo.queryName();
 				String binding = queryInfo.binding();
-				try {
-					Set<?> set = QueryUtils.extractSetFromExecutionResults( results, queryName, binding );
-					method.invoke( response, set );
-				} catch ( IllegalArgumentException e ) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch ( IllegalAccessException e ) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch ( InvocationTargetException e ) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				Class<?>[] params = method.getParameterTypes();
+				if ( params.length == 1 && params[0].isAssignableFrom( Set.class ) ) {
+					try {
+						Set<?> set = QueryUtils.extractSetFromExecutionResults( results, queryName, binding );
+						method.invoke( response, set );
+					} catch ( IllegalArgumentException e ) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch ( IllegalAccessException e ) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch ( InvocationTargetException e ) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
+					logger.warn( "QueryInfo annotation can not be used on " + method.getName()
+							+ ". It only be used on methods that take in a single paramter which is a Set" );
 				}
 			}
 		}

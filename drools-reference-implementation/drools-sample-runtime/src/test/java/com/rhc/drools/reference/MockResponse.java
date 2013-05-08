@@ -2,7 +2,6 @@ package com.rhc.drools.reference;
 
 import java.util.Set;
 
-
 /**
  * Simple class to be used in this test alone
  * 

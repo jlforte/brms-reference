@@ -31,30 +31,37 @@ import org.drools.runtime.rule.QueryResultsRow;
  * 
  */
 public class QueryUtils {
+
+	/**
+	 * Creates query commands based on the QueryInfo annotation on methods in the Class being passed in.
+	 * 
+	 * @param clazz
+	 * @return
+	 */
 	@SuppressWarnings("rawtypes")
-	protected static Set<Command> buildQueryCommands(Class clazz){
+	protected static Set<Command> buildQueryCommands( Class clazz ) {
 		Set<Command> queryCommands = new HashSet<Command>();
-		if(clazz != null){
+		if ( clazz != null ) {
 			Method[] methods = clazz.getMethods();
-			for(Method method : methods){
-				QueryInfo queryInfo = method.getAnnotation(QueryInfo.class);
-				if(queryInfo != null){
+			for ( Method method : methods ) {
+				QueryInfo queryInfo = method.getAnnotation( QueryInfo.class );
+				if ( queryInfo != null ) {
 					String queryName = queryInfo.queryName();
-					queryCommands.add(CommandFactory.newQuery(queryName, queryName));
+					queryCommands.add( CommandFactory.newQuery( queryName, queryName ) );
 				}
 			}
 		}
 		return queryCommands;
 	}
-	
 
-	public static Set<?> extractSetFromExecutionResults( ExecutionResults exectionResults, String queryName, String binding) {
+	public static Set<?> extractSetFromExecutionResults( ExecutionResults exectionResults, String queryName,
+			String binding ) {
 		Set<Object> set = new HashSet<Object>();
 		if ( exectionResults != null ) {
 			QueryResults queryResult = (QueryResults) exectionResults.getValue( queryName );
 			if ( queryResult != null ) {
 				for ( QueryResultsRow row : queryResult ) {
-					set.add(row.get(binding));
+					set.add( row.get( binding ) );
 				}
 			}
 		}

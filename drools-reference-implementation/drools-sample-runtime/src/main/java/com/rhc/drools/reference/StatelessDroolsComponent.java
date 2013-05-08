@@ -120,9 +120,9 @@ public class StatelessDroolsComponent<Response> {
 
 		List<Command> commandList = commandListBuilder.buildBusinessLogicCommandList( request );
 
-		// append the queries to the end of the list so they are executed after the business logic
-
 		KnowledgeBase kbase = kBaseBuilder.getKnowledgeBase();
+
+		// append the queries to the end of the list so they are executed after the business logic
 
 		if ( queryCommands == null ) {
 			queryCommands = QueryUtils.buildQueryCommands( response );
