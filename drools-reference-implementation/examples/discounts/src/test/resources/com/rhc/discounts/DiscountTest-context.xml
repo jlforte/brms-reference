@@ -29,7 +29,6 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 		
 	<bean id="discountsTransformer"
 		class="com.rhc.drools.reference.ReflectiveExecutionAnnotationResultsTransformer">
-		<property name="response" value="com.rhc.discounts.domain.Customer"/>
 	</bean>
 
 </beans>

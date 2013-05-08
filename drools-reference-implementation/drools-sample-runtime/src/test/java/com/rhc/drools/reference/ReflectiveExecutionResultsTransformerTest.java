@@ -20,20 +20,9 @@ package com.rhc.drools.reference;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import junit.framework.Assert;
-
-import org.drools.command.Command;
-import org.drools.command.CommandFactory;
-import org.drools.logger.KnowledgeRuntimeLogger;
-import org.drools.logger.KnowledgeRuntimeLoggerFactory;
-import org.drools.runtime.ExecutionResults;
-import org.drools.runtime.StatelessKnowledgeSession;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -49,35 +38,34 @@ public class ReflectiveExecutionResultsTransformerTest {
 			ClassNotFoundException, InstantiationException {
 
 		CommandListBuilder commandListBuilder = new RuleFlowCommandListBuilder();
-		
+
 		ClasspathKnowledgeBaseBuilder kBuilder = new ClasspathKnowledgeBaseBuilder();
 		kBuilder.addKnowledgeResource( "ExecutionResultsTest.drl" );
-		
-		ExecutionResultsTransformer<MockResponse> transformer = new ReflectiveExecutionAnnotationResultsTransformer<MockResponse>(MockResponse.class);
-		
+
+		ExecutionResultsTransformer<MockResponse> transformer = new ReflectiveExecutionAnnotationResultsTransformer<MockResponse>();
+
 		StatelessDroolsComponent<MockResponse> engine = new StatelessDroolsComponent<MockResponse>();
-		engine.setResponse(MockResponse.class);
-		engine.setCommandListBuilder(commandListBuilder);
-		engine.setKnowledgeBaseBuilder(kBuilder);
-		engine.setResultsTransformer(transformer);
-		
+		engine.setResponse( MockResponse.class );
+		engine.setCommandListBuilder( commandListBuilder );
+		engine.setKnowledgeBaseBuilder( kBuilder );
+		engine.setResultsTransformer( transformer );
+
 		MockRequest request = new MockRequest();
-		request.addObject("Calvin");
-		request.addObject("Hobbes");
-		request.addObject(new Integer(1));
-		request.addObject(new Integer(2));
-		
-		MockResponse response = engine.execute(request);
+		request.addObject( "Calvin" );
+		request.addObject( "Hobbes" );
+		request.addObject( new Integer( 1 ) );
+		request.addObject( new Integer( 2 ) );
+
+		MockResponse response = engine.execute( request );
 		Set<String> expectedStrings = new HashSet<String>();
-		expectedStrings.add("Calvin");
-		expectedStrings.add("Hobbes");
+		expectedStrings.add( "Calvin" );
+		expectedStrings.add( "Hobbes" );
 		Set<Integer> expectedIntegers = new HashSet<Integer>();
-		expectedIntegers.add(1);
-		expectedIntegers.add(2);
-		
-		
-		assertTrue("Strings are not correct", response.getStrings().equals(expectedStrings));
-		assertTrue("Integers are not correct" , response.getIntegers().equals(expectedIntegers));
+		expectedIntegers.add( 1 );
+		expectedIntegers.add( 2 );
+
+		assertTrue( "Strings are not correct", response.getStrings().equals( expectedStrings ) );
+		assertTrue( "Integers are not correct", response.getIntegers().equals( expectedIntegers ) );
 	}
 
 }

@@ -30,7 +30,6 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 		class="com.rhc.mortgage.application.MortgageApplicationCommandListBuilder" />
 	<bean id="mortgageResultTransform"
 		class="com.rhc.drools.reference.ReflectiveExecutionAnnotationResultsTransformer">
-		<property name="response" value="com.rhc.mortgage.application.MortgageApplicationResponse"/>
 	</bean>
 		
 

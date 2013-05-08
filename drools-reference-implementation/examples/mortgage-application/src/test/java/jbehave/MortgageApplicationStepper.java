@@ -32,12 +32,11 @@ public class MortgageApplicationStepper {
 	@BeforeStories
 	public void setUp() {
 		droolsComponent = new StatelessDroolsComponent<MortgageApplicationResponse>();
-		droolsComponent.setCommandListBuilder(new MortgageApplicationCommandListBuilder());
-		droolsComponent.setKnowledgeBaseBuilder(new ClasspathKnowledgeBaseBuilder( buildDrls() ));
+		droolsComponent.setCommandListBuilder( new MortgageApplicationCommandListBuilder() );
+		droolsComponent.setKnowledgeBaseBuilder( new ClasspathKnowledgeBaseBuilder( buildDrls() ) );
 		ReflectiveExecutionAnnotationResultsTransformer<MortgageApplicationResponse> resultsTransformer = new ReflectiveExecutionAnnotationResultsTransformer<MortgageApplicationResponse>();
-		resultsTransformer.setResponse(MortgageApplicationResponse.class);
-		droolsComponent.setResultsTransformer(resultsTransformer);
-		droolsComponent.setResponse(MortgageApplicationResponse.class);
+		droolsComponent.setResultsTransformer( resultsTransformer );
+		droolsComponent.setResponse( MortgageApplicationResponse.class );
 		request = new MortgageApplicationRequest( null, null );
 	}
 
@@ -94,9 +93,8 @@ public class MortgageApplicationStepper {
 		}
 		return tempSet;
 	}
-	
-	
-	public static Set<String> buildDrls(){
+
+	public static Set<String> buildDrls() {
 		Set<String> drls = new HashSet<String>();
 		drls.add( "Queries.drl" );
 		drls.add( "ApplicationValidation.drl" );
