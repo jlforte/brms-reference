@@ -8,42 +8,39 @@ import org.drools.command.Command;
 import org.drools.command.CommandFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.StatelessKnowledgeSession;
-import org.jbpm.test.JbpmJUnitTestCase;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.rhc.drools.reference.ClasspathKnowledgeBaseBuilder;
+public class BPMTest {
 
-public class BPMTest{
-	
 	private static KnowledgeBase kBase;
 	private static StatelessKnowledgeSession kSession;
-	
+
 	@BeforeClass
-	public static void setUp(){
+	public static void setUp() {
 		ClasspathKnowledgeBaseBuilder kBuilder = new ClasspathKnowledgeBaseBuilder();
 		kBuilder.addKnowledgeResource( "BPMTest.drl" );
 		kBuilder.addKnowledgeResource( "test.bpmn" );
 		kBase = kBuilder.getKnowledgeBase();
 	}
-	
+
 	@Before
-	public void setUpNewTest(){
+	public void setUpNewTest() {
 		kSession = kBase.newStatelessKnowledgeSession();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testStatelessSession(){
+	public void testStatelessSession() {
 		List<Command> commands = new ArrayList<Command>();
 		commands.add( CommandFactory.newStartProcess( "com.rhc.drools.test" ) );
 		commands.add( CommandFactory.newFireAllRules() );
 		kSession.execute( CommandFactory.newBatchExecution( commands ) );
 	}
-	
+
 	@Test
-	public void testStatefulSession(){
+	public void testStatefulSession() {
 		StatefulKnowledgeSession kSess = kBase.newStatefulKnowledgeSession();
 		kSess.startProcess( "com.rhc.drools.test" );
 		System.out.println( kSess.getProcessInstances().size() );

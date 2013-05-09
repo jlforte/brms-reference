@@ -9,9 +9,11 @@ import java.lang.annotation.Target;
  * Should be put on the methods in a Response class that is used by the Component. Will only work if it is put on a
  * method that takes in a single parameter that is a Set.
  * 
- * @author justin
  * 
  */
+
+// TODO make this a field type
+// TODO change name to DroolsQueryInfo
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface QueryInfo {

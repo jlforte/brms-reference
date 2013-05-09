@@ -57,6 +57,7 @@ public class StatelessDroolsComponent<Response> {
 	private String fullyQualifiedLogFileName;
 
 	// Simple way to cache commands so they don't need to be rebuilt
+	// TODO remove this - the query commands might be different for each ruleFlow
 	@SuppressWarnings("rawtypes")
 	private Set<Command> queryCommands;
 
@@ -107,6 +108,7 @@ public class StatelessDroolsComponent<Response> {
 	public StatelessDroolsComponent() {
 	}
 
+	// TODO add ruleFlowName and Response Class to this method signature
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Response execute( Request request ) {
 		// logging is optional and should only be done when testing, as it slows down the engine
@@ -114,6 +116,7 @@ public class StatelessDroolsComponent<Response> {
 
 		// Since ReflectiveExecutionAnnotationResultsTransformer is the default and has to be generic it needs the class
 		// of the response rather than force the user to set it in two place, it gets it from here.
+		// TODO get rid of this
 		if ( resultsTransformer instanceof ReflectiveExecutionAnnotationResultsTransformer ) {
 			( (ReflectiveExecutionAnnotationResultsTransformer) resultsTransformer ).setResponse( response );
 		}
@@ -124,6 +127,7 @@ public class StatelessDroolsComponent<Response> {
 
 		// append the queries to the end of the list so they are executed after the business logic
 
+		// TODO make this a local parameter - remove the class member because each ruleFlow could have different queries
 		if ( queryCommands == null ) {
 			queryCommands = QueryUtils.buildQueryCommands( response );
 		}

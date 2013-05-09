@@ -18,7 +18,6 @@
 package com.rhc.drools.reference;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.drools.command.Command;
@@ -29,8 +28,9 @@ import org.drools.command.CommandFactory;
  * Simple implementation of the CommandListBuilder Interface to use jBPM to control rule flow
  * 
  */
-public class RuleFlowCommandListBuilder implements CommandListBuilder{
+public class RuleFlowCommandListBuilder implements CommandListBuilder {
 
+	// TODO remove this class member, as the ruleFlow will be passed into the method
 	private String ruleFlowName;
 
 	public RuleFlowCommandListBuilder() {
@@ -42,10 +42,10 @@ public class RuleFlowCommandListBuilder implements CommandListBuilder{
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	public List<Command> buildBusinessLogicCommandList( Request request) {
+	public List<Command> buildBusinessLogicCommandList( Request request ) {
 		List<Command> commands = new ArrayList<Command>();
 		commands.add( CommandFactory.newInsertElements( request.getAllObjects() ) );
-		if(ruleFlowName != null){
+		if ( ruleFlowName != null ) {
 			commands.add( CommandFactory.newStartProcess( ruleFlowName ) );
 		}
 		commands.add( CommandFactory.newFireAllRules() );
@@ -56,5 +56,4 @@ public class RuleFlowCommandListBuilder implements CommandListBuilder{
 		this.ruleFlowName = ruleFlowName;
 	}
 
-	
 }

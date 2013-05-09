@@ -38,6 +38,7 @@ import org.drools.command.Command;
 
 public interface CommandListBuilder {
 
+	// TODO add ruleFlow name to this signature
 	@SuppressWarnings("rawtypes")
 	public List<Command> buildBusinessLogicCommandList( Request request );
 

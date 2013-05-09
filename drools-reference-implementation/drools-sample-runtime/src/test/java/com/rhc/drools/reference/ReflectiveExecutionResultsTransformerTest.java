@@ -25,11 +25,6 @@ import java.util.Set;
 
 import org.junit.Test;
 
-/**
- * @author Justin Holmes
- * @author Justin Goldsmith
- * 
- */
 
 public class ReflectiveExecutionResultsTransformerTest {
 

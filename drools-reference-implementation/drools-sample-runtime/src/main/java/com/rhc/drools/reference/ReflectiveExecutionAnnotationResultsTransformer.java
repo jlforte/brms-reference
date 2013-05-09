@@ -11,10 +11,11 @@ import org.slf4j.LoggerFactory;
 /**
  * Default Transformer. This class will set the Response based on the QueryInfo annotation on a method in the response.
  * 
- * @author justin
  * 
  * @param <Response>
  */
+
+// TODO rename to old name
 public class ReflectiveExecutionAnnotationResultsTransformer<Response> implements ExecutionResultsTransformer<Response> {
 
 	private static Logger logger = LoggerFactory.getLogger( ReflectiveExecutionAnnotationResultsTransformer.class );
@@ -24,9 +25,11 @@ public class ReflectiveExecutionAnnotationResultsTransformer<Response> implement
 
 	}
 
+	// TODO pass in response class to this signature
 	@Override
 	public Response transform( ExecutionResults results ) {
 		Response response = null;
+
 		try {
 			response = this.response.newInstance();
 		} catch ( InstantiationException e ) {
@@ -36,6 +39,7 @@ public class ReflectiveExecutionAnnotationResultsTransformer<Response> implement
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		for ( Method method : this.response.getMethods() ) {
 			QueryInfo queryInfo = method.getAnnotation( QueryInfo.class );
 			if ( queryInfo != null ) {
