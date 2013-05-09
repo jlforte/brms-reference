@@ -12,7 +12,6 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 		<property name="knowledgeBaseBuilder" ref="discountsKBaseBuilder" />
 		<property name="commandListBuilder" ref="discountsCommandList" />
 		<property name="resultsTransformer" ref="discountsTransformer" />
-		<property name="response" value="com.rhc.discounts.domain.Customer"/>
 	</bean>
 
 
@@ -28,7 +27,7 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 		class="com.rhc.drools.reference.RuleFlowCommandListBuilder" />
 		
 	<bean id="discountsTransformer"
-		class="com.rhc.drools.reference.ReflectiveExecutionAnnotationResultsTransformer">
+		class="com.rhc.drools.reference.ReflectiveExecutionResultsTransformer">
 	</bean>
 
 </beans>

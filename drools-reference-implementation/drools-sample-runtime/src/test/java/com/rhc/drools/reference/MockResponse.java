@@ -7,7 +7,11 @@ import java.util.Set;
  * 
  */
 public class MockResponse {
+
+	@DroolsQueryInfo(queryName = "Get Strings", binding = "$string")
 	private Set<String> strings;
+
+	@DroolsQueryInfo(queryName = "Get Integers", binding = "$integer")
 	private Set<Integer> integers;
 
 	public MockResponse() {
@@ -17,7 +21,6 @@ public class MockResponse {
 		return strings;
 	}
 
-	@QueryInfo(queryName = "Get Strings", binding = "$string")
 	public void setStrings( Set<String> strings ) {
 		this.strings = strings;
 	}
@@ -26,7 +29,6 @@ public class MockResponse {
 		return integers;
 	}
 
-	@QueryInfo(queryName = "Get Integers", binding = "$integer")
 	public void setIntegers( Set<Integer> integers ) {
 		this.integers = integers;
 	}

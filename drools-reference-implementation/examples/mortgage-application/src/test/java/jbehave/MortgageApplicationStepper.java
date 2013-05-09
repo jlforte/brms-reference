@@ -14,7 +14,7 @@ import org.jbehave.core.annotations.When;
 import org.jbehave.core.model.ExamplesTable;
 
 import com.rhc.drools.reference.ClasspathKnowledgeBaseBuilder;
-import com.rhc.drools.reference.ReflectiveExecutionAnnotationResultsTransformer;
+import com.rhc.drools.reference.ReflectiveExecutionResultsTransformer;
 import com.rhc.drools.reference.StatelessDroolsComponent;
 import com.rhc.mortgage.application.MortgageApplicationCommandListBuilder;
 import com.rhc.mortgage.application.MortgageApplicationRequest;
@@ -25,18 +25,17 @@ import com.rhc.mortgage.domain.Mortgage;
 
 public class MortgageApplicationStepper {
 
-	StatelessDroolsComponent<MortgageApplicationResponse> droolsComponent;
+	StatelessDroolsComponent droolsComponent;
 	private MortgageApplicationRequest request;
 	private MortgageApplicationResponse response;
 
 	@BeforeStories
 	public void setUp() {
-		droolsComponent = new StatelessDroolsComponent<MortgageApplicationResponse>();
+		droolsComponent = new StatelessDroolsComponent();
 		droolsComponent.setCommandListBuilder( new MortgageApplicationCommandListBuilder() );
 		droolsComponent.setKnowledgeBaseBuilder( new ClasspathKnowledgeBaseBuilder( buildDrls() ) );
-		ReflectiveExecutionAnnotationResultsTransformer<MortgageApplicationResponse> resultsTransformer = new ReflectiveExecutionAnnotationResultsTransformer<MortgageApplicationResponse>();
+		ReflectiveExecutionResultsTransformer resultsTransformer = new ReflectiveExecutionResultsTransformer();
 		droolsComponent.setResultsTransformer( resultsTransformer );
-		droolsComponent.setResponse( MortgageApplicationResponse.class );
 		request = new MortgageApplicationRequest( null, null );
 	}
 
@@ -71,7 +70,7 @@ public class MortgageApplicationStepper {
 
 	@When("I evaluate these objects in the mortgage application")
 	public void whenIEvaluateTheseObjectsInTheMortgageApplication() {
-		response = droolsComponent.execute( request );
+		response = droolsComponent.execute( request, MortgageApplicationResponse.class );
 	}
 
 	@Then("I expect the mortgages added to be $mortgagesTable")

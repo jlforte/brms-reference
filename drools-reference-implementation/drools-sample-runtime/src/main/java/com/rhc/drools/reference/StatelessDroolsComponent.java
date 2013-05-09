@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
  * 
  */
 
-public class StatelessDroolsComponent<Response> {
+public class StatelessDroolsComponent {
 
 	private static Logger logger = LoggerFactory.getLogger( StatelessDroolsComponent.class );
 
@@ -51,20 +51,12 @@ public class StatelessDroolsComponent<Response> {
 	private CommandListBuilder commandListBuilder;
 
 	// User Concern #4
-	private ExecutionResultsTransformer<Response> resultsTransformer;
+	private ExecutionResultsTransformer resultsTransformer;
 
 	// User Concern #5 Am I testing or not? Setting this value means you are testing
 	private String fullyQualifiedLogFileName;
 
-	// Simple way to cache commands so they don't need to be rebuilt
-	// TODO remove this - the query commands might be different for each ruleFlow
-	@SuppressWarnings("rawtypes")
-	private Set<Command> queryCommands;
-
 	private ConcurrentHashMap<String, List<AfterActivationFiredEvent>> firedActivations;
-
-	// Used with transformer so transform methods knows type
-	private Class<Response> response;
 
 	/**
 	 * Standard Constructor when using CommandLists
@@ -74,12 +66,11 @@ public class StatelessDroolsComponent<Response> {
 	 * @param resultsTransformer
 	 */
 	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, CommandListBuilder commandListBuilder,
-			ExecutionResultsTransformer<Response> resultsTransformer, Class<Response> response ) {
+			ExecutionResultsTransformer resultsTransformer ) {
 
 		this.kBaseBuilder = kBaseBuilder;
 		this.commandListBuilder = commandListBuilder;
 		this.resultsTransformer = resultsTransformer;
-		this.setResponse( response );
 	}
 
 	/**
@@ -92,14 +83,13 @@ public class StatelessDroolsComponent<Response> {
 	 * @param fullyQualifiedLogFileName
 	 */
 	public StatelessDroolsComponent( KnowledgeBaseBuilder kBaseBuilder, CommandListBuilder commandListBuilder,
-			ExecutionResultsTransformer<Response> resultsTransformer, Class<Response> response,
-			String fullyQualifiedLogFileName ) {
+			ExecutionResultsTransformer resultsTransformer, String fullyQualifiedLogFileName ) {
 
 		this.kBaseBuilder = kBaseBuilder;
 		this.commandListBuilder = commandListBuilder;
 		this.resultsTransformer = resultsTransformer;
 		this.fullyQualifiedLogFileName = fullyQualifiedLogFileName;
-		this.setResponse( response );
+
 	}
 
 	/**
@@ -110,16 +100,9 @@ public class StatelessDroolsComponent<Response> {
 
 	// TODO add ruleFlowName and Response Class to this method signature
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Response execute( Request request ) {
+	public <Response> Response execute( Request request, Class<Response> responseClazz ) {
 		// logging is optional and should only be done when testing, as it slows down the engine
 		KnowledgeRuntimeLogger droolsAuditLogger = null;
-
-		// Since ReflectiveExecutionAnnotationResultsTransformer is the default and has to be generic it needs the class
-		// of the response rather than force the user to set it in two place, it gets it from here.
-		// TODO get rid of this
-		if ( resultsTransformer instanceof ReflectiveExecutionAnnotationResultsTransformer ) {
-			( (ReflectiveExecutionAnnotationResultsTransformer) resultsTransformer ).setResponse( response );
-		}
 
 		List<Command> commandList = commandListBuilder.buildBusinessLogicCommandList( request );
 
@@ -127,10 +110,7 @@ public class StatelessDroolsComponent<Response> {
 
 		// append the queries to the end of the list so they are executed after the business logic
 
-		// TODO make this a local parameter - remove the class member because each ruleFlow could have different queries
-		if ( queryCommands == null ) {
-			queryCommands = QueryUtils.buildQueryCommands( response );
-		}
+		Set<Command> queryCommands = QueryUtils.buildQueryCommands( responseClazz );
 
 		commandList.addAll( queryCommands );
 
@@ -151,7 +131,8 @@ public class StatelessDroolsComponent<Response> {
 			droolsAuditLogger.close();
 		}
 
-		Response response = ( resultsTransformer != null ) ? resultsTransformer.transform( results ) : null;
+		Response response = ( resultsTransformer != null ) ? resultsTransformer.transform( results, responseClazz )
+				: null;
 
 		return response;
 	}
@@ -199,20 +180,12 @@ public class StatelessDroolsComponent<Response> {
 		this.commandListBuilder = commandListBuilder;
 	}
 
-	public void setResultsTransformer( ExecutionResultsTransformer<Response> resultsTransformer ) {
+	public void setResultsTransformer( ExecutionResultsTransformer resultsTransformer ) {
 		this.resultsTransformer = resultsTransformer;
 	}
 
 	public void setFullyQualifiedLogFileName( String fullyQualifiedLogFileName ) {
 		this.fullyQualifiedLogFileName = fullyQualifiedLogFileName;
-	}
-
-	public Class<?> getResponse() {
-		return response;
-	}
-
-	public void setResponse( Class<Response> response ) {
-		this.response = response;
 	}
 
 }

@@ -23,7 +23,7 @@ import com.rhc.mortgage.domain.Mortgage;
  */
 @ContextConfiguration
 public class SpringContextTest extends AbstractJUnit4SpringContextTests {
-	
+
 	private final static Long CUSTOMER_ID_1 = Long.valueOf( 1 );
 	private final static Long CUSTOMER_ID_2 = Long.valueOf( 2 );
 	private final static Long CUSTOMER_ID_3 = Long.valueOf( 3 );
@@ -32,8 +32,8 @@ public class SpringContextTest extends AbstractJUnit4SpringContextTests {
 	private final static Long APPLICATION_ID_2 = Long.valueOf( 2 );
 	private final static Long APPLICATION_ID_3 = Long.valueOf( 3 );
 
-	@Resource(name="mortgageDroolsComponent")
-	private StatelessDroolsComponent<MortgageApplicationResponse> droolsComponent;
+	@Resource(name = "mortgageDroolsComponent")
+	private StatelessDroolsComponent droolsComponent;
 
 	/*
 	 * This is just to test that my query worked
@@ -51,7 +51,7 @@ public class SpringContextTest extends AbstractJUnit4SpringContextTests {
 
 		MortgageApplicationRequest request = new MortgageApplicationRequest( applications, customers );
 
-		MortgageApplicationResponse response = droolsComponent.execute( request );
+		MortgageApplicationResponse response = droolsComponent.execute( request, MortgageApplicationResponse.class );
 
 		Assert.assertTrue( response != null );
 
@@ -66,7 +66,8 @@ public class SpringContextTest extends AbstractJUnit4SpringContextTests {
 	public void shouldApproveCustomer1and2DeniedCustomer3() {
 		MortgageApplicationRequest request = new MortgageApplicationRequest( createApplications(), createCustomers() );
 
-		MortgageApplicationResponse response = (MortgageApplicationResponse) droolsComponent.execute( request );
+		MortgageApplicationResponse response = (MortgageApplicationResponse) droolsComponent.execute( request,
+				MortgageApplicationResponse.class );
 
 		Assert.assertNotNull( response );
 
@@ -121,5 +122,5 @@ public class SpringContextTest extends AbstractJUnit4SpringContextTests {
 
 		return applications;
 	}
-		
+
 }

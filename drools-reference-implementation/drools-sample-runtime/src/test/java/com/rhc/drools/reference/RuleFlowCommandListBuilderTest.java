@@ -17,18 +17,19 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class RuleFlowCommandListBuilderTest {
 
 	@Resource(name = "droolsComponent")
-	private StatelessDroolsComponent<Object> drools;
+	private StatelessDroolsComponent drools;
 
 	@Test
 	public void test() {
 		Assert.assertNotNull( drools );
 
-		drools.execute( new Request(){
+		drools.execute( new Request() {
 
 			@Override
 			public Set<Object> getAllObjects() {
 				return new HashSet<Object>();
-			}} );
+			}
+		}, null );
 
 		Assert.assertEquals( 2, drools.getPreviouslyFiredActivations().size() );
 	}

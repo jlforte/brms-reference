@@ -25,7 +25,6 @@ import java.util.Set;
 
 import org.junit.Test;
 
-
 public class ReflectiveExecutionResultsTransformerTest {
 
 	@Test
@@ -37,10 +36,9 @@ public class ReflectiveExecutionResultsTransformerTest {
 		ClasspathKnowledgeBaseBuilder kBuilder = new ClasspathKnowledgeBaseBuilder();
 		kBuilder.addKnowledgeResource( "ExecutionResultsTest.drl" );
 
-		ExecutionResultsTransformer<MockResponse> transformer = new ReflectiveExecutionAnnotationResultsTransformer<MockResponse>();
+		ExecutionResultsTransformer transformer = new ReflectiveExecutionResultsTransformer();
 
-		StatelessDroolsComponent<MockResponse> engine = new StatelessDroolsComponent<MockResponse>();
-		engine.setResponse( MockResponse.class );
+		StatelessDroolsComponent engine = new StatelessDroolsComponent();
 		engine.setCommandListBuilder( commandListBuilder );
 		engine.setKnowledgeBaseBuilder( kBuilder );
 		engine.setResultsTransformer( transformer );
@@ -51,7 +49,7 @@ public class ReflectiveExecutionResultsTransformerTest {
 		request.addObject( new Integer( 1 ) );
 		request.addObject( new Integer( 2 ) );
 
-		MockResponse response = engine.execute( request );
+		MockResponse response = engine.execute( request, MockResponse.class );
 		Set<String> expectedStrings = new HashSet<String>();
 		expectedStrings.add( "Calvin" );
 		expectedStrings.add( "Hobbes" );

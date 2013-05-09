@@ -25,7 +25,7 @@ import org.drools.runtime.ExecutionResults;
  * </p>
  * 
  */
-public interface ExecutionResultsTransformer<Response> {
+public interface ExecutionResultsTransformer {
 
 	/**
 	 * Defines transformation to a response the application can understand
@@ -34,6 +34,6 @@ public interface ExecutionResultsTransformer<Response> {
 	 *            from a Drools Batch Execution
 	 */
 	// TODO at response class to this signature
-	public Response transform( ExecutionResults results );
+	public <Response> Response transform( ExecutionResults results, Class<Response> response );
 
 }

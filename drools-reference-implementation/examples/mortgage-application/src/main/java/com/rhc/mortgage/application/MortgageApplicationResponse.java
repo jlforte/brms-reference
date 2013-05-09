@@ -2,7 +2,7 @@ package com.rhc.mortgage.application;
 
 import java.util.Set;
 
-import com.rhc.drools.reference.QueryInfo;
+import com.rhc.drools.reference.DroolsQueryInfo;
 import com.rhc.mortgage.domain.Application;
 import com.rhc.mortgage.domain.Mortgage;
 
@@ -18,12 +18,13 @@ import com.rhc.mortgage.domain.Mortgage;
  */
 public class MortgageApplicationResponse {
 
+	@DroolsQueryInfo(queryName = "Get All Approved Applications", binding = "$application")
 	private Set<Application> approvedApplications;
+	@DroolsQueryInfo(queryName = "Get All Denied Applications", binding = "$application")
 	private Set<Application> deniedApplications;
+	@DroolsQueryInfo(queryName = "Get All New Mortgages", binding = "$mortgage")
 	private Set<Mortgage> newMortgagesCreated;
 
-	
-	@QueryInfo(queryName = "Get All Approved Applications", binding = "$application")
 	public void setApprovedApplications( Set<Application> approvedApplications ) {
 		this.approvedApplications = approvedApplications;
 	}
@@ -32,7 +33,6 @@ public class MortgageApplicationResponse {
 		return approvedApplications;
 	}
 
-	@QueryInfo(queryName = "Get All Denied Applications", binding = "$application")
 	public void setDeniedApplications( Set<Application> deniedApplications ) {
 		this.deniedApplications = deniedApplications;
 	}
@@ -45,7 +45,6 @@ public class MortgageApplicationResponse {
 		return newMortgagesCreated;
 	}
 
-	@QueryInfo(queryName = "Get All New Mortgages", binding = "$mortgage")
 	public void setNewMortgagesCreated( Set<Mortgage> newMortgagesCreated ) {
 		this.newMortgagesCreated = newMortgagesCreated;
 	}

@@ -17,8 +17,10 @@
 
 package com.rhc.drools.reference;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.drools.command.Command;
@@ -42,9 +44,9 @@ public class QueryUtils {
 	protected static Set<Command> buildQueryCommands( Class clazz ) {
 		Set<Command> queryCommands = new HashSet<Command>();
 		if ( clazz != null ) {
-			Method[] methods = clazz.getMethods();
-			for ( Method method : methods ) {
-				QueryInfo queryInfo = method.getAnnotation( QueryInfo.class );
+			List<Field> fields = getAllFields( clazz );
+			for ( Field field : fields ) {
+				DroolsQueryInfo queryInfo = field.getAnnotation( DroolsQueryInfo.class );
 				if ( queryInfo != null ) {
 					String queryName = queryInfo.queryName();
 					queryCommands.add( CommandFactory.newQuery( queryName, queryName ) );
@@ -66,5 +68,22 @@ public class QueryUtils {
 			}
 		}
 		return set;
+	}
+
+	public static List<Field> getAllFields( Class<?> clazz ) {
+		List<Field> fields = new ArrayList<Field>();
+		addFields( clazz, fields );
+		Class<?> superClazz = clazz;
+		while ( superClazz.getSuperclass() != null ) {
+			superClazz = superClazz.getSuperclass();
+			addFields( superClazz, fields );
+		}
+		return fields;
+	}
+
+	private static void addFields( Class<?> clazz, List<Field> fields ) {
+		for ( Field field : clazz.getDeclaredFields() ) {
+			fields.add( field );
+		}
 	}
 }
