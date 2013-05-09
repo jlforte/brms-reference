@@ -1,6 +1,6 @@
 package com.rhc.mortgage.application;
 
-import java.util.Set;
+import java.util.Collection;
 
 import com.rhc.drools.reference.DroolsQueryInfo;
 import com.rhc.mortgage.domain.Application;
@@ -19,33 +19,33 @@ import com.rhc.mortgage.domain.Mortgage;
 public class MortgageApplicationResponse {
 
 	@DroolsQueryInfo(queryName = "Get All Approved Applications", binding = "$application")
-	private Set<Application> approvedApplications;
+	private Collection<Application> approvedApplications;
 	@DroolsQueryInfo(queryName = "Get All Denied Applications", binding = "$application")
-	private Set<Application> deniedApplications;
+	private Collection<Application> deniedApplications;
 	@DroolsQueryInfo(queryName = "Get All New Mortgages", binding = "$mortgage")
-	private Set<Mortgage> newMortgagesCreated;
+	private Collection<Mortgage> newMortgagesCreated;
 
-	public void setApprovedApplications( Set<Application> approvedApplications ) {
+	public void setApprovedApplications( Collection<Application> approvedApplications ) {
 		this.approvedApplications = approvedApplications;
 	}
 
-	public Set<Application> getApprovedApplications() {
+	public Collection<Application> getApprovedApplications() {
 		return approvedApplications;
 	}
 
-	public void setDeniedApplications( Set<Application> deniedApplications ) {
+	public void setDeniedApplications( Collection<Application> deniedApplications ) {
 		this.deniedApplications = deniedApplications;
 	}
 
-	public Set<Application> getDeniedApplications() {
+	public Collection<Application> getDeniedApplications() {
 		return deniedApplications;
 	}
 
-	public Set<Mortgage> getNewMortgagesCreated() {
+	public Collection<Mortgage> getNewMortgagesCreated() {
 		return newMortgagesCreated;
 	}
 
-	public void setNewMortgagesCreated( Set<Mortgage> newMortgagesCreated ) {
+	public void setNewMortgagesCreated( Collection<Mortgage> newMortgagesCreated ) {
 		this.newMortgagesCreated = newMortgagesCreated;
 	}
 }

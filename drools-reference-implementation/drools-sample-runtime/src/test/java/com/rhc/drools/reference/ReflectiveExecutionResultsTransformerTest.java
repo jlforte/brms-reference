@@ -20,8 +20,9 @@ package com.rhc.drools.reference;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -50,12 +51,16 @@ public class ReflectiveExecutionResultsTransformerTest {
 		request.addObject( new Integer( 2 ) );
 
 		MockResponse response = engine.execute( request, MockResponse.class, null );
-		Set<String> expectedStrings = new HashSet<String>();
+		List<String> expectedStrings = new ArrayList<String>();
 		expectedStrings.add( "Calvin" );
 		expectedStrings.add( "Hobbes" );
-		Set<Integer> expectedIntegers = new HashSet<Integer>();
+		List<Integer> expectedIntegers = new ArrayList<Integer>();
 		expectedIntegers.add( 1 );
 		expectedIntegers.add( 2 );
+		Collections.sort( (List<String>) response.getStrings() );
+		Collections.sort( (List<Integer>) response.getIntegers() );
+		Collections.sort( expectedStrings );
+		Collections.sort( expectedIntegers );
 
 		assertTrue( "Strings are not correct", response.getStrings().equals( expectedStrings ) );
 		assertTrue( "Integers are not correct", response.getIntegers().equals( expectedIntegers ) );

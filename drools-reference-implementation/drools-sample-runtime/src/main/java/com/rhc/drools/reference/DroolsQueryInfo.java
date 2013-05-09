@@ -6,8 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Should be put on the Fields in a Response class that is used by the Component. Will only work if the field is a Set.
- * Also the fields must have setters that adhere to java bean standards
+ * Should be put on the Fields in a Response class that is used by the Component. Will only work if the field is a
+ * Collection. Also the fields must have setters that adhere to java bean standards
  * 
  * 
  */

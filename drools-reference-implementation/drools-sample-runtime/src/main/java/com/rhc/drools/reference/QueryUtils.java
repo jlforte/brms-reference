@@ -19,8 +19,8 @@ package com.rhc.drools.reference;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.drools.command.Command;
@@ -44,7 +44,7 @@ public class QueryUtils {
 	protected static Set<Command> buildQueryCommands( Class clazz ) {
 		Set<Command> queryCommands = new HashSet<Command>();
 		if ( clazz != null ) {
-			List<Field> fields = getAllFields( clazz );
+			Collection<Field> fields = getAllFields( clazz );
 			for ( Field field : fields ) {
 				DroolsQueryInfo queryInfo = field.getAnnotation( DroolsQueryInfo.class );
 				if ( queryInfo != null ) {
@@ -56,22 +56,22 @@ public class QueryUtils {
 		return queryCommands;
 	}
 
-	public static Set<?> extractSetFromExecutionResults( ExecutionResults exectionResults, String queryName,
-			String binding ) {
-		Set<Object> set = new HashSet<Object>();
+	public static Collection<?> extractCollectionFromExecutionResults( ExecutionResults exectionResults,
+			String queryName, String binding ) {
+		Collection<Object> list = new ArrayList<Object>();
 		if ( exectionResults != null ) {
 			QueryResults queryResult = (QueryResults) exectionResults.getValue( queryName );
 			if ( queryResult != null ) {
 				for ( QueryResultsRow row : queryResult ) {
-					set.add( row.get( binding ) );
+					list.add( row.get( binding ) );
 				}
 			}
 		}
-		return set;
+		return list;
 	}
 
-	public static List<Field> getAllFields( Class<?> clazz ) {
-		List<Field> fields = new ArrayList<Field>();
+	public static Collection<Field> getAllFields( Class<?> clazz ) {
+		Collection<Field> fields = new ArrayList<Field>();
 		addFields( clazz, fields );
 		Class<?> superClazz = clazz;
 		while ( superClazz.getSuperclass() != null ) {
@@ -81,7 +81,7 @@ public class QueryUtils {
 		return fields;
 	}
 
-	private static void addFields( Class<?> clazz, List<Field> fields ) {
+	private static void addFields( Class<?> clazz, Collection<Field> fields ) {
 		for ( Field field : clazz.getDeclaredFields() ) {
 			fields.add( field );
 		}

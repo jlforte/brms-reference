@@ -1,6 +1,6 @@
 package com.rhc.drools.reference;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * Interface for inserting objects into the knowledge session.
@@ -13,6 +13,6 @@ public interface DroolsRequest {
 	 * 
 	 * @return
 	 */
-	public Set<Object> getAllObjects();
+	public Collection<Object> getAllObjects();
 
 }

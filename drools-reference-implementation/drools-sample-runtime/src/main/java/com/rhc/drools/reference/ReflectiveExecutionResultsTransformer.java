@@ -2,7 +2,7 @@ package com.rhc.drools.reference;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Set;
+import java.util.Collection;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.drools.runtime.ExecutionResults;
@@ -43,10 +43,11 @@ public class ReflectiveExecutionResultsTransformer implements ExecutionResultsTr
 				String queryName = queryInfo.queryName();
 				String binding = queryInfo.binding();
 				Class<?> type = field.getType();
-				if ( type.isAssignableFrom( Set.class ) ) {
+				if ( Collection.class.equals( type ) ) {
 					try {
-						Set<?> set = QueryUtils.extractSetFromExecutionResults( results, queryName, binding );
-						PropertyUtils.setProperty( response, field.getName(), set );
+						Collection<?> list = QueryUtils.extractCollectionFromExecutionResults( results, queryName,
+								binding );
+						PropertyUtils.setProperty( response, field.getName(), list );
 					} catch ( IllegalArgumentException e ) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -62,7 +63,7 @@ public class ReflectiveExecutionResultsTransformer implements ExecutionResultsTr
 					}
 				} else {
 					logger.warn( "QueryInfo annotation can not be used on " + field.getName()
-							+ ". It only be used on fields which are of Type Set" );
+							+ ". It only be used on fields which are of Type Collection" );
 				}
 			}
 		}

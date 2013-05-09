@@ -3,6 +3,7 @@ package jbehave;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -76,8 +77,9 @@ public class MortgageApplicationStepper {
 	@Then("I expect the mortgages added to be $mortgagesTable")
 	public void iExpectTheNumberOfMortgageApplicationsToBe( ExamplesTable mortgagesTable ) {
 		Set<Mortgage> expectedSet = makeMortgages( mortgagesTable );
-		Set<Mortgage> actualSet = response.getNewMortgagesCreated();
-
+		Collection<Mortgage> actualList = response.getNewMortgagesCreated();
+		Set<Mortgage> actualSet = new HashSet<Mortgage>();
+		actualSet.addAll( actualList );
 		assertEquals( expectedSet, actualSet );
 	}
 
