@@ -50,7 +50,7 @@ public class ReflectiveExecutionResultsTransformerTest {
 		request.addObject( new Integer( 1 ) );
 		request.addObject( new Integer( 2 ) );
 
-		MockResponse response = engine.execute( request, MockResponse.class, null );
+		MockResponse response = engine.execute( request, MockResponse.class );
 		List<String> expectedStrings = new ArrayList<String>();
 		expectedStrings.add( "Calvin" );
 		expectedStrings.add( "Hobbes" );

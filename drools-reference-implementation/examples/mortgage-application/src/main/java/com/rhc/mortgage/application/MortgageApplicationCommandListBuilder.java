@@ -14,11 +14,11 @@ public class MortgageApplicationCommandListBuilder implements CommandListBuilder
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public List<Command> buildBusinessLogicCommandList( DroolsRequest request, String processId ) {
+	public List<Command> buildBusinessLogicCommandList( DroolsRequest request ) {
 		List<Command> commands = new ArrayList<Command>();
 
 		// Insert all of the Objects from the request
-		commands.add( CommandFactory.newInsertElements( request.getAllObjects() ) );
+		commands.add( CommandFactory.newInsertElements( request.getAllFacts() ) );
 
 		// The agenda is a stack, so agenda groups are First In, Last Out
 		commands.add( CommandBuilderUtil.buildAgendaGroupSetFocusCommand( "approve" ) );

@@ -8,7 +8,7 @@ public class MockRequest implements DroolsRequest {
 	private Set<Object> objectSet;
 
 	@Override
-	public Set<Object> getAllObjects() {
+	public Set<Object> getAllFacts() {
 		return objectSet;
 	}
 
@@ -17,6 +17,12 @@ public class MockRequest implements DroolsRequest {
 			objectSet = new HashSet<Object>();
 		}
 		objectSet.add( obj );
+	}
+
+	@Override
+	public String getProcessId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

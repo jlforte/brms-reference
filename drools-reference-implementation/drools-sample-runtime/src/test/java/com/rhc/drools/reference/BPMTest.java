@@ -30,7 +30,7 @@ public class BPMTest {
 		kSession = kBase.newStatelessKnowledgeSession();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void testStatelessSession() {
 		List<Command> commands = new ArrayList<Command>();

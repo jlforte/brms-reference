@@ -35,11 +35,11 @@ public class RuleFlowCommandListBuilder implements CommandListBuilder {
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	public List<Command> buildBusinessLogicCommandList( DroolsRequest request, String processId ) {
+	public List<Command> buildBusinessLogicCommandList( DroolsRequest request ) {
 		List<Command> commands = new ArrayList<Command>();
-		commands.add( CommandFactory.newInsertElements( request.getAllObjects() ) );
-		if ( processId != null ) {
-			commands.add( CommandFactory.newStartProcess( processId ) );
+		commands.add( CommandFactory.newInsertElements( request.getAllFacts() ) );
+		if ( request.getProcessId() != null ) {
+			commands.add( CommandFactory.newStartProcess( request.getProcessId() ) );
 		}
 		commands.add( CommandFactory.newFireAllRules() );
 		return commands;

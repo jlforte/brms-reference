@@ -39,6 +39,6 @@ import org.drools.command.Command;
 public interface CommandListBuilder {
 
 	@SuppressWarnings("rawtypes")
-	public List<Command> buildBusinessLogicCommandList( DroolsRequest request, String proecessId );
+	public List<Command> buildBusinessLogicCommandList( DroolsRequest request );
 
 }

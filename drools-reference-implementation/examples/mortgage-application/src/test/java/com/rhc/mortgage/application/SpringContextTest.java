@@ -51,8 +51,7 @@ public class SpringContextTest extends AbstractJUnit4SpringContextTests {
 
 		MortgageApplicationRequest request = new MortgageApplicationRequest( applications, customers );
 
-		MortgageApplicationResponse response = droolsComponent.execute( request, MortgageApplicationResponse.class,
-				null );
+		MortgageApplicationResponse response = droolsComponent.execute( request, MortgageApplicationResponse.class );
 
 		Assert.assertTrue( response != null );
 
@@ -68,7 +67,7 @@ public class SpringContextTest extends AbstractJUnit4SpringContextTests {
 		MortgageApplicationRequest request = new MortgageApplicationRequest( createApplications(), createCustomers() );
 
 		MortgageApplicationResponse response = (MortgageApplicationResponse) droolsComponent.execute( request,
-				MortgageApplicationResponse.class, null );
+				MortgageApplicationResponse.class );
 
 		Assert.assertNotNull( response );
 

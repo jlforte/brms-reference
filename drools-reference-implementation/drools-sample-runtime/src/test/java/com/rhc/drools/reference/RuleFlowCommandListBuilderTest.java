@@ -26,10 +26,16 @@ public class RuleFlowCommandListBuilderTest {
 		drools.execute( new DroolsRequest() {
 
 			@Override
-			public Set<Object> getAllObjects() {
+			public Set<Object> getAllFacts() {
 				return new HashSet<Object>();
 			}
-		}, null, "com.rhc.drools.test" );
+
+			@Override
+			public String getProcessId() {
+				// TODO Auto-generated method stub
+				return "com.rhc.drools.test";
+			}
+		}, null );
 
 		Assert.assertEquals( 2, drools.getPreviouslyFiredActivations().size() );
 	}

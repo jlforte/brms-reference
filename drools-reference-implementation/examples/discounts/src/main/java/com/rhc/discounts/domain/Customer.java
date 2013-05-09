@@ -92,12 +92,18 @@ public class Customer implements ICustomer, DroolsRequest {
 	}
 
 	@Override
-	public Set<Object> getAllObjects() {
+	public Set<Object> getAllFacts() {
 		Set<Object> set = new HashSet<Object>();
 		set.addAll( getProducts() );
 		set.addAll( getEligbleDiscounts() );
 		set.add( this );
 		return set;
+	}
+
+	@Override
+	public String getProcessId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

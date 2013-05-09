@@ -47,7 +47,7 @@ public class DiscountTest {
 	@Test
 	public void test() {
 
-		drools.execute( customer, Customer.class, null );
+		drools.execute( customer, Customer.class );
 
 		int discountsExpected = 3;
 		int discountsOffered = customer.getDiscountsOffered();

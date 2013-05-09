@@ -13,6 +13,14 @@ public interface DroolsRequest {
 	 * 
 	 * @return
 	 */
-	public Collection<Object> getAllObjects();
+	public Collection<Object> getAllFacts();
+
+	/**
+	 * This returns a process id that can be used by a command list builder. In the case of the Rule Flow Command List
+	 * Builder, this is the BPM process to be run.
+	 * 
+	 * @return
+	 */
+	public String getProcessId();
 
 }

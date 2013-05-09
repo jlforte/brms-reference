@@ -98,12 +98,12 @@ public class StatelessDroolsComponent {
 	public StatelessDroolsComponent() {
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public <Response> Response execute( DroolsRequest request, Class<Response> responseClazz, String processId ) {
+	@SuppressWarnings({ "rawtypes" })
+	public <Response> Response execute( DroolsRequest request, Class<Response> responseClazz ) {
 		// logging is optional and should only be done when testing, as it slows down the engine
 		KnowledgeRuntimeLogger droolsAuditLogger = null;
 
-		List<Command> commandList = commandListBuilder.buildBusinessLogicCommandList( request, processId );
+		List<Command> commandList = commandListBuilder.buildBusinessLogicCommandList( request );
 
 		KnowledgeBase kbase = kBaseBuilder.getKnowledgeBase();
 

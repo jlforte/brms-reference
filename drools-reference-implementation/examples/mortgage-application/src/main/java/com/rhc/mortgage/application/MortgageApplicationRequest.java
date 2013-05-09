@@ -45,11 +45,17 @@ public class MortgageApplicationRequest implements DroolsRequest {
 	}
 
 	@Override
-	public Set<Object> getAllObjects() {
+	public Set<Object> getAllFacts() {
 		Set<Object> set = new HashSet<Object>();
 		set.addAll( applications );
 		set.addAll( customers );
 		return set;
+	}
+
+	@Override
+	public String getProcessId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
