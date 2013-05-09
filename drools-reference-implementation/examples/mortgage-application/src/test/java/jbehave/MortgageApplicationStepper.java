@@ -70,7 +70,7 @@ public class MortgageApplicationStepper {
 
 	@When("I evaluate these objects in the mortgage application")
 	public void whenIEvaluateTheseObjectsInTheMortgageApplication() {
-		response = droolsComponent.execute( request, MortgageApplicationResponse.class );
+		response = droolsComponent.execute( request, MortgageApplicationResponse.class, null );
 	}
 
 	@Then("I expect the mortgages added to be $mortgagesTable")

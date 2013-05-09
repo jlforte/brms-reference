@@ -30,30 +30,19 @@ import org.drools.command.CommandFactory;
  */
 public class RuleFlowCommandListBuilder implements CommandListBuilder {
 
-	// TODO remove this class member, as the ruleFlow will be passed into the method
-	private String ruleFlowName;
-
 	public RuleFlowCommandListBuilder() {
-	}
-
-	public RuleFlowCommandListBuilder( String ruleFlowName ) {
-		this.ruleFlowName = ruleFlowName;
 	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	public List<Command> buildBusinessLogicCommandList( Request request ) {
+	public List<Command> buildBusinessLogicCommandList( DroolsRequest request, String processId ) {
 		List<Command> commands = new ArrayList<Command>();
 		commands.add( CommandFactory.newInsertElements( request.getAllObjects() ) );
-		if ( ruleFlowName != null ) {
-			commands.add( CommandFactory.newStartProcess( ruleFlowName ) );
+		if ( processId != null ) {
+			commands.add( CommandFactory.newStartProcess( processId ) );
 		}
 		commands.add( CommandFactory.newFireAllRules() );
 		return commands;
-	}
-
-	public void setRuleFlowName( String ruleFlowName ) {
-		this.ruleFlowName = ruleFlowName;
 	}
 
 }

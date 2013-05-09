@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
  * @param <Response>
  */
 
-// TODO rename to old name
 public class ReflectiveExecutionResultsTransformer implements ExecutionResultsTransformer {
 
 	private static Logger logger = LoggerFactory.getLogger( ReflectiveExecutionResultsTransformer.class );
@@ -25,7 +24,6 @@ public class ReflectiveExecutionResultsTransformer implements ExecutionResultsTr
 
 	}
 
-	// TODO pass in response class to this signature
 	@Override
 	public <Response> Response transform( ExecutionResults results, Class<Response> responseClazz ) {
 		Response response = null;

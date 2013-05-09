@@ -98,13 +98,12 @@ public class StatelessDroolsComponent {
 	public StatelessDroolsComponent() {
 	}
 
-	// TODO add ruleFlowName and Response Class to this method signature
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public <Response> Response execute( Request request, Class<Response> responseClazz ) {
+	public <Response> Response execute( DroolsRequest request, Class<Response> responseClazz, String processId ) {
 		// logging is optional and should only be done when testing, as it slows down the engine
 		KnowledgeRuntimeLogger droolsAuditLogger = null;
 
-		List<Command> commandList = commandListBuilder.buildBusinessLogicCommandList( request );
+		List<Command> commandList = commandListBuilder.buildBusinessLogicCommandList( request, processId );
 
 		KnowledgeBase kbase = kBaseBuilder.getKnowledgeBase();
 

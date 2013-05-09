@@ -33,7 +33,6 @@ public interface ExecutionResultsTransformer {
 	 * @param results
 	 *            from a Drools Batch Execution
 	 */
-	// TODO at response class to this signature
 	public <Response> Response transform( ExecutionResults results, Class<Response> response );
 
 }

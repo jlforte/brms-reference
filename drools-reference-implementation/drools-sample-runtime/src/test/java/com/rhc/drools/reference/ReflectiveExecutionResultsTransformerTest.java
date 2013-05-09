@@ -49,7 +49,7 @@ public class ReflectiveExecutionResultsTransformerTest {
 		request.addObject( new Integer( 1 ) );
 		request.addObject( new Integer( 2 ) );
 
-		MockResponse response = engine.execute( request, MockResponse.class );
+		MockResponse response = engine.execute( request, MockResponse.class, null );
 		Set<String> expectedStrings = new HashSet<String>();
 		expectedStrings.add( "Calvin" );
 		expectedStrings.add( "Hobbes" );

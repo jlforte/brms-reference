@@ -25,10 +25,8 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 		</property>
 	</bean>
 
-	<bean id="ruleFlowCommandListBuilder" class="com.rhc.drools.reference.RuleFlowCommandListBuilder">
-		<property name="ruleFlowName">
-			<value>com.rhc.drools.test</value>
-		</property>
-	</bean>
+	<bean id="ruleFlowCommandListBuilder" class="com.rhc.drools.reference.RuleFlowCommandListBuilder"/>
+		
+	
 
 </beans>

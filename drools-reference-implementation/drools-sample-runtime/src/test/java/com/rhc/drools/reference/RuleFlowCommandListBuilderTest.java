@@ -23,13 +23,13 @@ public class RuleFlowCommandListBuilderTest {
 	public void test() {
 		Assert.assertNotNull( drools );
 
-		drools.execute( new Request() {
+		drools.execute( new DroolsRequest() {
 
 			@Override
 			public Set<Object> getAllObjects() {
 				return new HashSet<Object>();
 			}
-		}, null );
+		}, null, "com.rhc.drools.test" );
 
 		Assert.assertEquals( 2, drools.getPreviouslyFiredActivations().size() );
 	}
