@@ -15,6 +15,11 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>com.rhc.drools</groupId>
+				<artifactId>drools-sample-runtime</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.drools</groupId>
 				<artifactId>drools-core</artifactId>
 				<version>${droolsVersion}</version>
