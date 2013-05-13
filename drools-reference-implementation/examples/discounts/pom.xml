@@ -12,7 +12,7 @@
 		<dependency>
 			<groupId>com.rhc.drools</groupId>
 			<artifactId>drools-sample-runtime</artifactId>
-			<version>1.0.0</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
