@@ -1,0 +1,20 @@
+//created on: Feb 8, 2013
+package com.rhc.drools.test;
+
+//list any import classes here.
+
+rule "Test"
+	ruleflow-group "1"
+	when
+
+	then
+		System.out.println( "Fired Rule Group 1" );
+end
+
+rule "Test 2"
+	ruleflow-group "2"
+	when
+
+	then
+		System.out.println( "Fired Rule Group 2" );
+end

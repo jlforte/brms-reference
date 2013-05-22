@@ -1,0 +1,37 @@
+import com.rhc.discounts.domain.Product
+import com.rhc.discounts.domain.IDiscount
+import com.rhc.discounts.domain.Customer
+
+
+rule 'haha'
+	when 
+		$prod : Product(name == "scarf")
+	then
+		System.out.println("haha");
+end
+
+rule 'add product'
+	salience 10
+	when
+		$prod : Product()
+		$cust : Customer()
+	then
+		$cust.setTotalCost($cust.getTotalCost() + $prod.getPrice());
+		System.out.println("blah");
+end
+
+rule 'add discount'
+	when 
+		$prod : Product()
+		$dis : IDiscount(type == $prod.getName(),  max > 0)
+		$cust : Customer(appliedDiscounts not contains $dis)
+	then
+		modify($dis) {setMax($dis.getMax() - 1)};
+		$cust.addAppliedDiscount($dis);
+		$cust.setDiscountsOffered($cust.getDiscountsOffered() + 1);
+		float value = $dis.getValue($prod.getPrice());
+		$cust.setTotalCost($cust.getTotalCost() - value);
+		$cust.setAmountSaved($cust.getAmountSaved() + value);
+		System.out.println("here");
+end
+		

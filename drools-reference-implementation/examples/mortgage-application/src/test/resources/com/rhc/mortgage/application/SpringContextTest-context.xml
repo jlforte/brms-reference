@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+	<bean id="mortgageDroolsComponent" class="com.rhc.drools.reference.StatelessDroolsComponent">
+		<property name="knowledgeBaseBuilder" ref="mortgageKBaseBuilder" />
+		<property name="commandListBuilder" ref="mortgageCommandList" />
+		<property name="resultsTransformer" ref="mortgageResultTransform" />		
+	</bean>
+
+	<bean id="mortgageKBaseBuilder" class="com.rhc.drools.reference.ClasspathKnowledgeBaseBuilder">
+		<property name="knowledgeResources">
+			<set>
+				<value>Queries.drl</value>
+				<value>ApplicationValidation.drl</value>
+				<value>CustomerValidation.drl</value>
+				<value>MortgageRules.drl</value>
+			</set>
+		</property>
+	</bean>
+	<bean id="mortgageCommandList"
+		class="com.rhc.mortgage.application.MortgageApplicationCommandListBuilder" />
+	<bean id="mortgageResultTransform"
+		class="com.rhc.drools.reference.ReflectiveExecutionResultsTransformer">
+	</bean>
+		
+
+</beans>
