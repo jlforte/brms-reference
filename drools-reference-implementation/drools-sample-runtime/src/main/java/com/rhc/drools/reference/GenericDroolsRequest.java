@@ -45,16 +45,6 @@ public class GenericDroolsRequest implements DroolsRequest {
 		this.processId = processId;
 	}
 
-	public void addFacts( Collection<Object> newFacts ) {
-		this.getAllFacts().addAll( newFacts );
-
-	}
-
-	public void addFact( Object newFact ) {
-		this.getAllFacts().add( newFact );
-
-	}
-
 	@Override
 	public Collection<Object> getAllFacts() {
 		if ( this.allFacts == null ) {
@@ -68,12 +58,20 @@ public class GenericDroolsRequest implements DroolsRequest {
 		return processId;
 	}
 
-	@Override
+	public void addFacts( Collection<Object> newFacts ) {
+		this.getAllFacts().addAll( newFacts );
+
+	}
+
+	public void addFact( Object newFact ) {
+		this.getAllFacts().add( newFact );
+
+	}
+
 	public void setAllFacts( Collection<Object> facts ) {
 		this.allFacts = new ArrayList<Object>( facts );
 	}
 
-	@Override
 	public void setProcessId( String processId ) {
 		this.processId = processId;
 	}

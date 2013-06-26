@@ -32,7 +32,6 @@ public class RuleFlowCommandListBuilderTest {
 
 			@Override
 			public String getProcessId() {
-				// TODO Auto-generated method stub
 				return "com.rhc.drools.test";
 			}
 		}, null );

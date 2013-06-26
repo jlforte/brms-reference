@@ -30,6 +30,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Uses a list of classpath resources to construct a KnowledgeBase. This is the simplest way to build a KBase.
+ * 
+ * Note the creation of the KnowledgeBase is lazy
  */
 public class ClasspathKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 
