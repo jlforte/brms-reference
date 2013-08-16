@@ -2,14 +2,10 @@ package com.rhc.insurance;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.drools.KnowledgeBase;
-import org.drools.KnowledgeBaseFactory;
-import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderError;
-import org.drools.builder.KnowledgeBuilderErrors;
-import org.drools.builder.KnowledgeBuilderFactory;
-import org.drools.builder.ResourceType;
-import org.drools.io.ResourceFactory;
 import org.drools.logger.KnowledgeRuntimeLogger;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.FactHandle;
@@ -17,27 +13,34 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.rhc.drools.reference.ClasspathKnowledgeBaseBuilder;
+import com.rhc.drools.reference.KnowledgeBaseBuilder;
+
 /**
  * This is a sample class to launch a rule.
  */
 
 public class PolicyRulesTest {
 
+	private static KnowledgeBaseBuilder kbuilder;
+
 	static KnowledgeBase kbase;
+
 	static StatefulKnowledgeSession ksession;
 	static KnowledgeRuntimeLogger logger;
 
 	@BeforeClass
-	public static void setupKsession() {
-		try {
-			// load up the knowledge base
-			kbase = readKnowledgeBase();
-			ksession = kbase.newStatefulKnowledgeSession();
-			// logger = KnowledgeRuntimeLoggerFactory.newThreadedFileLogger(ksession, "log/policyQuote", 500);
+	public static void setupComponent() {
 
-		} catch ( Throwable t ) {
-			t.printStackTrace();
-		}
+		Set<String> resources = new HashSet<String>();
+		resources.add( "rules/lowPHlowBH.drl" );
+		resources.add( "rules/lowPHhighBH.drl" );
+		resources.add( "rules/highPHlowBH.drl" );
+		resources.add( "rules/highPHhighBH.drl" );
+
+		kbuilder = new ClasspathKnowledgeBaseBuilder( resources );
+		kbase = kbuilder.getKnowledgeBase();
+
 	}
 
 	@AfterClass
@@ -153,36 +156,6 @@ public class PolicyRulesTest {
 		} catch ( Throwable t ) {
 			t.printStackTrace();
 		}
-	}
-
-	private static KnowledgeBase readKnowledgeBase() throws Exception {
-		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-		kbuilder.add( ResourceFactory.newClassPathResource( "policyquote.package" ), ResourceType.DRL );
-		hasErrors( kbuilder );
-		kbuilder.add( ResourceFactory.newClassPathResource( "lowPHlowBH.drl" ), ResourceType.DRL );
-		hasErrors( kbuilder );
-		kbuilder.add( ResourceFactory.newClassPathResource( "lowPHhighBH.drl" ), ResourceType.DRL );
-		hasErrors( kbuilder );
-		kbuilder.add( ResourceFactory.newClassPathResource( "highPHlowBH.drl" ), ResourceType.DRL );
-		hasErrors( kbuilder );
-		kbuilder.add( ResourceFactory.newClassPathResource( "highPHhighBH.drl" ), ResourceType.DRL );
-		hasErrors( kbuilder );
-		KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
-		hasErrors( kbuilder );
-		kbase.addKnowledgePackages( kbuilder.getKnowledgePackages() );
-
-		return kbase;
-	}
-
-	private static void hasErrors( KnowledgeBuilder kbuilder ) throws Exception {
-		KnowledgeBuilderErrors errors = kbuilder.getErrors();
-		if ( errors.size() > 0 ) {
-			for ( KnowledgeBuilderError error : errors ) {
-				System.err.println( error );
-			}
-			throw new IllegalArgumentException( "Could not parse knowledge." );
-		}
-
 	}
 
 }

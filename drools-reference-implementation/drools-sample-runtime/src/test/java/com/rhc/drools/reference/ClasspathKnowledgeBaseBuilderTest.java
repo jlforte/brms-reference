@@ -17,10 +17,12 @@
 package com.rhc.drools.reference;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class ClasspathKnowledgeBaseBuilderTest {
 
+	@Ignore
 	@Test
 	public void shouldBuildFromAChangeSetXml() {
 		Assert.fail();
