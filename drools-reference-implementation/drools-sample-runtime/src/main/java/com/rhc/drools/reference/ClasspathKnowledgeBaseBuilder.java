@@ -55,6 +55,10 @@ public class ClasspathKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 		return this.kBase;
 	}
 
+	public void setKnowledgeBase( KnowledgeBase kBase ) {
+		this.kBase = kBase;
+	}
+
 	private KnowledgeBase buildKnowledgeBase() {
 
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
@@ -69,6 +73,9 @@ public class ClasspathKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 					kbuilder.add( ResourceFactory.newClassPathResource( resourceFile, getClass() ), ResourceType.DRL );
 				} else if ( resourceFile.endsWith( ".bpmn" ) ) {
 					kbuilder.add( ResourceFactory.newClassPathResource( resourceFile, getClass() ), ResourceType.BPMN2 );
+				} else if ( resourceFile.endsWith( ".xml" ) ) {
+					kbuilder.add( ResourceFactory.newClassPathResource( resourceFile, getClass() ),
+							ResourceType.CHANGE_SET );
 				}
 
 			}

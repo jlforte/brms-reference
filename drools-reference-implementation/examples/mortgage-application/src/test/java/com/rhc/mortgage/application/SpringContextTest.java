@@ -1,126 +1,61 @@
+/* 
+ * Written by Red Hat Consulting.	
+ * 
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.rhc.mortgage.application;
-
-import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
-import com.rhc.drools.reference.StatelessDroolsComponent;
-import com.rhc.mortgage.domain.Application;
-import com.rhc.mortgage.domain.Customer;
-import com.rhc.mortgage.domain.Mortgage;
+import com.rhc.drools.reference.ClasspathKnowledgeBaseBuilder;
 
-/**
- * This will load a spring context definition defined on the classpath at com.rhc.spring.SpringContextTest-context.xml
- */
 @ContextConfiguration
 public class SpringContextTest extends AbstractJUnit4SpringContextTests {
 
-	private final static Long CUSTOMER_ID_1 = Long.valueOf( 1 );
-	private final static Long CUSTOMER_ID_2 = Long.valueOf( 2 );
-	private final static Long CUSTOMER_ID_3 = Long.valueOf( 3 );
+	@Resource(name = "mortgageKBaseBuilder")
+	private ClasspathKnowledgeBaseBuilder foo;
 
-	private final static Long APPLICATION_ID_1 = Long.valueOf( 1 );
-	private final static Long APPLICATION_ID_2 = Long.valueOf( 2 );
-	private final static Long APPLICATION_ID_3 = Long.valueOf( 3 );
+	@Resource(name = "mortgageKBaseBuilder")
+	private ClasspathKnowledgeBaseBuilder bar;
 
-	@Resource(name = "mortgageDroolsComponent")
-	private StatelessDroolsComponent droolsComponent;
-
-	/*
-	 * This is just to test that my query worked
+	/**
+	 * This is a sanity check on Spring's singleton behavior
 	 */
 	@Test
-	public void shouldApproveCustomerAndApplicationAndCreateOneMortgage() {
-		Application application = new Application( new BigDecimal( 9000 ), 1L, 10L );
-		Customer customer = new Customer( "Bob", 25, 700, 1L );
+	public void shouldMakeNullBarsResources() {
 
-		HashSet<Application> applications = new HashSet<Application>();
-		applications.add( application );
-
-		HashSet<Customer> customers = new HashSet<Customer>();
-		customers.add( customer );
-
-		MortgageApplicationRequest request = new MortgageApplicationRequest( applications, customers );
-
-		MortgageApplicationResponse response = droolsComponent.execute( request, MortgageApplicationResponse.class );
-
-		Assert.assertTrue( response != null );
-
-		Collection<Application> approvedApplications = response.getApprovedApplications();
-		Assert.assertTrue( approvedApplications.size() == 1 );
-
-		Collection<Mortgage> mortgages = response.getNewMortgagesCreated();
-		Assert.assertTrue( mortgages.size() == 1 );
-	}
-
-	@Test
-	public void shouldApproveCustomer1and2DeniedCustomer3() {
-		MortgageApplicationRequest request = new MortgageApplicationRequest( createApplications(), createCustomers() );
-
-		MortgageApplicationResponse response = (MortgageApplicationResponse) droolsComponent.execute( request,
-				MortgageApplicationResponse.class );
-
-		Assert.assertNotNull( response );
-
-		Assert.assertEquals( 2, response.getApprovedApplications().size() );
-
-		// TODO how do I do this cleaner?
-		boolean containsCustomer1 = false;
-		boolean containsCustomer2 = false;
-		boolean containsCustomer3 = false;
-		for ( Application application : response.getApprovedApplications() ) {
-			if ( application.getCustomerId() == 1L ) {
-				containsCustomer1 = true;
-			} else if ( application.getCustomerId() == 2L ) {
-				containsCustomer2 = true;
-			}
+		if ( foo == null && bar == null ) {
+			Assert.fail();
 		}
-		Assert.assertTrue( containsCustomer1 );
-		Assert.assertTrue( containsCustomer2 );
-		Assert.assertFalse( containsCustomer3 );
 
-		Assert.assertEquals( 1, response.getDeniedApplications().size() );
+		// Show both have a valid kbase
+		Assert.assertEquals( 1, foo.getKnowledgeBase().getKnowledgePackages().size() );
+		Assert.assertEquals( 1, bar.getKnowledgeBase().getKnowledgePackages().size() );
 
-		containsCustomer1 = false;
-		containsCustomer2 = false;
-		containsCustomer3 = false;
-		for ( Application application : response.getDeniedApplications() ) {
-			if ( application.getCustomerId() == 3L ) {
-				containsCustomer3 = true;
-			}
-		}
-		Assert.assertFalse( containsCustomer1 );
-		Assert.assertFalse( containsCustomer2 );
-		Assert.assertTrue( containsCustomer3 );
-	}
+		// make foo null directly, and bar null indirectly - its the same reference
+		foo.setKnowledgeBase( null );
+		foo.setKnowledgeResources( null );
 
-	private Set<Customer> createCustomers() {
+		// show both are empty kbases
+		Assert.assertEquals( 0, foo.getKnowledgeBase().getKnowledgePackages().size() );
+		Assert.assertEquals( 0, bar.getKnowledgeBase().getKnowledgePackages().size() );
 
-		Set<Customer> customers = new HashSet<Customer>();
-		customers.add( new Customer( "Dave", 20, 700, CUSTOMER_ID_1 ) );
-		customers.add( new Customer( "Mike", 18, 750, CUSTOMER_ID_2 ) );
-		customers.add( new Customer( "Bryan", 28, 450, CUSTOMER_ID_3 ) );
-
-		return customers;
-	}
-
-	private Set<Application> createApplications() {
-
-		Set<Application> applications = new HashSet<Application>();
-		applications.add( new Application( new BigDecimal( 15000 ), CUSTOMER_ID_1, APPLICATION_ID_1 ) );
-		applications.add( new Application( new BigDecimal( 75000 ), CUSTOMER_ID_3, APPLICATION_ID_2 ) );
-		applications.add( new Application( new BigDecimal( 85000 ), CUSTOMER_ID_2, APPLICATION_ID_3 ) );
-
-		return applications;
 	}
 
 }
