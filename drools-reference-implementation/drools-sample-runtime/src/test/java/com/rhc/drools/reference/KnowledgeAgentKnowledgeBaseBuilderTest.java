@@ -18,6 +18,7 @@ package com.rhc.drools.reference;
 
 import org.drools.KnowledgeBase;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -31,6 +32,19 @@ public class KnowledgeAgentKnowledgeBaseBuilderTest {
 	public void shouldRetrieveChangeSetAndBuildAKnowledgeBase() {
 		KnowledgeAgentKnowledgeBaseBuilder kbuilder = new KnowledgeAgentKnowledgeBaseBuilder(
 				"classpath:change-set.xml" );
+
+		KnowledgeBase kBase = kbuilder.getKnowledgeBase();
+
+		Assert.assertNotNull( kBase );
+		Assert.assertEquals( 1, kBase.getKnowledgePackages().size() );
+	}
+
+	// Test for Guvnor - need localhost Guvnor server running
+	@Ignore
+	@Test
+	public void shouldRetrieveChangeSetAndBuildAKnowledgeBaseFromGuvnor() {
+		KnowledgeAgentKnowledgeBaseBuilder kbuilder = new KnowledgeAgentKnowledgeBaseBuilder(
+				"classpath:change-set-guvnor.xml" );
 
 		KnowledgeBase kBase = kbuilder.getKnowledgeBase();
 
