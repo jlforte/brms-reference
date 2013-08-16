@@ -1,0 +1,25 @@
+//created on: Aug 14, 2013
+package insurance.pricing
+
+import insurance.Member;
+import insurance.Policy;
+
+dialect "mvel";
+
+
+rule "A stand alone rule"
+
+    when
+        //conditions
+        member : Member(smokesRegularly == false && filesMedicationRegularly == false)
+		policy : Policy()
+        
+        
+    then
+        //actions
+        modify(policy) {price=500};
+        System.out.println("fired rule " + kcontext.getRule().getName());
+    
+
+end
+
