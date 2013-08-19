@@ -33,13 +33,15 @@ public class PolicyRulesTest {
 	public static void setupComponent() {
 
 		Set<String> resources = new HashSet<String>();
-		resources.add( "rules/lowPHlowBH.drl" );
-		resources.add( "rules/lowPHhighBH.drl" );
-		resources.add( "rules/highPHlowBH.drl" );
+		resources.add( "rules/lowPHlowBH.drl  " );
+		resources.add( "rules/lowPHhighBH.drl " );
+		resources.add( "rules/highPHlowBH.drl " );
 		resources.add( "rules/highPHhighBH.drl" );
 
 		kbuilder = new ClasspathKnowledgeBaseBuilder( resources );
 		kbase = kbuilder.getKnowledgeBase();
+		
+		ksession = kbase.newStatefulKnowledgeSession();
 
 	}
 
@@ -67,8 +69,8 @@ public class PolicyRulesTest {
 			Policy policy = new Policy();
 
 			// insert objects into working memory
-			FactHandle driverFH = ksession.insert( member );
-			FactHandle policyFH = ksession.insert( policy );
+			FactHandle driverFH = (FactHandle) ksession.insert( member );
+			FactHandle policyFH = (FactHandle) ksession.insert( policy );
 			ksession.fireAllRules();
 			// logger.close();
 			ksession.retract( driverFH );
@@ -93,8 +95,8 @@ public class PolicyRulesTest {
 			Policy policy = new Policy();
 
 			// insert objects into working memory
-			FactHandle driverFH = ksession.insert( member );
-			FactHandle policyFH = ksession.insert( policy );
+			FactHandle driverFH = (FactHandle) ksession.insert( member );
+			FactHandle policyFH = (FactHandle) ksession.insert( policy );
 			ksession.fireAllRules();
 			// logger.close();
 			ksession.retract( driverFH );
@@ -119,8 +121,8 @@ public class PolicyRulesTest {
 			Policy policy = new Policy();
 
 			// insert objects into working memory
-			FactHandle memberFH = ksession.insert( member );
-			FactHandle policyFH = ksession.insert( policy );
+			FactHandle memberFH = (FactHandle) ksession.insert( member );
+			FactHandle policyFH = (FactHandle) ksession.insert( policy );
 			ksession.fireAllRules();
 			// logger.close();
 			ksession.retract( memberFH );
@@ -144,8 +146,8 @@ public class PolicyRulesTest {
 			Policy policy = new Policy();
 
 			// insert objects into working memory
-			FactHandle driverFH = ksession.insert( member );
-			FactHandle policyFH = ksession.insert( policy );
+			FactHandle driverFH = (FactHandle) ksession.insert( member );
+			FactHandle policyFH = (FactHandle) ksession.insert( policy );
 			ksession.fireAllRules();
 			// logger.close();
 			ksession.retract( driverFH );
