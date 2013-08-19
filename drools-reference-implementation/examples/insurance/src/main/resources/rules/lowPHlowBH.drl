@@ -7,19 +7,25 @@ import com.rhc.insurance.Policy;
 dialect "mvel";
 
 
-rule "A stand alone rule"
+rule "lowPHlowBH rule"
 
     when
         //conditions
-        member : Member(smokesRegularly == true && filesMedicationRegularly == false)
-		policy : Policy()
+        $member : Member
+        (
+        	smokesRegularly == true,
+        	filesMedicationRegularly == false
+		)
+		
+		$policy : Policy
+		(
+			price == 0
+		)
         
         
     then
         //actions
-        modify(policy) {price=1000};
+        $policy.price = 1000;
         System.out.println("fired rule " + kcontext.getRule().getName());
     
-
 end
-

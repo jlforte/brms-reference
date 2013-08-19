@@ -4,20 +4,28 @@ package insurance.pricing
 import com.rhc.insurance.Member;
 import com.rhc.insurance.Policy;
 
-dialect "mvel";
+//dialect "mvel";
 
 
-rule "A stand alone rule"
+rule "highPHhighBH rule"
 
     when
         //conditions
-        member : Member(smokesRegularly == false && filesMedicationRegularly == true)
-		policy : Policy()
+        $member : Member
+        (
+        	smokesRegularly == false,
+        	filesMedicationRegularly == true
+        )
+		$policy : Policy
+		(
+			price == 0
+		)
+        
         
         
     then
         //actions
-        modify(policy) {price=300};
+        $policy.price = 300;
         System.out.println("fired rule " + kcontext.getRule().getName());
     
 

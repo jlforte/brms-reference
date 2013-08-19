@@ -6,6 +6,13 @@ public class Policy {
 	public int price;
 	public int physicalHealth;
 	public int behavioralHealth;
+	
+	public Policy()
+	{
+		price = 0;
+	}
+	
+	
 	public Member getMember() {
 		return member;
 	}

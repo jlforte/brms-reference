@@ -2,10 +2,17 @@ package com.rhc.insurance;
 
 public class Member
 {
-	private String name;
-	private Boolean smokesRegularly;
-	private Boolean skydivesRegularly;
-	private Boolean filesMedicationRegularly;
+	public String name;
+	public Boolean smokesRegularly;
+	public Boolean skydivesRegularly;
+	public Boolean filesMedicationRegularly;
+	
+	public Member()
+	{
+		name = "";
+		smokesRegularly = false;
+		skydivesRegularly = false;
+	}
 	
 	public String getName() {
 		return name;

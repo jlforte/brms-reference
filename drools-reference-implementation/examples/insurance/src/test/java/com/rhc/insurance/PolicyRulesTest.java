@@ -33,9 +33,9 @@ public class PolicyRulesTest {
 	public static void setupComponent() {
 
 		Set<String> resources = new HashSet<String>();
-		resources.add( "rules/lowPHlowBH.drl  " );
-		resources.add( "rules/lowPHhighBH.drl " );
-		resources.add( "rules/highPHlowBH.drl " );
+		resources.add( "rules/lowPHlowBH.drl" );
+		resources.add( "rules/lowPHhighBH.drl" );
+		resources.add( "rules/highPHlowBH.drl" );
 		resources.add( "rules/highPHhighBH.drl" );
 
 		kbuilder = new ClasspathKnowledgeBaseBuilder( resources );
@@ -116,7 +116,7 @@ public class PolicyRulesTest {
 			// now create some test data
 			Member member = new Member();
 			member.setSmokesRegularly( false );
-			member.setFilesMedicationRegularly( true );
+			member.setFilesMedicationRegularly( false );
 
 			Policy policy = new Policy();
 
@@ -144,6 +144,7 @@ public class PolicyRulesTest {
 			member.setFilesMedicationRegularly( true );
 
 			Policy policy = new Policy();
+			
 
 			// insert objects into working memory
 			FactHandle driverFH = (FactHandle) ksession.insert( member );
