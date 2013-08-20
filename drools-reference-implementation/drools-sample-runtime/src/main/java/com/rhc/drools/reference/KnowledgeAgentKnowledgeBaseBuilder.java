@@ -63,7 +63,7 @@ public class KnowledgeAgentKnowledgeBaseBuilder implements KnowledgeBaseBuilder 
 	}
 
 	@Override
-	public KnowledgeBase getKnowledgeBase() {
+	public KnowledgeBase buildKnowledgeBase() {
 		if ( !isInit ) {
 			init();
 		}
@@ -133,6 +133,12 @@ public class KnowledgeAgentKnowledgeBaseBuilder implements KnowledgeBaseBuilder 
 
 	public String getScannerInterval() {
 		return this.scannerInterval;
+	}
+
+	@Override
+	public boolean cacheKnowledgeBase() {
+		// Knowledge Agent handles caching for you.
+		return false;
 	}
 
 }

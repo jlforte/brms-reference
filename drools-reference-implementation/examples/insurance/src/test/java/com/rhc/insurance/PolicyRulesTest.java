@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.drools.KnowledgeBase;
 import org.drools.logger.KnowledgeRuntimeLogger;
-import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.FactHandle;
 import org.junit.AfterClass;
@@ -40,12 +39,9 @@ public class PolicyRulesTest {
 		resources.add( "rules/highPHhighBH.drl" );
 
 		kbuilder = new ClasspathKnowledgeBaseBuilder( resources );
-		kbase = kbuilder.getKnowledgeBase();
-		
-		
+		kbase = kbuilder.buildKnowledgeBase();
+
 		ksession = kbase.newStatefulKnowledgeSession();
-
-
 
 	}
 
@@ -148,7 +144,6 @@ public class PolicyRulesTest {
 			member.setFilesMedicationRegularly( true );
 
 			Policy policy = new Policy();
-			
 
 			// insert objects into working memory
 			FactHandle driverFH = (FactHandle) ksession.insert( member );

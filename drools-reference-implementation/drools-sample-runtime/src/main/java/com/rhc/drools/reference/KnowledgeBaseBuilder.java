@@ -39,5 +39,7 @@ import org.drools.KnowledgeBase;
 
 public interface KnowledgeBaseBuilder {
 
-	public KnowledgeBase getKnowledgeBase();
+	public KnowledgeBase buildKnowledgeBase();
+
+	public boolean cacheKnowledgeBase();
 }

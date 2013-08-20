@@ -22,7 +22,7 @@ public class BPMTest {
 		ClasspathKnowledgeBaseBuilder kBuilder = new ClasspathKnowledgeBaseBuilder();
 		kBuilder.addKnowledgeResource( "BPMTest.drl" );
 		kBuilder.addKnowledgeResource( "test.bpmn" );
-		kBase = kBuilder.getKnowledgeBase();
+		kBase = kBuilder.buildKnowledgeBase();
 	}
 
 	@Before

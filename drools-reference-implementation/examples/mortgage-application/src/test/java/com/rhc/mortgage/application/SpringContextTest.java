@@ -45,16 +45,15 @@ public class SpringContextTest extends AbstractJUnit4SpringContextTests {
 		}
 
 		// Show both have a valid kbase
-		Assert.assertEquals( 1, foo.getKnowledgeBase().getKnowledgePackages().size() );
-		Assert.assertEquals( 1, bar.getKnowledgeBase().getKnowledgePackages().size() );
+		Assert.assertEquals( 1, foo.buildKnowledgeBase().getKnowledgePackages().size() );
+		Assert.assertEquals( 1, bar.buildKnowledgeBase().getKnowledgePackages().size() );
 
 		// make foo null directly, and bar null indirectly - its the same reference
-		foo.setKnowledgeBase( null );
 		foo.setKnowledgeResources( null );
 
 		// show both are empty kbases
-		Assert.assertEquals( 0, foo.getKnowledgeBase().getKnowledgePackages().size() );
-		Assert.assertEquals( 0, bar.getKnowledgeBase().getKnowledgePackages().size() );
+		Assert.assertEquals( 0, foo.buildKnowledgeBase().getKnowledgePackages().size() );
+		Assert.assertEquals( 0, bar.buildKnowledgeBase().getKnowledgePackages().size() );
 
 	}
 
