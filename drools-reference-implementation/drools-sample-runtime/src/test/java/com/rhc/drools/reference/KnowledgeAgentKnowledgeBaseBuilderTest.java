@@ -33,7 +33,7 @@ public class KnowledgeAgentKnowledgeBaseBuilderTest {
 		KnowledgeAgentKnowledgeBaseBuilder kbuilder = new KnowledgeAgentKnowledgeBaseBuilder(
 				"classpath:change-set.xml" );
 
-		KnowledgeBase kBase = kbuilder.buildKnowledgeBase();
+		KnowledgeBase kBase = kbuilder.getKnowledgeBase();
 
 		Assert.assertNotNull( kBase );
 		Assert.assertEquals( 1, kBase.getKnowledgePackages().size() );
@@ -46,7 +46,7 @@ public class KnowledgeAgentKnowledgeBaseBuilderTest {
 		KnowledgeAgentKnowledgeBaseBuilder kbuilder = new KnowledgeAgentKnowledgeBaseBuilder(
 				"classpath:change-set-guvnor.xml" );
 
-		KnowledgeBase kBase = kbuilder.buildKnowledgeBase();
+		KnowledgeBase kBase = kbuilder.getKnowledgeBase();
 
 		Assert.assertNotNull( kBase );
 		Assert.assertEquals( 1, kBase.getKnowledgePackages().size() );

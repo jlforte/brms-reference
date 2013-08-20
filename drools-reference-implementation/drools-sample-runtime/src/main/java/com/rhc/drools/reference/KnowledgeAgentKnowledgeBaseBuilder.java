@@ -41,6 +41,7 @@ public class KnowledgeAgentKnowledgeBaseBuilder implements KnowledgeBaseBuilder 
 	private KnowledgeAgent kagent = KnowledgeAgentFactory.newKnowledgeAgent( "MyAgent" );
 	private ResourceChangeNotifier notifier = ResourceFactory.getResourceChangeNotifierService();
 	private ResourceChangeScanner scanner = ResourceFactory.getResourceChangeScannerService();
+	private KnowledgeBase kBase;
 
 	/**
 	 * Use the same syntax use in a change set: prefix with the protocol <code>http:</code> or <code>file:</code> or
@@ -63,13 +64,19 @@ public class KnowledgeAgentKnowledgeBaseBuilder implements KnowledgeBaseBuilder 
 	}
 
 	@Override
-	public KnowledgeBase buildKnowledgeBase() {
+	public KnowledgeBase getKnowledgeBase() {
+		buildKnowledgeBase();
+		return kBase;
+	}
+
+	@Override
+	public void buildKnowledgeBase() {
 		if ( !isInit ) {
 			init();
 		}
 
 		// kagent handles caching for us
-		return this.kagent.getKnowledgeBase();
+		kBase = this.kagent.getKnowledgeBase();
 	}
 
 	private void init() {
@@ -133,12 +140,6 @@ public class KnowledgeAgentKnowledgeBaseBuilder implements KnowledgeBaseBuilder 
 
 	public String getScannerInterval() {
 		return this.scannerInterval;
-	}
-
-	@Override
-	public boolean cacheKnowledgeBase() {
-		// Knowledge Agent handles caching for you.
-		return false;
 	}
 
 }

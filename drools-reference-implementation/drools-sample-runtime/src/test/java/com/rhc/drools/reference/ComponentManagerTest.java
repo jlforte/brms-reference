@@ -18,8 +18,8 @@ public class ComponentManagerTest {
 		KnowledgeBaseBuilder kbaseBuilder = new ClasspathKnowledgeBaseBuilder();
 		component.setKnowledgeBaseBuilder( kbaseBuilder );
 		ComponentManager.rebuildAllKnowledgeBases();
-		KnowledgeBase originalKBase = ComponentManager.getKnowledgeBase( component.getName() );
-		KnowledgeBase cacheKBase = ComponentManager.getKnowledgeBase( component.getName() );
+		KnowledgeBase originalKBase = kbaseBuilder.getKnowledgeBase();
+		KnowledgeBase cacheKBase = kbaseBuilder.getKnowledgeBase();
 
 		Assert.assertTrue( originalKBase == cacheKBase );
 	}
@@ -30,9 +30,9 @@ public class ComponentManagerTest {
 		KnowledgeBaseBuilder kbaseBuilder = new ClasspathKnowledgeBaseBuilder();
 		component.setKnowledgeBaseBuilder( kbaseBuilder );
 		ComponentManager.rebuildAllKnowledgeBases();
-		KnowledgeBase originalKBase = ComponentManager.getKnowledgeBase( component.getName() );
+		KnowledgeBase originalKBase = kbaseBuilder.getKnowledgeBase();
 		ComponentManager.rebuildAllKnowledgeBases();
-		KnowledgeBase newKBase = ComponentManager.getKnowledgeBase( component.getName() );
+		KnowledgeBase newKBase = kbaseBuilder.getKnowledgeBase();
 
 		Assert.assertFalse( originalKBase == newKBase );
 	}
@@ -43,10 +43,10 @@ public class ComponentManagerTest {
 		KnowledgeBaseBuilder kbaseBuilder = new ClasspathKnowledgeBaseBuilder();
 		component.setKnowledgeBaseBuilder( kbaseBuilder );
 		ComponentManager.rebuildAllKnowledgeBases();
-		KnowledgeBase originalKBase = ComponentManager.getKnowledgeBase( component.getName() );
+		KnowledgeBase originalKBase = kbaseBuilder.getKnowledgeBase();
 		component.setName( "Change" );
-
-		KnowledgeBase cacheKBase = ComponentManager.getKnowledgeBase( component.getName() );
+		StatelessDroolsComponent sameComponent = ComponentManager.getComponent( "Change" );
+		KnowledgeBase cacheKBase = sameComponent.getKnowledgeBaseBuilder().getKnowledgeBase();
 
 		Assert.assertTrue( originalKBase == cacheKBase );
 	}

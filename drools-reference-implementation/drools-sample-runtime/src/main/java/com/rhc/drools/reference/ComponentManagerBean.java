@@ -4,19 +4,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.drools.KnowledgeBase;
-
 public class ComponentManagerBean {
 
 	private static final String DEFAULT_NAME = "component_";
 
 	private Map<String, StatelessDroolsComponent> componentMap;
-	private Map<String, KnowledgeBase> knowledgeBaseMap;
 	private int namelessCount = 1;
 
 	public ComponentManagerBean() {
 		this.componentMap = new HashMap<String, StatelessDroolsComponent>();
-		this.knowledgeBaseMap = new HashMap<String, KnowledgeBase>();
 	}
 
 	/**
@@ -48,7 +44,6 @@ public class ComponentManagerBean {
 		}
 
 		componentMap.remove( name );
-		knowledgeBaseMap.remove( name );
 		return true;
 	}
 
@@ -57,11 +52,14 @@ public class ComponentManagerBean {
 	}
 
 	public void rebuildAllKnowledgeBases() {
-		this.knowledgeBaseMap = new HashMap<String, KnowledgeBase>();
 		for ( String name : componentMap.keySet() ) {
 			StatelessDroolsComponent component = componentMap.get( name );
-			knowledgeBaseMap.put( name, component.getKnowledgeBaseBuilder().buildKnowledgeBase() );
+			component.getKnowledgeBaseBuilder().buildKnowledgeBase();
 		}
+	}
+
+	public StatelessDroolsComponent getComponent( String name ) {
+		return componentMap.get( name );
 	}
 
 	public boolean rebuildKnowledgeBase( String name ) {
@@ -70,32 +68,11 @@ public class ComponentManagerBean {
 			return false;
 		}
 
-		knowledgeBaseMap.put( name, component.getKnowledgeBaseBuilder().buildKnowledgeBase() );
+		component.getKnowledgeBaseBuilder().buildKnowledgeBase();
 		return true;
 	}
 
-	public KnowledgeBase getKnowledgeBase( String name ) {
-		StatelessDroolsComponent component = componentMap.get( name );
-		if ( component == null ) {
-			return null;
-		}
-
-		KnowledgeBaseBuilder kBaseBuilder = component.getKnowledgeBaseBuilder();
-		if ( kBaseBuilder.cacheKnowledgeBase() ) {
-			if ( knowledgeBaseMap.containsKey( name ) ) {
-				return knowledgeBaseMap.get( name );
-			}
-		}
-
-		if ( rebuildKnowledgeBase( name ) ) {
-			return knowledgeBaseMap.get( name );
-		}
-
-		return null;
-	}
-
 	public boolean changeName( String oldName, String newName ) {
-		KnowledgeBase kbase = knowledgeBaseMap.get( oldName );
 		StatelessDroolsComponent component = componentMap.get( oldName );
 
 		if ( component == null ) {
@@ -104,13 +81,7 @@ public class ComponentManagerBean {
 
 		removeComponent( oldName );
 
-		boolean added = addComponent( component, newName );
-
-		if ( added && kbase != null ) {
-			knowledgeBaseMap.put( newName, kbase );
-		}
-
-		return added;
+		return addComponent( component, newName );
 
 	}
 

@@ -2,8 +2,6 @@ package com.rhc.drools.reference;
 
 import java.util.Collection;
 
-import org.drools.KnowledgeBase;
-
 public class ComponentManager {
 
 	private static ComponentManagerBean componentManager = new ComponentManagerBean();
@@ -28,16 +26,16 @@ public class ComponentManager {
 		return componentManager.rebuildKnowledgeBase( name );
 	}
 
-	public static KnowledgeBase getKnowledgeBase( String name ) {
-		return componentManager.getKnowledgeBase( name );
-	}
-
 	public static boolean changeName( String oldName, String newName ) {
 		return componentManager.changeName( oldName, newName );
 	}
 
 	public static void reset() {
 		componentManager = new ComponentManagerBean();
+	}
+
+	public static StatelessDroolsComponent getComponent( String name ) {
+		return componentManager.getComponent( name );
 	}
 
 }

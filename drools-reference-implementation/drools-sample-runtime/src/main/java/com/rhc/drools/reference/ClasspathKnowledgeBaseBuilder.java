@@ -37,6 +37,7 @@ public class ClasspathKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 
 	private static Logger logger = LoggerFactory.getLogger( ClasspathKnowledgeBaseBuilder.class );
 	private Set<String> knowledgeResources;
+	private KnowledgeBase kBase;
 
 	public ClasspathKnowledgeBaseBuilder( Set<String> knowledgeResources ) {
 		this.knowledgeResources = knowledgeResources;
@@ -46,7 +47,15 @@ public class ClasspathKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 	}
 
 	@Override
-	public KnowledgeBase buildKnowledgeBase() {
+	public KnowledgeBase getKnowledgeBase() {
+		if ( kBase == null ) {
+			buildKnowledgeBase();
+		}
+		return kBase;
+	}
+
+	@Override
+	public void buildKnowledgeBase() {
 
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 
@@ -72,11 +81,10 @@ public class ClasspathKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 			logger.error( kbuilder.getErrors().toString() );
 		}
 
-		KnowledgeBase kBase = kbuilder.newKnowledgeBase();
+		kBase = kbuilder.newKnowledgeBase();
 
 		logger.debug( "Building Knowledge Base took " + ( System.currentTimeMillis() - startTime ) + " ms" );
 
-		return kBase;
 	}
 
 	public void setKnowledgeResources( Set<String> knowledgeResources ) {
@@ -89,11 +97,6 @@ public class ClasspathKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 		}
 
 		this.knowledgeResources.add( resourceFile );
-	}
-
-	@Override
-	public boolean cacheKnowledgeBase() {
-		return true;
 	}
 
 }

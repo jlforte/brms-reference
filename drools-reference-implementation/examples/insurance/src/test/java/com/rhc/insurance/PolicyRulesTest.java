@@ -39,7 +39,7 @@ public class PolicyRulesTest {
 		resources.add( "rules/highPHhighBH.drl" );
 
 		kbuilder = new ClasspathKnowledgeBaseBuilder( resources );
-		kbase = kbuilder.buildKnowledgeBase();
+		kbase = kbuilder.getKnowledgeBase();
 
 		ksession = kbase.newStatefulKnowledgeSession();
 
