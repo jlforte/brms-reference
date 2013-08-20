@@ -9,7 +9,7 @@ public class ComponentManagerTest {
 
 	@Before
 	public void shouldClearComponentMangerState() {
-		ComponentManager.refresh();
+		ComponentManager.reset();
 	}
 
 	@Test

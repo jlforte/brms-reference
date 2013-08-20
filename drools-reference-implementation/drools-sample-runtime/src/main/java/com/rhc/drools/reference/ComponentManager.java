@@ -36,7 +36,7 @@ public class ComponentManager {
 		return componentManager.changeName( oldName, newName );
 	}
 
-	public static void refresh() {
+	public static void reset() {
 		componentManager = new ComponentManagerBean();
 	}
 
