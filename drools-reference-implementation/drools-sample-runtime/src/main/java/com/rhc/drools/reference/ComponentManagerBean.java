@@ -20,7 +20,7 @@ public class ComponentManagerBean {
 	}
 
 	/**
-	 * If the component has a name that allready exists, will return falce.
+	 * If the component has a name that already exists, will return false.
 	 * 
 	 * @param component
 	 */

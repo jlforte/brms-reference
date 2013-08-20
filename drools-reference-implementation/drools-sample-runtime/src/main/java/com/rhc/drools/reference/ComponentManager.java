@@ -6,38 +6,38 @@ import org.drools.KnowledgeBase;
 
 public class ComponentManager {
 
-	private static ComponentManagerBean compnentManager = new ComponentManagerBean();
+	private static ComponentManagerBean componentManager = new ComponentManagerBean();
 
 	public static boolean addComponent( StatelessDroolsComponent component ) {
-		return compnentManager.addComponent( component );
+		return componentManager.addComponent( component );
 	}
 
 	public static boolean removeComponent( String name ) {
-		return compnentManager.removeComponent( name );
+		return componentManager.removeComponent( name );
 	}
 
 	public static Collection<StatelessDroolsComponent> getAllManagedComponents() {
-		return compnentManager.getAllManagedComponents();
+		return componentManager.getAllManagedComponents();
 	}
 
 	public static void rebuildAllKnowledgeBases() {
-		compnentManager.rebuildAllKnowledgeBases();
+		componentManager.rebuildAllKnowledgeBases();
 	}
 
 	public static boolean rebuildKnowledgeBase( String name ) {
-		return compnentManager.rebuildKnowledgeBase( name );
+		return componentManager.rebuildKnowledgeBase( name );
 	}
 
 	public static KnowledgeBase getKnowledgeBase( String name ) {
-		return compnentManager.getKnowledgeBase( name );
+		return componentManager.getKnowledgeBase( name );
 	}
 
 	public static boolean changeName( String oldName, String newName ) {
-		return compnentManager.changeName( oldName, newName );
+		return componentManager.changeName( oldName, newName );
 	}
 
 	public static void refresh() {
-		compnentManager = new ComponentManagerBean();
+		componentManager = new ComponentManagerBean();
 	}
 
 }
