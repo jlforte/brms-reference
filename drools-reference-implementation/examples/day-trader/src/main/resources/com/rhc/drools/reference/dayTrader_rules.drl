@@ -1,0 +1,75 @@
+package com.rhc.drools.test;
+
+import com.rhc.stock.Stock
+import com.rhc.stock.StockDay
+import com.rhc.stock.StockQuote
+import com.rhc.trade.Trade
+
+rule 'bidToBuyStock'
+	ruleflow-group 'determineAction'
+	when
+		$quote : StockQuote()
+		
+		$day : StockDay
+		(
+			stock.name == $quote.stock.name, 
+			dayOpen > $quote.price + $quote.volatility
+		)
+		
+	then
+		Trade trade = new Trade();
+		trade.setAction("buy");
+		insert ( trade );
+end
+
+
+rule 'askToSellStock'
+	ruleflow-group 'determineAction'
+	when
+		$quote : StockQuote()
+		
+		$day : StockDay
+		(
+			stock.name == $quote.stock.name, 
+			dayOpen < $quote.price - $quote.volatility
+		)
+		
+	then
+		Trade trade = new Trade();
+		trade.setAction("sell");
+		insert ( trade );
+end
+
+rule 'determineBidPrice'
+	ruleflow-group 'determinePrice'
+	when 
+	
+		$quote : StockQuote()
+		$trade : Trade( action == "buy" )
+		
+	then
+		$trade.setPrice( $quote.getPrice() + (float) 0.01 );
+end
+
+rule 'determineAskPrice'
+	ruleflow-group 'determinePrice'
+	when 
+	
+		$quote : StockQuote()
+		$trade : Trade( action == "sell" )
+		
+	then
+		$trade.setPrice( $quote.getPrice() - (float) 0.01 );
+end
+
+query "Get buy trades"
+
+	$buyTrade : Trade(action == "buy")
+	
+end
+
+query "Get sell trades"
+	
+	$sellTrade : Trade(action == "sell")
+	
+end
