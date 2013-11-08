@@ -18,6 +18,7 @@ rule 'bidToBuyStock'
 		
 	then
 		Trade trade = new Trade();
+		trade.setStock($quote.getStock());
 		trade.setAction("buy");
 		insert ( trade );
 end
@@ -36,6 +37,7 @@ rule 'askToSellStock'
 		
 	then
 		Trade trade = new Trade();
+		trade.setStock($quote.getStock());
 		trade.setAction("sell");
 		insert ( trade );
 end

@@ -70,7 +70,8 @@ public class DayTraderSteps {
 
 		Trade trade = tradeResponse.getSellTrade();
 		if (trade != null) {
-			if (trade.getPrice().equals(Float.valueOf(price)))
+			if (trade.getPrice().equals(Float.valueOf(price))
+					&& trade.getStock().getName().equals(name))
 				System.out.println("Sell stock of " + name + " for " + price );
 			
 		}
@@ -81,7 +82,8 @@ public class DayTraderSteps {
 
 		Trade trade = tradeResponse.getBuyTrade();
 		if (trade != null) {
-			if (trade.getPrice().equals(Float.valueOf(price)))
+			if (trade.getPrice().equals(Float.valueOf(price))
+					&& trade.getStock().getName().equals(name))
 				System.out.println("Buy stock of " + name + " for " + price );
 		}
 	}
