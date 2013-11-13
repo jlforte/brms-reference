@@ -10,9 +10,9 @@
   <packaging>pom</packaging>
   
 	<modules>
-		<module>mortgage-application</module>
 		<module>discounts</module>
 		<module>insurance</module>
 		<module>day-trader</module>
+		<module>mortgage-application</module>
 	</modules>
 </project>
