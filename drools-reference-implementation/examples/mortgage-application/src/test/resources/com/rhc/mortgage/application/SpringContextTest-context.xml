@@ -11,7 +11,8 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 	<bean id="mortgageDroolsComponent" class="com.rhc.drools.reference.StatelessDroolsComponent">
 		<property name="knowledgeBaseBuilder" ref="mortgageKBaseBuilder" />
 		<property name="commandListBuilder" ref="mortgageCommandList" />
-		<property name="resultsTransformer" ref="mortgageResultTransform" />		
+		<property name="resultsTransformer" ref="mortgageResultTransform" />
+		<property name="fullyQualifiedLogFileName" value="mortgageAudit" />		
 	</bean>
 
 	<bean id="mortgageKBaseBuilder" class="com.rhc.drools.reference.ClasspathKnowledgeBaseBuilder">
