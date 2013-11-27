@@ -1,0 +1,1 @@
+This is an empty text file that is used in the DirectoryKnowledgeBaseBuilderTest class. Please do not remove me.
