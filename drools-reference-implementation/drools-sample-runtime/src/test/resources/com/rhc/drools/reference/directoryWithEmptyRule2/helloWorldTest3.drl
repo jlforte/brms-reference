@@ -3,10 +3,10 @@ package com.rhc.drools.test;
 
 //list any import classes here.
 
-rule "Test"
+rule "Test 3"
 	when
 
 	then
-		System.out.println( "Hello World, I am an empty test rule 1" );
+		System.out.println( "Hello World, I am an empty test rule 3" );
 end
 

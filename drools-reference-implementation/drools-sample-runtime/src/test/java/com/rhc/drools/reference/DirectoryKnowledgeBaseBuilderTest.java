@@ -30,6 +30,7 @@ public class DirectoryKnowledgeBaseBuilderTest {
 	private String emptyDirectory;
 	private String directoryWithBadFiles;
 	private String directoryWithSimpleDrl;
+	private String directoryWithSimpleDrl2;
 
 	@Before
 	public void setUp() {
@@ -37,6 +38,7 @@ public class DirectoryKnowledgeBaseBuilderTest {
 		this.directoryWithBadFiles = "/home/sherl0ck/Code/brms-reference/drools-reference-implementation/drools-sample-runtime/src/test/resources/com/rhc/drools/reference/directoryWithBadFiles";
 		this.emptyDirectory = "/home/sherl0ck/Code/brms-reference/drools-reference-implementation/drools-sample-runtime/src/test/resources/com/rhc/drools/reference/emptyDirectory";
 		this.directoryWithSimpleDrl = "/home/sherl0ck/Code/brms-reference/drools-reference-implementation/drools-sample-runtime/src/test/resources/com/rhc/drools/reference/directoryWithEmptyRule";
+		this.directoryWithSimpleDrl2 = "/home/sherl0ck/Code/brms-reference/drools-reference-implementation/drools-sample-runtime/src/test/resources/com/rhc/drools/reference/directoryWithEmptyRule2";
 	}
 
 	@Test
@@ -118,6 +120,35 @@ public class DirectoryKnowledgeBaseBuilderTest {
 		ksession.fireAllRules();
 		ksession.dispose();
 
+	}
+
+	@Test
+	public void shouldBuildAKnowledgeBaseWithAValidDirectoryWithAValidDrlAndThenReBuildWithASecondValidDirectoryWithNewRules() {
+
+		// Given
+		DirectoryKnowledgeBaseBuilder builder = new DirectoryKnowledgeBaseBuilder( directoryWithSimpleDrl );
+
+		// When
+		KnowledgeBase kBase = builder.getKnowledgeBase();
+
+		// Then
+		Assert.assertNotNull( kBase );
+		StatefulKnowledgeSession ksession = kBase.newStatefulKnowledgeSession();
+		Assert.assertNotNull( ksession );
+		ksession.fireAllRules();
+		ksession.dispose();
+
+		// When
+		builder.setDirectoryPath( directoryWithSimpleDrl2 );
+		builder.buildKnowledgeBase();
+		kBase = builder.getKnowledgeBase();
+
+		// Then
+		Assert.assertNotNull( kBase );
+		ksession = kBase.newStatefulKnowledgeSession();
+		Assert.assertNotNull( ksession );
+		ksession.fireAllRules();
+		ksession.dispose();
 	}
 
 }

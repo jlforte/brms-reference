@@ -7,6 +7,6 @@ rule "Test"
 	when
 
 	then
-		System.out.println( "Hello World, I am an empty test rule 1" );
+		System.out.println( "Hello World, I am an empty test rule 2" );
 end
 
