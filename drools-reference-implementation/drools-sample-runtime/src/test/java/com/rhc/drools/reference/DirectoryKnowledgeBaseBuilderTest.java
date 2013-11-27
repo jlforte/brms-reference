@@ -21,15 +21,29 @@ import java.io.File;
 import org.drools.KnowledgeBase;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class DirectoryKnowledgeBaseBuilderTest {
+
+	private String directoryThatShouldExist;
+	private String emptyDirectory;
+	private String directoryWithBadFiles;
+	private String directoryWithSimpleDrl;
+
+	@Before
+	public void setUp() {
+		this.directoryThatShouldExist = "/directoryThatShouldNotExist";
+		this.directoryWithBadFiles = "/home/sherl0ck/Code/brms-reference/drools-reference-implementation/drools-sample-runtime/src/test/resources/com/rhc/drools/reference/directoryWithBadFiles";
+		this.emptyDirectory = "/home/sherl0ck/Code/brms-reference/drools-reference-implementation/drools-sample-runtime/src/test/resources/com/rhc/drools/reference/emptyDirectory";
+		this.directoryWithSimpleDrl = "/home/sherl0ck/Code/brms-reference/drools-reference-implementation/drools-sample-runtime/src/test/resources/com/rhc/drools/reference/directoryWithEmptyRule";
+	}
 
 	@Test
 	public void shouldFailToBuildWithInvalidDirectory() {
 
 		// Given
-		DirectoryKnowledgeBaseBuilder builder = new DirectoryKnowledgeBaseBuilder( "/directoryThatShouldNotExist" );
+		DirectoryKnowledgeBaseBuilder builder = new DirectoryKnowledgeBaseBuilder( directoryThatShouldExist );
 
 		// When
 		KnowledgeBase kBase = builder.getKnowledgeBase();
@@ -41,48 +55,46 @@ public class DirectoryKnowledgeBaseBuilderTest {
 	@Test
 	public void shouldFailToBuildWithAValidDirectoryWithNoFiles() {
 		// Given
-		String directoryPath = "/home/sherl0ck/Code/brms-reference/drools-reference-implementation/drools-sample-runtime/src/test/resources/com/rhc/drools/reference/emptyDirectory";
-		DirectoryKnowledgeBaseBuilder builder = new DirectoryKnowledgeBaseBuilder( directoryPath );
+		DirectoryKnowledgeBaseBuilder builder = new DirectoryKnowledgeBaseBuilder( emptyDirectory );
 
 		// When
 		KnowledgeBase kBase = builder.getKnowledgeBase();
 
 		// Then
 		Assert.assertTrue(
-				String.format( "Directory (%s) must exist - chances are you've removed it. ", directoryPath ),
-				new File( directoryPath ).isDirectory() );
+				String.format( "Directory (%s) must exist - chances are you've removed it. ", emptyDirectory ),
+				new File( emptyDirectory ).isDirectory() );
 
 		Assert.assertNull( String.format(
 				"Knowledge Base should be null because the %s should not have files in it. Check that it's empty.",
-				directoryPath ), kBase );
+				emptyDirectory ), kBase );
 
 	}
 
 	@Test
 	public void shouldFailToBuildWithAValidDirectoryAndInvalidResources() {
 		// Given
-		String directoryPath = "/home/sherl0ck/Code/brms-reference/drools-reference-implementation/drools-sample-runtime/src/test/resources/com/rhc/drools/reference/directoryWithBadFiles";
-		DirectoryKnowledgeBaseBuilder builder = new DirectoryKnowledgeBaseBuilder( directoryPath );
+
+		DirectoryKnowledgeBaseBuilder builder = new DirectoryKnowledgeBaseBuilder( directoryWithBadFiles );
 
 		// When
 		KnowledgeBase kBase = builder.getKnowledgeBase();
 
 		// Then
 		Assert.assertTrue(
-				String.format( "Directory (%s) must exist - chances are you've removed it. ", directoryPath ),
-				new File( directoryPath ).isDirectory() );
+				String.format( "Directory (%s) must exist - chances are you've removed it. ", directoryWithBadFiles ),
+				new File( directoryWithBadFiles ).isDirectory() );
 
 		Assert.assertNull( String.format(
 				"Knowledge Base should be null because the %s should not have files in it. Check that it's empty.",
-				directoryPath ), kBase );
+				directoryWithBadFiles ), kBase );
 	}
 
 	@Test
-	public void shouldBuildAKnowledgeBaseWithAValidDirectoryWithTwoDrls() {
+	public void shouldBuildAKnowledgeBaseWithAValidDirectoryWithAValidDrlAndRetainKBaseAfterRebuildWithBadDirectory() {
 
 		// Given
-		String directoryPath = "/home/sherl0ck/Code/brms-reference/drools-reference-implementation/drools-sample-runtime/src/test/resources/com/rhc/drools/reference/directoryWithEmptyRule";
-		DirectoryKnowledgeBaseBuilder builder = new DirectoryKnowledgeBaseBuilder( directoryPath );
+		DirectoryKnowledgeBaseBuilder builder = new DirectoryKnowledgeBaseBuilder( directoryWithSimpleDrl );
 
 		// When
 		KnowledgeBase kBase = builder.getKnowledgeBase();
@@ -93,6 +105,19 @@ public class DirectoryKnowledgeBaseBuilderTest {
 		Assert.assertNotNull( ksession );
 		ksession.fireAllRules();
 		ksession.dispose();
+
+		// When
+		builder.setDirectoryPath( directoryThatShouldExist );
+		builder.buildKnowledgeBase();
+		kBase = builder.getKnowledgeBase();
+
+		// Then
+		Assert.assertNotNull( kBase );
+		ksession = kBase.newStatefulKnowledgeSession();
+		Assert.assertNotNull( ksession );
+		ksession.fireAllRules();
+		ksession.dispose();
+
 	}
 
 }
