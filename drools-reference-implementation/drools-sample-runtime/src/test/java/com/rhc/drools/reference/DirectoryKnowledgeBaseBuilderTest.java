@@ -17,6 +17,7 @@
 package com.rhc.drools.reference;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.drools.KnowledgeBase;
 import org.drools.runtime.StatefulKnowledgeSession;
@@ -33,12 +34,17 @@ public class DirectoryKnowledgeBaseBuilderTest {
 	private String directoryWithSimpleDrl2;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws IOException {
+		String baseDirectory = new File( "" ).getCanonicalPath();
+
 		this.directoryThatShouldExist = "/directoryThatShouldNotExist";
-		this.directoryWithBadFiles = "/home/sherl0ck/Code/brms-reference/drools-reference-implementation/drools-sample-runtime/src/test/resources/com/rhc/drools/reference/directoryWithBadFiles";
-		this.emptyDirectory = "/home/sherl0ck/Code/brms-reference/drools-reference-implementation/drools-sample-runtime/src/test/resources/com/rhc/drools/reference/emptyDirectory";
-		this.directoryWithSimpleDrl = "/home/sherl0ck/Code/brms-reference/drools-reference-implementation/drools-sample-runtime/src/test/resources/com/rhc/drools/reference/directoryWithEmptyRule";
-		this.directoryWithSimpleDrl2 = "/home/sherl0ck/Code/brms-reference/drools-reference-implementation/drools-sample-runtime/src/test/resources/com/rhc/drools/reference/directoryWithEmptyRule2";
+		this.directoryWithBadFiles = baseDirectory
+				.concat( "/src/test/resources/com/rhc/drools/reference/directoryWithBadFiles" );
+		this.emptyDirectory = baseDirectory.concat( "/src/test/resources/com/rhc/drools/reference/emptyDirectory" );
+		this.directoryWithSimpleDrl = baseDirectory
+				.concat( "/src/test/resources/com/rhc/drools/reference/directoryWithEmptyRule" );
+		this.directoryWithSimpleDrl2 = baseDirectory
+				.concat( "/src/test/resources/com/rhc/drools/reference/directoryWithEmptyRule2" );
 	}
 
 	@Test
