@@ -36,7 +36,6 @@ public class DirectoryKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 
 	private String directoryPath;
 	private KnowledgeBase kBase;
-	private ResourceType resourceType = ResourceType.DRL;
 
 	/**
 	 * @param directoryPath
@@ -102,20 +101,31 @@ public class DirectoryKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 
 			for ( int i = 0; i < directory.listFiles().length; i++ ) {
 				File childFile = directory.listFiles()[i];
+
 				if ( childFile.isDirectory() ) {
+
 					logger.info( String.format( "Child file %s is a directory, so it is being skipped.",
 							childFile.getName() ) );
 					continue;
+
 				}
-				// TODO remove this using a Resource Discriminator
-				if ( childFile.getName().endsWith( ".txt" ) ) {
-					logger.info( String.format(
-							"Child file %s is a text file (ends with .txt), so it is being skipped.",
-							childFile.getName() ) );
+
+				ResourceType childFileResourceType = ResourceType.determineResourceType( childFile.getName() );
+
+				if ( childFileResourceType == null ) {
+
+					logger.warn( String
+							.format(
+									"Child file %s does not have an file extension supported by Drools ResourceType defaults. See Drools source for details: https://github.com/droolsjbpm/droolsjbpm-knowledge/blob/5.4.x/knowledge-api/src/main/java/org/drools/builder/ResourceType.java",
+									childFile.getName() ) );
 					continue;
+
 				} else {
+
 					filesUsed++;
-					builder.add( ResourceFactory.newFileResource( childFile ), this.resourceType );
+					builder.add( ResourceFactory.newFileResource( childFile ), childFileResourceType );
+
+					logger.debug( String.format( "Adding %s to the kBuilder", childFile.getName() ) );
 				}
 			}
 

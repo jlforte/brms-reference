@@ -65,14 +65,16 @@ public class ClasspathKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 		if ( knowledgeResources != null ) {
 			for ( String resourceFile : knowledgeResources ) {
 
-				if ( resourceFile.endsWith( ".drl" ) ) {
-					kbuilder.add( ResourceFactory.newClassPathResource( resourceFile, getClass() ), ResourceType.DRL );
-				} else if ( resourceFile.endsWith( ".bpmn" ) 
-							|| resourceFile.endsWith( ".rf" ) ) {
-					kbuilder.add( ResourceFactory.newClassPathResource( resourceFile, getClass() ), ResourceType.BPMN2 );
-				} else if ( resourceFile.endsWith( ".xml" ) ) {
-					kbuilder.add( ResourceFactory.newClassPathResource( resourceFile, getClass() ),
-							ResourceType.CHANGE_SET );
+				ResourceType resourceType = ResourceType.determineResourceType( resourceFile );
+
+				if ( resourceType != null ) {
+					logger.debug( String.format( "Adding %s to kBuilder", resourceFile ) );
+					kbuilder.add( ResourceFactory.newClassPathResource( resourceFile, getClass() ), resourceType );
+				} else {
+					logger.warn( String
+							.format(
+									"Classpath resource %s does not have an file extension supported by Drools ResourceType defaults. See Drools source for details: https://github.com/droolsjbpm/droolsjbpm-knowledge/blob/5.4.x/knowledge-api/src/main/java/org/drools/builder/ResourceType.java",
+									resourceFile ) );
 				}
 
 			}
