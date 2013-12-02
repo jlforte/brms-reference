@@ -95,23 +95,35 @@ public class DirectoryKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 		KnowledgeBuilder builder = null;
 		File[] fileList = directory.listFiles();
 
-		if ( fileList.length == 0 ) {
-			// builder will stay null
-			logger.error( "Directory does not contain any files" );
-
-		} else {
+		int filesUsed = 0;
+		if ( fileList.length != 0 ) {
 
 			builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 
 			for ( int i = 0; i < directory.listFiles().length; i++ ) {
 				File childFile = directory.listFiles()[i];
 				if ( childFile.isDirectory() ) {
+					logger.info( String.format( "Child file %s is a directory, so it is being skipped.",
+							childFile.getName() ) );
+					continue;
+				}
+				// TODO remove this using a Resource Discriminator
+				if ( childFile.getName().endsWith( ".txt" ) ) {
+					logger.info( String.format(
+							"Child file %s is a text file (ends with .txt), so it is being skipped.",
+							childFile.getName() ) );
 					continue;
 				} else {
+					filesUsed++;
 					builder.add( ResourceFactory.newFileResource( childFile ), this.resourceType );
 				}
 			}
 
+		}
+
+		if ( filesUsed == 0 ) {
+			logger.error( "Directory does not contain any usable files" );
+			builder = null;
 		}
 
 		return builder;

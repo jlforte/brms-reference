@@ -42,9 +42,9 @@ public class DirectoryKnowledgeBaseBuilderTest {
 				.concat( "/src/test/resources/com/rhc/drools/reference/directoryWithBadFiles" );
 		this.emptyDirectory = baseDirectory.concat( "/src/test/resources/com/rhc/drools/reference/emptyDirectory" );
 		this.directoryWithSimpleDrl = baseDirectory
-				.concat( "/src/test/resources/com/rhc/drools/reference/directoryWithEmptyRule" );
+				.concat( "/src/test/resources/com/rhc/drools/reference/directoryWithTestRules" );
 		this.directoryWithSimpleDrl2 = baseDirectory
-				.concat( "/src/test/resources/com/rhc/drools/reference/directoryWithEmptyRule2" );
+				.concat( "/src/test/resources/com/rhc/drools/reference/directoryWithTestRules2" );
 	}
 
 	@Test
