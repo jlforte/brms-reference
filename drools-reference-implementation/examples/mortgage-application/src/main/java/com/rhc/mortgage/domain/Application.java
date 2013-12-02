@@ -63,6 +63,65 @@ public class Application {
 				+ ", applicationId=" + applicationId + ", valid=" + valid + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((amount == null) ? 0 : amount.hashCode());
+		result = prime * result
+				+ ((applicationId == null) ? 0 : applicationId.hashCode());
+		result = prime * result
+				+ ((approved == null) ? 0 : approved.hashCode());
+		result = prime * result
+				+ ((customerId == null) ? 0 : customerId.hashCode());
+		result = prime * result
+				+ ((reviewed == null) ? 0 : reviewed.hashCode());
+		result = prime * result + ((valid == null) ? 0 : valid.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Application other = (Application) obj;
+		if (amount == null) {
+			if (other.amount != null)
+				return false;
+		} else if (!amount.equals(other.amount))
+			return false;
+		if (applicationId == null) {
+			if (other.applicationId != null)
+				return false;
+		} else if (!applicationId.equals(other.applicationId))
+			return false;
+		if (approved == null) {
+			if (other.approved != null)
+				return false;
+		} else if (!approved.equals(other.approved))
+			return false;
+		if (customerId == null) {
+			if (other.customerId != null)
+				return false;
+		} else if (!customerId.equals(other.customerId))
+			return false;
+		if (reviewed == null) {
+			if (other.reviewed != null)
+				return false;
+		} else if (!reviewed.equals(other.reviewed))
+			return false;
+		if (valid == null) {
+			if (other.valid != null)
+				return false;
+		} else if (!valid.equals(other.valid))
+			return false;
+		return true;
+	}
+
 
 	
 	
