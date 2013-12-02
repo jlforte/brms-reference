@@ -61,6 +61,8 @@ public class StatelessDroolsComponent {
 	// Name to be managed by the componentManager
 	private String name;
 
+	private int executionCount = 0;
+
 	/**
 	 * Standard Constructor when using CommandLists
 	 * 
@@ -121,15 +123,15 @@ public class StatelessDroolsComponent {
 		StatelessKnowledgeSession kSession = kbase.newStatelessKnowledgeSession();
 		// setting the audit log file name will cause the component to log and capture fired rule events
 		if ( fullyQualifiedLogFileName != null ) {
-			droolsAuditLogger = KnowledgeRuntimeLoggerFactory.newFileLogger( kSession, fullyQualifiedLogFileName );
+			droolsAuditLogger = KnowledgeRuntimeLoggerFactory.newFileLogger( kSession, createAuditLogName() );
 			addFiredRulesEventListener( kSession );
 		}
 
 		long startTime = System.currentTimeMillis();
-		logger.debug( "Executing Drools Application..." );
+		logger.debug( "Executing " + name + "..." );
 		ExecutionResults results = kSession.execute( CommandFactory.newBatchExecution( commandList ) );
 
-		logger.debug( "Executing Drools Application took " + ( System.currentTimeMillis() - startTime ) + " ms" );
+		logger.debug( "Executing " + name + " took" + ( System.currentTimeMillis() - startTime ) + " ms" );
 
 		if ( fullyQualifiedLogFileName != null ) {
 			droolsAuditLogger.close();
@@ -167,8 +169,16 @@ public class StatelessDroolsComponent {
 
 	}
 
+	private String createAuditLogName() {
+		return fullyQualifiedLogFileName + "_" + incrementExecutionCount();
+	}
+
 	private void registerCompnent() {
 		ComponentManager.addComponent( this );
+	}
+
+	private synchronized int incrementExecutionCount() {
+		return this.executionCount++;
 	}
 
 	/**
