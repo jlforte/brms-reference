@@ -30,11 +30,6 @@
 			<artifactId>jbpm-flow</artifactId>
 			<version>5.4.0.Final</version>
 		</dependency>
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-test</artifactId>
-			<version>5.4.0.Final</version>
-		</dependency>
 
 
 		<dependency>
