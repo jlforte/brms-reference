@@ -58,6 +58,11 @@ public class StatelessDroolsComponent {
 
 	private ConcurrentHashMap<String, List<AfterActivationFiredEvent>> firedActivations;
 
+	// Name to be managed by the componentManager
+	private String name;
+
+	private int executionCount = 0;
+
 	/**
 	 * Standard Constructor when using CommandLists
 	 * 
@@ -71,6 +76,7 @@ public class StatelessDroolsComponent {
 		this.kBaseBuilder = kBaseBuilder;
 		this.commandListBuilder = commandListBuilder;
 		this.resultsTransformer = resultsTransformer;
+		registerCompnent();
 	}
 
 	/**
@@ -89,13 +95,14 @@ public class StatelessDroolsComponent {
 		this.commandListBuilder = commandListBuilder;
 		this.resultsTransformer = resultsTransformer;
 		this.fullyQualifiedLogFileName = fullyQualifiedLogFileName;
-
+		registerCompnent();
 	}
 
 	/**
 	 * Nullary Constructor for use with Dependency Injection
 	 */
 	public StatelessDroolsComponent() {
+		registerCompnent();
 	}
 
 	@SuppressWarnings({ "rawtypes" })
@@ -116,15 +123,15 @@ public class StatelessDroolsComponent {
 		StatelessKnowledgeSession kSession = kbase.newStatelessKnowledgeSession();
 		// setting the audit log file name will cause the component to log and capture fired rule events
 		if ( fullyQualifiedLogFileName != null ) {
-			droolsAuditLogger = KnowledgeRuntimeLoggerFactory.newFileLogger( kSession, fullyQualifiedLogFileName );
+			droolsAuditLogger = KnowledgeRuntimeLoggerFactory.newFileLogger( kSession, createAuditLogName() );
 			addFiredRulesEventListener( kSession );
 		}
 
 		long startTime = System.currentTimeMillis();
-		logger.debug( "Executing Drools Application..." );
+		logger.debug( "Executing " + name + "..." );
 		ExecutionResults results = kSession.execute( CommandFactory.newBatchExecution( commandList ) );
 
-		logger.debug( "Executing Drools Application took " + ( System.currentTimeMillis() - startTime ) + " ms" );
+		logger.debug( "Executing " + name + " took" + ( System.currentTimeMillis() - startTime ) + " ms" );
 
 		if ( fullyQualifiedLogFileName != null ) {
 			droolsAuditLogger.close();
@@ -162,6 +169,18 @@ public class StatelessDroolsComponent {
 
 	}
 
+	private String createAuditLogName() {
+		return fullyQualifiedLogFileName + "_" + incrementExecutionCount();
+	}
+
+	private void registerCompnent() {
+		ComponentManager.addComponent( this );
+	}
+
+	private synchronized int incrementExecutionCount() {
+		return this.executionCount++;
+	}
+
 	/**
 	 * Convenience method for testing to return activations from previous the previous execution.
 	 * 
@@ -175,6 +194,10 @@ public class StatelessDroolsComponent {
 		this.kBaseBuilder = kBaseBuilder;
 	}
 
+	public KnowledgeBaseBuilder getKnowledgeBaseBuilder() {
+		return kBaseBuilder;
+	}
+
 	public void setCommandListBuilder( CommandListBuilder commandListBuilder ) {
 		this.commandListBuilder = commandListBuilder;
 	}
@@ -185,6 +208,23 @@ public class StatelessDroolsComponent {
 
 	public void setFullyQualifiedLogFileName( String fullyQualifiedLogFileName ) {
 		this.fullyQualifiedLogFileName = fullyQualifiedLogFileName;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName( String name ) {
+		ComponentManager.changeName( this.name, name );
+		this.name = name;
+	}
+
+	/*
+	 * This is here so the component manager can set the name without recursion happening since set names has to change
+	 * the name in the component manager.
+	 */
+	protected void updateName( String name ) {
+		this.name = name;
 	}
 
 }

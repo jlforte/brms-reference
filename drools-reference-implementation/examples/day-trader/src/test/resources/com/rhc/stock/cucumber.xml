@@ -1,0 +1,5 @@
+<context:component-scan base-package="cucumber.runtime.java.spring"/>
+<context:annotation-config/>
+
+<!-- wire beans required for testing -->
+<import resource="classpath*:/src/test/resources/com/rhc/stock/DayTraderSteps-context.xml"/>

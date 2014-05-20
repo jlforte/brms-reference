@@ -3,17 +3,23 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.rhc.drools</groupId>
 	<artifactId>drools-reference-implementation</artifactId>
-	<version>1.1.0</version>
+	<version>1.2.1</version>
 	<packaging>pom</packaging>
 
 	<properties>
 
-		<droolsVersion>5.5.0.Final</droolsVersion>
+		<droolsVersion>5.4.0.Final</droolsVersion>
 		<jbpmVersion>5.4.0.Final</jbpmVersion>
+		<spring.version>3.1.3.RELEASE</spring.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>com.rhc.drools</groupId>
+				<artifactId>drools-sample-runtime</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.drools</groupId>
 				<artifactId>drools-core</artifactId>
@@ -52,7 +58,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.10</version>
+				<version>4.11</version>
 			</dependency>
 			<dependency>
 				<groupId>org.jbehave</groupId>
@@ -62,13 +68,14 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
-				<version>3.1.3.RELEASE</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-test</artifactId>
-				<version>3.1.3.RELEASE</version>
+				<version>${spring.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>commons-beanutils</groupId>
 				<artifactId>commons-beanutils</artifactId>

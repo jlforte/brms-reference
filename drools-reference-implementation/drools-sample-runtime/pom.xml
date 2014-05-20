@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.rhc.drools</groupId>
 		<artifactId>drools-reference-implementation</artifactId>
-		<version>1.1.0</version>
+		<version>1.2.1</version>
 	</parent>
 	<artifactId>drools-sample-runtime</artifactId>
 
@@ -25,17 +25,6 @@
 			<groupId>org.jbpm</groupId>
 			<artifactId>jbpm-bpmn2</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-flow</artifactId>
-			<version>5.4.0.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jbpm</groupId>
-			<artifactId>jbpm-test</artifactId>
-			<version>5.4.0.Final</version>
-		</dependency>
-
 
 		<dependency>
 			<groupId>ch.qos.logback</groupId>

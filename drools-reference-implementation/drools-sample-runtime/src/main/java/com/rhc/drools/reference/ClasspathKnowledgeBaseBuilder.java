@@ -30,12 +30,14 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Uses a list of classpath resources to construct a KnowledgeBase. This is the simplest way to build a KBase.
+ * 
+ * Note the creation of the KnowledgeBase is lazy
  */
 public class ClasspathKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 
 	private static Logger logger = LoggerFactory.getLogger( ClasspathKnowledgeBaseBuilder.class );
-	private KnowledgeBase kBase;
 	private Set<String> knowledgeResources;
+	private KnowledgeBase kBase;
 
 	public ClasspathKnowledgeBaseBuilder( Set<String> knowledgeResources ) {
 		this.knowledgeResources = knowledgeResources;
@@ -46,14 +48,14 @@ public class ClasspathKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 
 	@Override
 	public KnowledgeBase getKnowledgeBase() {
-
-		if ( this.kBase == null ) {
-			this.kBase = buildKnowledgeBase();
+		if ( kBase == null ) {
+			buildKnowledgeBase();
 		}
-		return this.kBase;
+		return kBase;
 	}
 
-	private KnowledgeBase buildKnowledgeBase() {
+	@Override
+	public void buildKnowledgeBase() {
 
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 
@@ -63,10 +65,16 @@ public class ClasspathKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 		if ( knowledgeResources != null ) {
 			for ( String resourceFile : knowledgeResources ) {
 
-				if ( resourceFile.endsWith( ".drl" ) ) {
-					kbuilder.add( ResourceFactory.newClassPathResource( resourceFile, getClass() ), ResourceType.DRL );
-				} else if ( resourceFile.endsWith( ".bpmn" ) ) {
-					kbuilder.add( ResourceFactory.newClassPathResource( resourceFile, getClass() ), ResourceType.BPMN2 );
+				ResourceType resourceType = ResourceType.determineResourceType( resourceFile );
+
+				if ( resourceType != null ) {
+					logger.debug( String.format( "Adding %s to kBuilder", resourceFile ) );
+					kbuilder.add( ResourceFactory.newClassPathResource( resourceFile, getClass() ), resourceType );
+				} else {
+					logger.warn( String
+							.format(
+									"Classpath resource %s does not have an file extension supported by Drools ResourceType defaults. See Drools source for details: https://github.com/droolsjbpm/droolsjbpm-knowledge/blob/5.4.x/knowledge-api/src/main/java/org/drools/builder/ResourceType.java",
+									resourceFile ) );
 				}
 
 			}
@@ -76,11 +84,10 @@ public class ClasspathKnowledgeBaseBuilder implements KnowledgeBaseBuilder {
 			logger.error( kbuilder.getErrors().toString() );
 		}
 
-		this.kBase = kbuilder.newKnowledgeBase();
+		kBase = kbuilder.newKnowledgeBase();
 
 		logger.debug( "Building Knowledge Base took " + ( System.currentTimeMillis() - startTime ) + " ms" );
 
-		return kBase;
 	}
 
 	public void setKnowledgeResources( Set<String> knowledgeResources ) {

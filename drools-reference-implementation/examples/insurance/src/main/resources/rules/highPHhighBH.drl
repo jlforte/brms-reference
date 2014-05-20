@@ -1,0 +1,33 @@
+//created on: Aug 14, 2013
+package insurance.pricing
+
+import com.rhc.insurance.Member;
+import com.rhc.insurance.Policy;
+
+//dialect "mvel";
+
+
+rule "highPHhighBH rule"
+
+    when
+        //conditions
+        $member : Member
+        (
+        	smokesRegularly == false,
+        	filesMedicationRegularly == true
+        )
+		$policy : Policy
+		(
+			price == 0
+		)
+        
+        
+        
+    then
+        //actions
+        $policy.price = 300;
+        System.out.println("fired rule " + kcontext.getRule().getName());
+    
+
+end
+

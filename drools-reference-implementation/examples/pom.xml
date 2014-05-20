@@ -4,13 +4,15 @@
 	<parent>
 		<groupId>com.rhc.drools</groupId>
 		<artifactId>drools-reference-implementation</artifactId>
-		<version>1.1.0</version>
+		<version>1.2.1</version>
 	</parent>
 	<artifactId>examples</artifactId>
   <packaging>pom</packaging>
   
 	<modules>
-		<module>mortgage-application</module>
 		<module>discounts</module>
+		<module>insurance</module>
+		<module>day-trader</module>
+		<module>mortgage-application</module>
 	</modules>
 </project>

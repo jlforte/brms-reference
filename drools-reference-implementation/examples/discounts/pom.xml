@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.rhc.drools</groupId>
 		<artifactId>examples</artifactId>
-		<version>1.1.0</version>
+		<version>1.2.1</version>
 	</parent>
 	<artifactId>discounts</artifactId>
 
@@ -12,7 +12,6 @@
 		<dependency>
 			<groupId>com.rhc.drools</groupId>
 			<artifactId>drools-sample-runtime</artifactId>
-			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>

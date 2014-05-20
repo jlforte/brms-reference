@@ -40,4 +40,7 @@ import org.drools.KnowledgeBase;
 public interface KnowledgeBaseBuilder {
 
 	public KnowledgeBase getKnowledgeBase();
+
+	public void buildKnowledgeBase();
+
 }

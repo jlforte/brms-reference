@@ -1,0 +1,12 @@
+//created on: Feb 8, 2013
+package com.rhc.drools.test;
+
+//list any import classes here.
+
+rule "Test 3"
+	when
+
+	then
+		System.out.println( "Hello World, I am an empty test rule 3" );
+end
+
